@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING, unique: true, allowNull: false },
       price: { type: DataTypes.INTEGER, allowNull: false },
       rating: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-      name: { type: DataTypes.STRING, allowNull: false },
+      img: { type: DataTypes.STRING, allowNull: false },
     },
     {
       sequelize,
