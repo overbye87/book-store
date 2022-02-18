@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
-import { fetchUsers } from "../store/actions/book";
 
 const BookList: React.FC = () => {
   const { books, error, loading } = useTypedSelector((state) => state.book);
-  const dispatch = useDispatch();
+  const { fetchBooks } = useActions();
 
   useEffect(() => {
-    dispatch(fetchUsers());
+    fetchBooks();
   }, []);
   //console.log(state);
   if (loading) return <h3>Loading, please wait...</h3>;

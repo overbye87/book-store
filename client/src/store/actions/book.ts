@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { BookAction, BookActionTypes } from "../../types/books";
 
-export const fetchUsers = () => {
+export const fetchBooks = () => {
   return async (dispatch: Dispatch<BookAction>) => {
     try {
       dispatch({ type: BookActionTypes.FETCH_BOOKS });
