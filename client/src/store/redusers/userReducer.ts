@@ -12,7 +12,8 @@ export const userReducer = (
 ): IUserState => {
   switch (action.type) {
     case UserActionTypes.SET_ISAUTH:
-      return { error: null, user: {}, isAuth: true };
+      console.log(state.isAuth);
+      return { ...state, isAuth: action.payload };
     case UserActionTypes.SET_USER:
       return { error: null, user: {}, isAuth: true };
     default:

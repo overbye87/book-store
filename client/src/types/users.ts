@@ -5,7 +5,7 @@ export enum UserActionTypes {
 
 interface ISetIsAuthAction {
   type: UserActionTypes.SET_ISAUTH;
-  isAuth: boolean;
+  payload: boolean;
 }
 
 interface ISetUserAction {

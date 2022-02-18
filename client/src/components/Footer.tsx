@@ -1,14 +1,14 @@
 import { Typography } from "@mui/material";
 import React from "react";
 
-const Header = () => {
+const Footer = () => {
   return (
     <div>
-      <Typography variant="h5" component="div">
-        Book - Store
+      <Typography variant="h6" component="div">
+        All rights reserved
       </Typography>
     </div>
   );
 };
 
-export default Header;
+export default Footer;
