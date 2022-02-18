@@ -18,7 +18,7 @@ interface IFetchBooksErrorAction {
   payload: string | object;
 }
 
-export type IBookAction =
+export type BookAction =
   | IFetchBooksAction
   | IFetchBooksSuccessAction
   | IFetchBooksErrorAction;

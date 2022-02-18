@@ -1,11 +1,11 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import BookList from "../components/bookList";
+import BookList from "../components/BookList";
+import Header from "../components/Header";
 
 const Shop = () => {
   return (
     <div>
-      <Button variant="outlined">Hello World</Button>
+      <Header />
       <BookList />
     </div>
   );

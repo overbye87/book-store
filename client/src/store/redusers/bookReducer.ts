@@ -1,4 +1,4 @@
-import { BookActionTypes, IBookAction, IBookState } from "../../types/books";
+import { BookActionTypes, BookAction, IBookState } from "../../types/books";
 
 const initialState: IBookState = {
   books: [],
@@ -8,7 +8,7 @@ const initialState: IBookState = {
 
 export const bookReducer = (
   state = initialState,
-  action: IBookAction
+  action: BookAction
 ): IBookState => {
   switch (action.type) {
     case BookActionTypes.FETCH_BOOKS:
