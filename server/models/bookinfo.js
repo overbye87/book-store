@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   BookInfo.init(
     {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+        foreignKey: true,
+      },
       title: DataTypes.STRING,
       description: DataTypes.STRING,
     },

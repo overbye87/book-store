@@ -8,7 +8,7 @@ const ApiError = require("../error/ApiError");
 class BookController {
   async create(req, res, next) {
     try {
-      const { name, price, authorId, geneId, info } = req.body;
+      const { name, price, authorId, genreId, info } = req.body;
       const { img } = req.files;
       let fileName = "img_" + uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
@@ -16,7 +16,7 @@ class BookController {
         name,
         price,
         authorId,
-        geneId,
+        genreId,
         img: fileName,
       });
       return res.json(book);

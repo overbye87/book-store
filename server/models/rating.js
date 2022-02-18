@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Rating.init(
     {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+        foreignKey: true,
+      },
       rate: { type: DataTypes.INTEGER, allowNull: false },
     },
     {

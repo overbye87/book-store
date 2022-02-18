@@ -13,7 +13,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Basket.init(
-    {},
+    {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+        foreignKey: true,
+      },
+    },
     {
       sequelize,
       modelName: "Basket",
