@@ -73,9 +73,6 @@ const NavBar: React.FC = () => {
               <li>
                 <NavLink to={LOGIN_ROUTE}>Login</NavLink>
               </li>
-              <li>
-                <NavLink to={REGISTRATION_ROUTE}>Registration</NavLink>
-              </li>
             </div>
           )}
         </ul>
