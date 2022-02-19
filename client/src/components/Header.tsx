@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setIsAuthAction } from "../store/actions/user";
 
-const Header = () => {
+const Header: React.FC = () => {
   const dispatch = useDispatch();
   return (
     <div>

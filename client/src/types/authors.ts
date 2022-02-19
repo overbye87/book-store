@@ -1,1 +1,33 @@
-export interface IAuthorState {}
+export interface IAuthorState {
+  authors: any[];
+  loading: boolean;
+  selectedAuthors: { id: number | null };
+  error: null | string | object;
+}
+export enum AuthorActionTypes {
+  FETCH_AUTHORS = "FETCH_AUTHORS",
+  FETCH_AUTHORS_SUCCESS = "FETCH_AUTHORS_SUCCESS",
+  FETCH_AUTHORS_ERROR = "FETCH_AUTHORS_ERROR",
+  SET_SELECTED_AUTHORS = "SET_SELECTED_AUTHORS",
+}
+
+interface IFetchAuthorsAction {
+  type: AuthorActionTypes.FETCH_AUTHORS;
+}
+interface IFetchAuthorsSuccessAction {
+  type: AuthorActionTypes.FETCH_AUTHORS_SUCCESS;
+  payload: any[];
+}
+interface IFetchAuthorsErrorAction {
+  type: AuthorActionTypes.FETCH_AUTHORS_ERROR;
+  payload: string | object;
+}
+interface ISetSelectedAuthors {
+  type: AuthorActionTypes.SET_SELECTED_AUTHORS;
+  payload: number;
+}
+export type AuthorAction =
+  | IFetchAuthorsAction
+  | IFetchAuthorsSuccessAction
+  | IFetchAuthorsErrorAction
+  | ISetSelectedAuthors;

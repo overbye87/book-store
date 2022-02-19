@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { authRoutes, publicRoutes } from "../routes";
 
-const AppRouter = () => {
+const AppRouter: React.FC = () => {
   const isAuth = true;
 
   return (

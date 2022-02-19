@@ -5,28 +5,26 @@ import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
-import { setSelectedAuthors } from "../store/actions/author";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
+import { setSelectedGenres } from "../store/actions/genre";
 
-const AuthorBar: React.FC = () => {
+const GenreBar: React.FC = () => {
   const dispatch = useDispatch();
-  const { authors, error, loading, selectedAuthors } = useTypedSelector(
-    (state) => state.author
+  const { genres, error, loading, selectedGenres } = useTypedSelector(
+    (state) => state.genre
   );
 
   return (
     <nav aria-label="secondary mailbox folders">
       <List>
-        {(authors as []).map((author: any) => (
-          <ListItem key={author.id} disablePadding>
+        {(genres as []).map((genre: any) => (
+          <ListItem key={genre.id} disablePadding>
             <ListItemButton
-              selected={author.id === selectedAuthors.id}
+              selected={genre.id === selectedGenres.id}
               onClick={() => {
-                dispatch(setSelectedAuthors(author.id));
+                dispatch(setSelectedGenres(genre.id));
               }}
             >
-              <ListItemText primary={author.name} />
+              <ListItemText primary={genre.name} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -35,4 +33,4 @@ const AuthorBar: React.FC = () => {
   );
 };
 
-export default AuthorBar;
+export default GenreBar;

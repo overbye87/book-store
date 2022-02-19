@@ -1,21 +1,22 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { AuthorAction, AuthorActionTypes } from "../../types/authors";
 
 export const fetchAuthors = () => {
-  return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
+  return async (dispatch: Dispatch<AuthorAction>) => {
     try {
-      dispatch({ type: "FETCH_AUTHORS" });
+      dispatch({ type: AuthorActionTypes.FETCH_AUTHORS });
       const response = await axios.get(
         "https://jsonplaceholder.typicode.com/users_authors"
       );
       dispatch({
-        type: "FETCH_AUTHORS_SUCCESS",
+        type: AuthorActionTypes.FETCH_AUTHORS_SUCCESS,
         payload: response.data,
       });
     } catch (e) {
       console.log(e);
       dispatch({
-        type: "FETCH_AUTHORS_ERROR",
+        type: AuthorActionTypes.FETCH_AUTHORS_ERROR,
         payload: "An error occurred loading the list of authors",
       });
     }
@@ -23,9 +24,9 @@ export const fetchAuthors = () => {
 };
 
 export const setSelectedAuthors = (id: number) => {
-  return (dispatch: (arg0: { type: string; payload: number }) => void) => {
+  return (dispatch: Dispatch<AuthorAction>) => {
     dispatch({
-      type: "SET_SELECTED_AUTHORS",
+      type: AuthorActionTypes.SET_SELECTED_AUTHORS,
       payload: id,
     });
   };

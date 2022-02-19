@@ -1,7 +1,18 @@
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import BookItem from "./BookItem";
+
+const BookCard = styled(Paper)({
+  color: "darkslategray",
+  backgroundColor: "#96ccc9",
+  padding: 8,
+  borderRadius: 4,
+});
 
 const BookList: React.FC = () => {
   const { books, error, loading } = useTypedSelector((state) => state.book);
@@ -15,11 +26,11 @@ const BookList: React.FC = () => {
   if (loading) return <h3>Loading, please wait...</h3>;
   if (error) return <h3>{error}</h3>;
   return (
-    <div>
+    <Grid container spacing={1}>
       {books.map((book) => (
-        <h3 key={book.id}>{book.name}</h3>
+        <BookItem key={book.id} book={book} />
       ))}
-    </div>
+    </Grid>
   );
 };
 
