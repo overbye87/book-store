@@ -65,7 +65,7 @@ const Auth = () => {
   return (
     <Wrapper>
       <Card>
-        {isLogin ? <Title>Authorization</Title> : <Title>Registration</Title>}
+        {isLogin ? <Title>Log in</Title> : <Title>Registration</Title>}
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Label>Email:</Label>
           <Input
@@ -88,15 +88,24 @@ const Auth = () => {
 
           {/* {errors.email && errors.password && <p>Fill in all the fields</p>} */}
 
-          <Input type="submit" value="Login" />
+          <Input type="submit" value={isLogin ? "Log in" : "Registration"} />
         </Form>
         <div>
-          <p>
-            Don't have an account?{" "}
-            <NavLink to={REGISTRATION_ROUTE}>
-              <Span>Register!</Span>
-            </NavLink>
-          </p>
+          {isLogin ? (
+            <p>
+              Don't have an account?{" "}
+              <NavLink to={REGISTRATION_ROUTE}>
+                <Span>Register!</Span>
+              </NavLink>
+            </p>
+          ) : (
+            <p>
+              Have an account?{" "}
+              <NavLink to={LOGIN_ROUTE}>
+                <Span>Log in!</Span>
+              </NavLink>
+            </p>
+          )}
         </div>
         <div>
           {errors?.password && (
