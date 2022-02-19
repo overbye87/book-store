@@ -1,7 +1,22 @@
 import { BookActionTypes, BookAction, IBookState } from "../../types/books";
 
 const initialState: IBookState = {
-  books: [],
+  books: [
+    {
+      name: "Treasure Island",
+      price: 500,
+      img: "img1.jpg",
+      authorId: 1,
+      genreId: 1,
+    },
+    {
+      name: "Burattino",
+      price: 300,
+      img: "img2.jpg",
+      authorId: 2,
+      genreId: 2,
+    },
+  ],
   loading: false,
   error: null,
 };

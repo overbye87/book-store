@@ -8,7 +8,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import TypeBar from "../components/TypeBar";
+import TypeBar from "../components/AuthorBar";
 
 const Item = styled(Paper)({
   color: "darkslategray",
