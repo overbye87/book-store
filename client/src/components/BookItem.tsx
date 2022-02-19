@@ -6,9 +6,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import bookImg from "../assets/book.jpg";
+
+import { useNavigate } from "react-router-dom";
+import { BOOK_ROUTE } from "../utils/consts";
 
 interface IBookItemProps {
   book: {
+    id: number;
     name: string;
     price: number;
     img: string;
@@ -19,13 +24,15 @@ interface IBookItemProps {
 }
 
 const BookItem: React.FC<IBookItemProps> = ({ book }) => {
+  let navigate = useNavigate();
+
   return (
-    <Grid item sx={{ width: 200 }}>
+    <Grid item sx={{ flexGrow: 1, minWidth: 200, maxWidth: 260 }}>
       <Card>
         <CardMedia
           component="img"
           height="200"
-          image="../static/book.jpg"
+          image={bookImg}
           alt="book picture"
         />
         <CardContent>
@@ -39,9 +46,17 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
             authorId: {book.authorId} <br />
             genreId: {book.genreId}
           </Typography>
+          <Typography variant="h4" color="text.secondary" textAlign="end">
+            &#9734;{book.rating}
+          </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button
+            onClick={() => navigate(BOOK_ROUTE + "/" + book.id)}
+            size="small"
+          >
+            Learn More
+          </Button>
         </CardActions>
       </Card>
     </Grid>
