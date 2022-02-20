@@ -12,6 +12,50 @@ type Inputs = {
   password: string;
 };
 
+const Title = styled.h2`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+`;
+const Span = styled.span`
+  color: palevioletred;
+`;
+const Wrapper = styled.section`
+  font-size: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  //height: calc(100vh - 50px);
+  .card_box {
+    &--card {
+    }
+  }
+`;
+const Card = styled.div`
+  width: 500px;
+  padding: 1.5em;
+  background: papayawhip;
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  background: papayawhip;
+`;
+const Input = styled.input`
+  padding: 0.5em;
+  margin-top: 0.5em;
+`;
+const Label = styled.label`
+  margin-top: 0.5em;
+`;
+
+const Item = styledmui(Paper)({
+  color: "darkslategray",
+  backgroundColor: "papayawhip",
+  padding: 8,
+  borderRadius: 4,
+});
+
 const Auth = () => {
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
@@ -31,50 +75,6 @@ const Auth = () => {
 
   //console.log(watch("email")); // watch input value by passing the name of it
   //console.log(watch("password"));
-
-  const Title = styled.h2`
-    font-size: 1.5em;
-    text-align: center;
-    color: palevioletred;
-  `;
-  const Span = styled.span`
-    color: palevioletred;
-  `;
-  const Wrapper = styled.section`
-    font-size: 1.2em;
-    display: flex;
-    justify-content: center;
-    align-items: top;
-    //height: calc(100vh - 50px);
-    .card_box {
-      &--card {
-      }
-    }
-  `;
-  const Card = styled.div`
-    width: 500px;
-    padding: 1.5em;
-    background: papayawhip;
-  `;
-  const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    background: papayawhip;
-  `;
-  const Input = styled.input`
-    padding: 0.5em;
-    margin-top: 0.5em;
-  `;
-  const Label = styled.label`
-    margin-top: 0.5em;
-  `;
-
-  const Item = styledmui(Paper)({
-    color: "darkslategray",
-    backgroundColor: "papayawhip",
-    padding: 8,
-    borderRadius: 4,
-  });
 
   return (
     <Grid container spacing={1}>
