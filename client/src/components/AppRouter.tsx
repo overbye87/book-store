@@ -2,7 +2,8 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import React from "react";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 //import { authRoutes, publicRoutes } from "../routes";
 
 import Admin from "../pages/Admin";
@@ -47,15 +48,39 @@ const AppRouter: React.FC = () => {
           <Route path={LOGIN_ROUTE} element={<Auth />} />
           <Route path={REGISTRATION_ROUTE} element={<Auth />} />
 
-          <Route path={ADMIN_ROUTE} element={<Admin />} />
-          <Route path={BASKET_ROUTE} element={<Basket />} />
+          <Route
+            path={ADMIN_ROUTE}
+            element={
+              <RequireAuth>
+                <Admin />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={BASKET_ROUTE}
+            element={
+              <RequireAuth>
+                <Basket />
+              </RequireAuth>
+            }
+          />
 
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
         </Route>
       </Routes>
     </div>
   );
 };
+
+function RequireAuth({ children }: { children: JSX.Element }) {
+  let { isAuth } = useTypedSelector((state) => state.user);
+  let location = useLocation();
+  if (!isAuth) {
+    return <Navigate to={LOGIN_ROUTE} state={{ from: location }} replace />;
+  }
+
+  return children;
+}
 
 function Layout() {
   return (
@@ -85,22 +110,6 @@ function Layout() {
     </div>
   );
 }
-
-// const AppRouter: React.FC = () => {
-//   const isAuth = true;
-//   return (
-//     <Routes>
-//       {isAuth &&
-//         authRoutes.map(({ path, Component }) => (
-//           <Route path={path} element={<Component />} key={path} />
-//         ))}
-//       {publicRoutes.map(({ path, Component }) => (
-//         <Route path={path} element={<Component />} key={path} />
-//       ))}
-//       <Route path="*" element={<Navigate to="/" />} />
-//     </Routes>
-//   );
-// };
 
 export default AppRouter;
 

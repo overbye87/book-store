@@ -26,7 +26,8 @@ const NavLink2 = styled(Button)({
 const NavBar: React.FC = () => {
   let navigate = useNavigate();
   const { isAuth } = useTypedSelector((state) => state.user);
-  console.log(isAuth);
+  //let isAuth = true;
+  //console.log(isAuth);
 
   const dispatch = useDispatch();
   return (
