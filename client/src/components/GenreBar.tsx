@@ -16,7 +16,7 @@ const GenreBar: React.FC = () => {
   return (
     <nav aria-label="secondary mailbox folders">
       <List>
-        {(genres as []).map((genre: any) => (
+        {genres.map((genre: any) => (
           <ListItem key={genre.id} disablePadding>
             <ListItemButton
               selected={genre.id === selectedGenres.id}

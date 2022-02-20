@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
     <Stack spacing={1} direction="row">
       <Button
         onClick={() => {
-          navigate(SHOP_ROUTE, { replace: true });
+          navigate(SHOP_ROUTE, { replace: false });
         }}
         variant="outlined"
       >
@@ -44,6 +44,7 @@ const NavBar: React.FC = () => {
           <Button
             onClick={() => {
               dispatch(setIsAuthAction(false));
+              navigate(SHOP_ROUTE, { replace: false });
             }}
             variant="outlined"
           >
@@ -51,7 +52,7 @@ const NavBar: React.FC = () => {
           </Button>
           <Button
             onClick={() => {
-              navigate(LOGIN_ROUTE, { replace: true });
+              navigate(ADMIN_ROUTE, { replace: false });
             }}
             variant="outlined"
           >
@@ -60,7 +61,7 @@ const NavBar: React.FC = () => {
 
           <Button
             onClick={() => {
-              navigate(LOGIN_ROUTE, { replace: true });
+              navigate(BASKET_ROUTE, { replace: false });
             }}
             variant="outlined"
           >
@@ -71,7 +72,7 @@ const NavBar: React.FC = () => {
         <Stack spacing={1} direction="row">
           <Button
             onClick={() => {
-              navigate(LOGIN_ROUTE, { replace: true });
+              navigate(LOGIN_ROUTE, { replace: false });
             }}
             variant="outlined"
           >

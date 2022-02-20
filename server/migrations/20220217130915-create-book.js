@@ -27,6 +27,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      authorId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      genreId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

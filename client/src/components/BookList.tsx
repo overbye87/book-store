@@ -3,8 +3,8 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import { fetchBooks } from "../store/actions/book";
 import BookItem from "./BookItem";
 
 const BookCard = styled(Paper)({
@@ -15,12 +15,12 @@ const BookCard = styled(Paper)({
 });
 
 const BookList: React.FC = () => {
+  const dispatch = useDispatch();
   const { books, error, loading } = useTypedSelector((state) => state.book);
-  const { fetchBooks } = useActions();
 
-  // useEffect(() => {
-  //   fetchBooks();
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchBooks());
+  }, []);
 
   //console.log(state);
   if (loading) return <h3>Loading, please wait...</h3>;

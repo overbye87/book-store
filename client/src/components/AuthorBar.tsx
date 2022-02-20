@@ -18,7 +18,7 @@ const AuthorBar: React.FC = () => {
   return (
     <nav aria-label="secondary mailbox folders">
       <List>
-        {(authors as []).map((author: any) => (
+        {authors.map((author: any) => (
           <ListItem key={author.id} disablePadding>
             <ListItemButton
               selected={author.id === selectedAuthors.id}

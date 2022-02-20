@@ -1,3 +1,6 @@
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { styled as styledmui } from "@mui/material/styles";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink, useLocation } from "react-router-dom";
@@ -42,7 +45,11 @@ const Auth = () => {
     display: flex;
     justify-content: center;
     align-items: top;
-    height: calc(100vh - 50px);
+    //height: calc(100vh - 50px);
+    .card_box {
+      &--card {
+      }
+    }
   `;
   const Card = styled.div`
     width: 500px;
@@ -62,62 +69,82 @@ const Auth = () => {
     margin-top: 0.5em;
   `;
 
+  const Item = styledmui(Paper)({
+    color: "darkslategray",
+    backgroundColor: "papayawhip",
+    padding: 8,
+    borderRadius: 4,
+  });
+
   return (
-    <Wrapper>
-      <Card>
-        {isLogin ? <Title>Log in</Title> : <Title>Registration</Title>}
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <Label>Email:</Label>
-          <Input
-            type="email"
-            {...register("email", {
-              required: 'Field "email" cannot be empty',
-            })}
-          />
-          <Label>Password:</Label>
-          <Input
-            type="password"
-            {...register("password", {
-              required: 'Field "Password" cannot be empty',
-              minLength: {
-                value: 3,
-                message: "Password must be longer than 3 characters",
-              },
-            })}
-          />
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <Item sx={{ minHeight: 500 }}>
+          <Wrapper>
+            <Card className="card_box--card">
+              {isLogin ? <Title>Log in</Title> : <Title>Registration</Title>}
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <Label>Email:</Label>
+                <Input
+                  type="email"
+                  {...register("email", {
+                    required: 'Field "email" cannot be empty',
+                  })}
+                />
+                <Label>Password:</Label>
+                <Input
+                  type="password"
+                  {...register("password", {
+                    required: 'Field "Password" cannot be empty',
+                    minLength: {
+                      value: 3,
+                      message: "Password must be longer than 3 characters",
+                    },
+                  })}
+                />
 
-          {/* {errors.email && errors.password && <p>Fill in all the fields</p>} */}
+                {/* {errors.email && errors.password && <p>Fill in all the fields</p>} */}
 
-          <Input type="submit" value={isLogin ? "Log in" : "Registration"} />
-        </Form>
-        <div>
-          {isLogin ? (
-            <p>
-              Don't have an account?{" "}
-              <NavLink to={REGISTRATION_ROUTE}>
-                <Span>Register!</Span>
-              </NavLink>
-            </p>
-          ) : (
-            <p>
-              Have an account?{" "}
-              <NavLink to={LOGIN_ROUTE}>
-                <Span>Log in!</Span>
-              </NavLink>
-            </p>
-          )}
-        </div>
-        <div>
-          {errors?.password && (
-            <p>{errors?.password?.message || "Form filled out incorrectly"}</p>
-          )}
+                <Input
+                  type="submit"
+                  value={isLogin ? "Log in" : "Registration"}
+                />
+              </Form>
+              <div>
+                {isLogin ? (
+                  <p>
+                    Don't have an account?{" "}
+                    <NavLink to={REGISTRATION_ROUTE}>
+                      <Span>Register!</Span>
+                    </NavLink>
+                  </p>
+                ) : (
+                  <p>
+                    Have an account?{" "}
+                    <NavLink to={LOGIN_ROUTE}>
+                      <Span>Log in!</Span>
+                    </NavLink>
+                  </p>
+                )}
+              </div>
+              <div>
+                {errors?.password && (
+                  <p>
+                    {errors?.password?.message || "Form filled out incorrectly"}
+                  </p>
+                )}
 
-          {errors?.email && (
-            <p>{errors?.email?.message || "Form filled out incorrectly"}</p>
-          )}
-        </div>
-      </Card>
-    </Wrapper>
+                {errors?.email && (
+                  <p>
+                    {errors?.email?.message || "Form filled out incorrectly"}
+                  </p>
+                )}
+              </div>
+            </Card>
+          </Wrapper>
+        </Item>
+      </Grid>
+    </Grid>
   );
 };
 

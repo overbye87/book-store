@@ -24,7 +24,15 @@ class BookController {
       next(ApiError.badRequest(e.message));
     }
   }
-  async getAll(req, res) {}
+
+  async getAll(req, res, next) {
+    try {
+      const books = await db.Book.findAll({ include: "author" });
+      return res.json(books);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
   async getOne(req, res) {}
 }
 
