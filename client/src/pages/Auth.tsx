@@ -1,3 +1,4 @@
+import { Email } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled as styledmui } from "@mui/material/styles";
@@ -5,56 +6,14 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { login, registration } from "../http/userAPI";
 import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 
 type Inputs = {
   email: string;
   password: string;
+  name: string;
 };
-
-const Title = styled.h2`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
-`;
-const Span = styled.span`
-  color: palevioletred;
-`;
-const Wrapper = styled.section`
-  font-size: 1.2em;
-  display: flex;
-  justify-content: center;
-  align-items: top;
-  //height: calc(100vh - 50px);
-  .card_box {
-    &--card {
-    }
-  }
-`;
-const Card = styled.div`
-  width: 500px;
-  padding: 1.5em;
-  background: papayawhip;
-`;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  background: papayawhip;
-`;
-const Input = styled.input`
-  padding: 0.5em;
-  margin-top: 0.5em;
-`;
-const Label = styled.label`
-  margin-top: 0.5em;
-`;
-
-const Item = styledmui(Paper)({
-  color: "darkslategray",
-  backgroundColor: "papayawhip",
-  padding: 8,
-  borderRadius: 4,
-});
 
 const Auth = () => {
   const location = useLocation();
@@ -68,9 +27,30 @@ const Auth = () => {
     formState: { errors, isValid },
   } = useForm<Inputs>({ mode: "onBlur" });
 
+  const signIn = async (email: string, password: string) => {
+    const response = await login(email, password);
+    console.log(response);
+  };
+
+  const registrationIn = async (
+    email: string,
+    password: string,
+    name: string
+  ) => {
+    const response = await registration(email, password, name);
+    console.log(response);
+  };
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
-    reset();
+    const { email, password, name } = data;
+    //alert(JSON.stringify(data));
+
+    //reset();
+    if (isLogin) {
+      signIn(email, password);
+    } else {
+      registrationIn(email, password, name);
+    }
   };
 
   //console.log(watch("email")); // watch input value by passing the name of it
@@ -102,9 +82,16 @@ const Auth = () => {
                     },
                   })}
                 />
-
+                {!isLogin && <Label>Name</Label>}
+                {!isLogin && (
+                  <Input
+                    {...register("name", {
+                      required: 'Field "email" cannot be empty',
+                    })}
+                  />
+                )}
+                <br />
                 {/* {errors.email && errors.password && <p>Fill in all the fields</p>} */}
-
                 <Input
                   type="submit"
                   value={isLogin ? "Log in" : "Registration"}
@@ -149,3 +136,47 @@ const Auth = () => {
 };
 
 export default Auth;
+
+const Title = styled.h2`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+`;
+const Span = styled.span`
+  color: palevioletred;
+`;
+const Wrapper = styled.section`
+  font-size: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  //height: calc(100vh - 50px);
+  .card_box {
+    &--card {
+    }
+  }
+`;
+const Card = styled.div`
+  width: 500px;
+  padding: 1.5em;
+  background: papayawhip;
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  background: papayawhip;
+`;
+const Input = styled.input`
+  padding: 0.5em;
+  margin-top: 0.5em;
+`;
+const Label = styled.label`
+  margin-top: 0.5em;
+`;
+
+const Item = styledmui(Paper)({
+  color: "darkslategray",
+  backgroundColor: "papayawhip",
+  padding: 8,
+  borderRadius: 4,
+});
