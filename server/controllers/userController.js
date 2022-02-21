@@ -7,7 +7,7 @@ const saltRounds = 10;
 const { validationResult } = require("express-validator");
 
 const jwt = require("jsonwebtoken");
-const { secret } = require("../secret");
+const secret = process.env.SECRET_KEY;
 
 const generateAccessToken = (user) => {
   const payload = {
@@ -126,12 +126,14 @@ class UserController {
     }
   }
   async check(req, res, next) {
-    const { id } = req.query;
-    if (!id) {
-      return next(ApiError.badRequest("No ID"));
-    }
-
-    res.json(id);
+    console.log("Refresh token for user", req.user);
+    const token = generateAccessToken(req.user);
+    return res.json({
+      status: true,
+      token,
+      //user: user,   //not needed - user is in the token
+      message: `Refresh token successful`,
+    });
   }
 }
 

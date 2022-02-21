@@ -1,40 +1,37 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 
 import AppRouter from "./components/AppRouter";
-
-const AppWrapper = styled.div`
-  font-family: sans-serif;
-`;
-
-// type IBook = {
-//   id: number;
-//   name: string;
-// };
+import { useTypedSelector } from "./hooks/useTypedSelector";
+import { check } from "./http/userAPI";
+import { setIsAuthAction, setUserAction } from "./store/actions/user";
+import { UserActionTypes } from "./types/users";
 
 const App = () => {
-  //
-  //   const [state, setState] = useState<IBook[]>([]);
+  const { isAuth, user } = useTypedSelector((state) => state.user);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
-  //   useEffect(() => {
-  //     const foo = async () => {
-  //       try {
-  //         const responce = await axios.get("http://localhost:4000/api/book");
-  //         setState(responce.data);
-  //       } catch (e) {
-  //         console.log("ERROR FROM", e);
-  //       }
-  //     };
-  //     foo();
-  //   }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      check()
+        .then((user) => {
+          dispatch(setIsAuthAction(true));
+          dispatch(setUserAction(user));
+        })
+        .finally(() => setLoading(false));
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return <h1>LOADING PLEASE WAIT...</h1>;
+  }
 
   return (
     <AppWrapper>
-      {/* {state.map((book) => {
-        return <h1 key={book.id}>{book.name}</h1>;
-      })} */}
       <BrowserRouter>
         <AppRouter />
       </BrowserRouter>
@@ -43,3 +40,7 @@ const App = () => {
 };
 
 export default App;
+
+const AppWrapper = styled.div`
+  font-family: sans-serif;
+`;

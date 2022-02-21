@@ -33,7 +33,10 @@ export const login = async (email: string, password: string) => {
   return token_decode.user;
 };
 
+// --- CHECK --- --- ---
 export const check = async () => {
-  const response = await $authHost.post("api/user/check");
-  return response;
+  const response = await $authHost.get("api/user/auth");
+  const { data } = response;
+  const token_decode: any = jwt_decode(data.token);
+  return token_decode.user;
 };

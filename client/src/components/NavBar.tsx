@@ -48,6 +48,7 @@ const NavBar: React.FC = () => {
           <Button
             onClick={() => {
               dispatch(setIsAuthAction(false));
+              localStorage.removeItem("accessToken");
               navigate(SHOP_ROUTE, { replace: false });
             }}
             variant="outlined"

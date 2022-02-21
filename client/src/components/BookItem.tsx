@@ -27,8 +27,8 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
   let navigate = useNavigate();
 
   return (
-    <Grid item sx={{ flexGrow: 1, minWidth: 200, maxWidth: 260 }}>
-      <Card>
+    <Grid item>
+      <Card sx={{ width: 220, height: 500 }}>
         <CardMedia
           component="img"
           height="200"
