@@ -9,10 +9,9 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../secret");
 
-const generateAccessToken = (id, role) => {
+const generateAccessToken = (user) => {
   const payload = {
-    id,
-    role,
+    user,
   };
   return jwt.sign(payload, secret, { expiresIn: "24h" });
 };
@@ -51,10 +50,14 @@ class UserController {
         where: { email: email },
         raw: true,
       });
+      // deleting user password, before putting it into token
       delete responseUser.password;
+      // generate token and put user in
+      const token = generateAccessToken(responseUser);
       return res.json({
         status: true,
-        user: responseUser,
+        token,
+        //user: responseUser,  //not needed - user is in the token
         message: `User with ${email} successfully registered`,
       });
     } catch (error) {
@@ -85,13 +88,15 @@ class UserController {
           .status(400)
           .json({ status: false, message: `Password is incorrect` });
       }
-      // generate token
-      const token = generateAccessToken(user.id, user.role);
+      // deleting user password, before putting it into token
       delete user.password;
+      // generate token
+      const token = generateAccessToken(user);
+
       return res.json({
         status: true,
         token,
-        user: user,
+        //user: user,   //not needed - user is in the token
         message: `Login successful`,
       });
     } catch (error) {

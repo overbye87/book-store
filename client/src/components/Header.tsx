@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   return (
     <div>
       <h1>Book - Store</h1>
-      <button
+      {/* <button
         onClick={() => {
           dispatch(setIsAuthAction(true));
         }}
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
         color="inherit"
       >
         set isAuth to false
-      </button>
+      </button> */}
     </div>
   );
 };

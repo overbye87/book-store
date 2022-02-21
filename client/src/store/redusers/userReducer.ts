@@ -1,4 +1,9 @@
-import { UserActionTypes, UserAction, IUserState } from "../../types/users";
+import {
+  UserActionTypes,
+  UserAction,
+  IUserState,
+  IUser,
+} from "../../types/users";
 
 const initialState: IUserState = {
   isAuth: false,
@@ -12,10 +17,9 @@ export const userReducer = (
 ): IUserState => {
   switch (action.type) {
     case UserActionTypes.SET_ISAUTH:
-      console.log(state.isAuth);
       return { ...state, isAuth: action.payload };
     case UserActionTypes.SET_USER:
-      return { error: null, user: {}, isAuth: true };
+      return { ...state, user: action.payload };
     default:
       return state;
   }

@@ -10,13 +10,21 @@ interface ISetIsAuthAction {
 
 interface ISetUserAction {
   type: UserActionTypes.SET_USER;
-  user: object;
+  payload: IUser;
 }
 
 export type UserAction = ISetIsAuthAction | ISetUserAction;
 
+export interface IUser {
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  img: string;
+}
+
 export interface IUserState {
   isAuth: boolean;
-  user: object;
+  user: {} | IUser;
   error: null | string | object;
 }

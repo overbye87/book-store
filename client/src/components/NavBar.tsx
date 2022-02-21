@@ -25,7 +25,7 @@ const NavLink2 = styled(Button)({
 
 const NavBar: React.FC = () => {
   let navigate = useNavigate();
-  const { isAuth } = useTypedSelector((state) => state.user);
+  const { isAuth, user } = useTypedSelector((state) => state.user);
   //let isAuth = true;
   //console.log(isAuth);
 
@@ -42,6 +42,9 @@ const NavBar: React.FC = () => {
       </Button>
       {isAuth ? (
         <Stack spacing={1} direction="row">
+          <h2>
+            Welcome {"name" in user ? user.name : <p>error</p>}! &#128512;
+          </h2>
           <Button
             onClick={() => {
               dispatch(setIsAuthAction(false));
@@ -59,7 +62,6 @@ const NavBar: React.FC = () => {
           >
             Admin
           </Button>
-
           <Button
             onClick={() => {
               navigate(BASKET_ROUTE, { replace: false });
