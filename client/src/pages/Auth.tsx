@@ -34,39 +34,50 @@ const Auth = () => {
     formState: { errors, isValid },
   } = useForm<Inputs>({ mode: "onBlur" });
 
-  const signIn = async (email: string, password: string) => {
-    const responseUser = await login(email, password);
-    console.log(localStorage.getItem("accessToken"));
-    console.log(responseUser);
-    dispatch(setUserAction(responseUser));
-    dispatch(setIsAuthAction(true));
-    setTimeout(() => {
-      navigate(SHOP_ROUTE, { replace: false });
-    }, 2000);
-  };
+  // const signIn = async (email: string, password: string) => {
+  //   const responseUser = await login(email, password);
+  //   console.log(localStorage.getItem("accessToken"));
+  //   console.log(responseUser);
+  //   dispatch(setUserAction(responseUser));
+  //   dispatch(setIsAuthAction(true));
+  //   setTimeout(() => {
+  //     navigate(SHOP_ROUTE, { replace: false });
+  //   }, 2000);
+  // };
 
-  const registrationIn = async (
-    email: string,
-    password: string,
-    name: string,
-    img: string
-  ) => {
-    const responseUser = await registration(email, password, name, img);
-    console.log(localStorage.getItem("accessToken"));
-    console.log(responseUser);
-    dispatch(setUserAction(responseUser));
-    dispatch(setIsAuthAction(true));
-    setTimeout(() => {
-      navigate(SHOP_ROUTE, { replace: false });
-    }, 2000);
-  };
+  // const registrationIn = async (
+  //   email: string,
+  //   password: string,
+  //   name: string,
+  //   img: string
+  // ) => {
+  //   const responseUser = await registration(email, password, name, img);
+  //   console.log(localStorage.getItem("accessToken"));
+  //   console.log(responseUser);
+  //   dispatch(setUserAction(responseUser));
+  //   dispatch(setIsAuthAction(true));
+  //   setTimeout(() => {
+  //     navigate(SHOP_ROUTE, { replace: false });
+  //   }, 2000);
+  // };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const { email, password, name, img } = data;
-    if (isLogin) {
-      signIn(email, password);
-    } else {
-      registrationIn(email, password, name, img);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const { email, password, name, img } = data;
+      if (isLogin) {
+        var responseUser = await login(email, password);
+      } else {
+        var responseUser = await registration(email, password, name, img);
+      }
+      console.log(localStorage.getItem("accessToken"));
+      console.log(responseUser);
+      dispatch(setUserAction(responseUser));
+      dispatch(setIsAuthAction(true));
+      setTimeout(() => {
+        navigate(SHOP_ROUTE, { replace: false });
+      }, 2000);
+    } catch (e: any) {
+      alert(e.response.data.message);
     }
   };
   if (isAuth)
