@@ -125,6 +125,7 @@ class UserController {
         .json({ status: false, message: `Can not get users` });
     }
   }
+  // --- CHECK REFRESH ACCESSTOKEN --- --- ---
   async check(req, res, next) {
     console.log("Refresh token for user", req.user);
     const token = generateAccessToken(req.user);
@@ -134,6 +135,45 @@ class UserController {
       //user: user,   //not needed - user is in the token
       message: `Refresh token successful`,
     });
+  }
+
+  // --- UPDATE USER INFORMATION --- --- ---
+  async updateUser(req, res) {
+    try {
+      const { id, name, surname, email, password, dob, role } = req.body;
+      if (typeof id !== "number") {
+        return res.status(400).json({ status: false, message: `Incorrect id` });
+      }
+      const user = await User.findByPk(id, { raw: true });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ status: false, message: `Can not get user with id:${id}` });
+      }
+      const status = await User.update(
+        {
+          name,
+          surname,
+          email,
+          password,
+          dob,
+          role,
+        },
+        { where: { id: id } }
+      );
+      const responseUser = await User.findByPk(id, { raw: true });
+      delete responseUser.password;
+      return res.json({
+        status: true,
+        user: responseUser,
+        message: `Data of user with id:${id} successfully changed`,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: false,
+        message: `Can not change data of user with id:${id}`,
+      });
+    }
   }
 }
 
