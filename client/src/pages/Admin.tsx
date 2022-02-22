@@ -36,6 +36,7 @@ const Admin = () => {
       //const responseUser = await userDataChange(email, name, img);
       //dispatch(setUserDataAction(responseUser));
       console.log({ email, name, img });
+      //resetData();
     } catch (error: any) {
       alert(error.response.data.message);
     }
@@ -49,6 +50,7 @@ const Admin = () => {
       //const responseUser = await userPasswordChange(oldPassword, newPassword);
       //dispatch(setUserPasswordAction(responseUser));
       console.log({ oldPassword, newPassword });
+      //resetPassword();
     } catch (error: any) {
       alert(error.response.data.message);
     }

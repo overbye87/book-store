@@ -40,3 +40,31 @@ export const check = async () => {
   const token_decode: any = jwt_decode(data.token);
   return token_decode.user;
 };
+
+// --- UPDATE PASSWORD --- --- ---
+export const updatePassword = async (
+  oldPassword: string,
+  newPassword: string
+) => {
+  const response = await $host.put("api/user/updatepassword", {
+    oldPassword,
+    newPassword,
+  });
+  localStorage.setItem("accessToken", response.data.token);
+  const { data } = response;
+  const token_decode: any = jwt_decode(data.token);
+  return token_decode.user;
+};
+
+// --- UPDATE USER DATA --- --- ---
+export const updateUser = async (email: string, name: string, img: string) => {
+  const response = await $host.put("api/user/update", {
+    email,
+    name,
+    img,
+  });
+  localStorage.setItem("accessToken", response.data.token);
+  const { data } = response;
+  const token_decode: any = jwt_decode(data.token);
+  return token_decode.user;
+};
