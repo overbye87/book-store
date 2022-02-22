@@ -1,9 +1,4 @@
-import {
-  UserActionTypes,
-  UserAction,
-  IUserState,
-  IUser,
-} from "../../types/users";
+import { UserActionTypes, UserAction, IUserState } from "../../types/users";
 
 const initialState: IUserState = {
   isAuth: false,

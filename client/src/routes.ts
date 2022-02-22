@@ -11,7 +11,7 @@ import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
   SHOP_ROUTE,
-} from "./utils/consts";
+} from "./constants";
 
 export const authRoutes = [
   { path: ADMIN_ROUTE, Component: Admin },

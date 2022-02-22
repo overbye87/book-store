@@ -8,7 +8,7 @@ router.post("/login", userController.login);
 
 router.get("/auth", authMiddleware, userController.check);
 
-router.get("/all", userController.getUsers);
-router.get("/update", userController.updateUser);
+router.get("/all", authMiddleware, userController.getUsers);
+router.get("/update", authMiddleware, userController.updateUser);
 
 module.exports = router;

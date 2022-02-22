@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import bookImg from "../assets/book.jpg";
 
 import { useNavigate } from "react-router-dom";
-import { BOOK_ROUTE } from "../utils/consts";
+import { BOOK_ROUTE } from "../constants";
 
 interface IBookItemProps {
   book: {

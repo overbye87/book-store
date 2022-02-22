@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { login, registration } from "../http/userAPI";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../utils/consts";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../constants";
 import { useDispatch } from "react-redux";
 import { setIsAuthAction, setUserAction } from "../store/actions/user";
 import { useTypedSelector } from "../hooks/useTypedSelector";

@@ -4,10 +4,6 @@ const $host = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
-const $authHost = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
-
 const authInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
   const token = localStorage.getItem("accessToken");
   if (token != null) {
@@ -19,6 +15,6 @@ const authInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
   return config;
 };
 
-$authHost.interceptors.request.use(authInterceptor);
+$host.interceptors.request.use(authInterceptor);
 
-export { $host, $authHost };
+export { $host };

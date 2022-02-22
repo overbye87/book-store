@@ -14,14 +14,7 @@ import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
   SHOP_ROUTE,
-} from "../utils/consts";
-
-const NavLink2 = styled(Button)({
-  color: "darkslategray",
-  backgroundColor: "papayawhip",
-  padding: 8,
-  borderRadius: 4,
-});
+} from "../constants";
 
 const NavBar: React.FC = () => {
   let navigate = useNavigate();
@@ -30,22 +23,33 @@ const NavBar: React.FC = () => {
   //console.log(isAuth);
 
   const dispatch = useDispatch();
+
+  let activeStyle = {
+    textDecoration: "underline",
+  };
+
   return (
     <Stack spacing={1} direction="row">
-      <Button
+      {/* <Button
         onClick={() => {
           navigate(SHOP_ROUTE, { replace: false });
         }}
         variant="outlined"
       >
         Home
-      </Button>
+      </Button> */}
+      <NavLink
+        to={SHOP_ROUTE}
+        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      >
+        Home
+      </NavLink>
       {isAuth ? (
         <Stack spacing={1} direction="row">
           <h2>
             Welcome {"name" in user ? user.name : <p>error</p>}! &#128512;
           </h2>
-          <Button
+          {/* <Button
             onClick={() => {
               dispatch(setIsAuthAction(false));
               localStorage.removeItem("accessToken");
@@ -54,34 +58,63 @@ const NavBar: React.FC = () => {
             variant="outlined"
           >
             Logout
-          </Button>
-          <Button
+          </Button> */}
+          <NavLink
+            to={SHOP_ROUTE}
+            onClick={() => {
+              dispatch(setIsAuthAction(false));
+              localStorage.removeItem("accessToken");
+              //navigate(SHOP_ROUTE, { replace: false });
+            }}
+            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            Logout
+          </NavLink>
+          {/* <Button
             onClick={() => {
               navigate(ADMIN_ROUTE, { replace: false });
             }}
             variant="outlined"
           >
             Admin
-          </Button>
-          <Button
+          </Button> */}
+          <NavLink
+            to={ADMIN_ROUTE}
+            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            Admin
+          </NavLink>
+          {/* <Button
             onClick={() => {
               navigate(BASKET_ROUTE, { replace: false });
             }}
             variant="outlined"
           >
             Basket
-          </Button>
+          </Button> */}
+          <NavLink
+            to={BASKET_ROUTE}
+            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            Basket
+          </NavLink>
         </Stack>
       ) : (
         <Stack spacing={1} direction="row">
-          <Button
+          {/* <Button
             onClick={() => {
               navigate(LOGIN_ROUTE, { replace: false });
             }}
             variant="outlined"
           >
             Login
-          </Button>
+          </Button> */}
+          <NavLink
+            to={LOGIN_ROUTE}
+            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            Login
+          </NavLink>
         </Stack>
       )}
     </Stack>

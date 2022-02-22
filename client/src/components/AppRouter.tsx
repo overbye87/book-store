@@ -19,7 +19,7 @@ import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
   SHOP_ROUTE,
-} from "../utils/consts";
+} from "../constants";
 
 import Footer from "./Footer";
 import Header from "./Header";
