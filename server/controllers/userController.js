@@ -69,7 +69,6 @@ class UserController {
   }
 
   // --- LOGIN --- --- ---
-
   async login(req, res) {
     try {
       const { email, password } = req.body;
@@ -127,46 +126,120 @@ class UserController {
   }
   // --- CHECK REFRESH ACCESSTOKEN --- --- ---
   async check(req, res, next) {
-    console.log("Refresh token for user", req.user);
+    //console.log("Refresh token for user", req.user);
     const token = generateAccessToken(req.user);
     return res.json({
       status: true,
       token,
       //user: user,   //not needed - user is in the token
-      message: `Refresh token successful`,
+      message: `Token successfully refreshed`,
     });
   }
 
   // --- UPDATE USER INFORMATION --- --- ---
   async updateUser(req, res) {
     try {
-      const { id, name, surname, email, password, dob, role } = req.body;
-      if (typeof id !== "number") {
-        return res.status(400).json({ status: false, message: `Incorrect id` });
+      //getting user.id from middleware injection
+      const { id } = req.user;
+      //console.log("User from token", req.user);
+
+      //getting new user data from request body
+      const { email, name, img } = req.body;
+
+      const candidate = await db.User.findOne({ where: { email: email } });
+
+      //check existing email
+      if (candidate) {
+        return res.status(400).json({
+          status: false,
+          message: "Email alredy exist",
+        });
       }
-      const user = await User.findByPk(id, { raw: true });
+
+      if (typeof id !== "number") {
+        return res
+          .status(400)
+          .json({ status: false, message: `Incorrect user id` });
+      }
+
+      const user = await db.User.findByPk(id, { raw: true });
       if (!user) {
         return res
           .status(400)
           .json({ status: false, message: `Can not get user with id:${id}` });
       }
-      const status = await User.update(
+      // ok - update ) may be
+      const status = await db.User.update(
         {
           name,
-          surname,
           email,
-          password,
-          dob,
-          role,
+          img,
         },
         { where: { id: id } }
       );
-      const responseUser = await User.findByPk(id, { raw: true });
-      delete responseUser.password;
+      // get this updated user for response and new token generation
+      const updatedUser = await db.User.findByPk(id, { raw: true });
+      delete updatedUser.password;
+      // generate new token from updated user
+      const token = generateAccessToken(updatedUser);
       return res.json({
         status: true,
-        user: responseUser,
-        message: `Data of user with id:${id} successfully changed`,
+        user: updatedUser,
+        token,
+        message: `Data of user with id:${id} successfully updated. Token successfully refreshed`,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: false,
+        message: `Can not change data of user with id:${id}`,
+      });
+    }
+  }
+
+  // --- UPDATE USER PASSWORD --- --- ---
+  async updatePassword(req, res) {
+    try {
+      //getting user.id from middleware injection
+      const { id } = req.user;
+      //console.log("User from token", req.user);
+      //getting new user data from request body
+      const { oldPassword, newPassword } = req.body;
+      if (typeof id !== "number") {
+        return res.status(400).json({ status: false, message: `Incorrect id` });
+      }
+      // get user from db
+      const user = await db.User.findByPk(id, { raw: true });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ status: false, message: `Can not get user with id:${id}` });
+      }
+      // check old password
+      const validPassword = await bcrypt.compare(oldPassword, user.password);
+      if (!validPassword) {
+        return res
+          .status(400)
+          .json({ status: false, message: `Password is incorrect` });
+      }
+      // calculate hash for new password
+      const hash = await bcrypt.hash(newPassword, saltRounds);
+
+      // ok - update password ) may be
+      const status = await db.User.update(
+        {
+          password: hash,
+        },
+        { where: { id: id } }
+      );
+      const updatedUser = await db.User.findByPk(id, { raw: true });
+      delete updatedUser.password;
+      // generate new token from updated user
+      const token = generateAccessToken(updatedUser);
+      return res.json({
+        status: true,
+        user: updatedUser,
+        token,
+        message: `Password for user with id:${id} successfully updated. Token successfully refreshed`,
       });
     } catch (error) {
       return res.status(400).json({
