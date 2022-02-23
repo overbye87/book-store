@@ -143,8 +143,8 @@ class UserController {
   async updateUser(req, res) {
     try {
       //file upload
-      //const { file } = req.file;
-      console.log(req.body);
+      //const { file } = req.files;
+      //console.log(file);
       //let fileName = "user_avatar_" + uuid.v4() + ".jpg";
       //file.mv(path.resolve(__dirname, "..", "static/user", fileName));
 
@@ -158,7 +158,7 @@ class UserController {
       const { email, name, img } = req.body;
       //img = fileName;
 
-      //console.log(req.body);
+      console.log(req.body);
       const candidate = await db.User.findOne({ where: { email: email } });
 
       //check existing email
@@ -175,8 +175,8 @@ class UserController {
           .json({ status: false, message: `Incorrect user id` });
       }
 
-      const user = await db.User.finedOne({ where: { id } });
-      console.log(user);
+      const user = await db.User.findOne({ where: { id } });
+      //console.log(user);
       if (!user) {
         return res
           .status(400)
