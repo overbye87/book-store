@@ -3,6 +3,7 @@ const express = require("express");
 const db = require("./models");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
+const bodyParser = require("body-parser");
 const router = require("./routes/index");
 const errorHandler = require("./middleware/ErrorHandlingMiddleware");
 

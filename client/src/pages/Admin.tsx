@@ -4,11 +4,15 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 import { styled as styledMUI } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { updatePassword, updateUser } from "../http/userAPI";
+import { setIsAuthAction, setUserAction } from "../store/actions/user";
 
 interface DataChangeInputs {
   email: string;
   name: string;
   img: string;
+  files: FileList;
 }
 interface PasswordChangeInputs {
   oldPassword: string;
@@ -16,6 +20,8 @@ interface PasswordChangeInputs {
 }
 
 const Admin = () => {
+  const dispatch = useDispatch();
+
   const {
     register: registerData,
     handleSubmit: handleSubmitData,
@@ -30,27 +36,31 @@ const Admin = () => {
     formState: { errors: errorsPassword, isValid: isValidPassword },
   } = useForm<PasswordChangeInputs>({ mode: "onBlur" });
 
+  // --- DATA CHANGE --- --- ---
   const onSubmitDataChange: SubmitHandler<DataChangeInputs> = async (data) => {
     try {
-      const { email, name, img } = data;
-      //const responseUser = await userDataChange(email, name, img);
-      //dispatch(setUserDataAction(responseUser));
-      console.log({ email, name, img });
+      const { email, name, img, files } = data;
+      const responseUser = await updateUser(email, name, img, files[0]);
+      dispatch(setUserAction(responseUser));
+      console.log(files[0]);
       //resetData();
+      alert("Data changed successfully");
     } catch (error: any) {
       alert(error.response.data.message);
     }
   };
 
+  // --- PASSWORD CHANGE --- --- ---
   const onSubmitPasswordChange: SubmitHandler<PasswordChangeInputs> = async (
     data
   ) => {
     try {
       const { oldPassword, newPassword } = data;
-      //const responseUser = await userPasswordChange(oldPassword, newPassword);
+      const responseUser = await updatePassword(oldPassword, newPassword);
       //dispatch(setUserPasswordAction(responseUser));
-      console.log({ oldPassword, newPassword });
-      //resetPassword();
+      //console.log({ oldPassword, newPassword });
+      resetPassword();
+      alert("Password changed successfully");
     } catch (error: any) {
       alert(error.response.data.message);
     }
@@ -85,6 +95,7 @@ const Admin = () => {
                     required: 'Field "img" cannot be empty',
                   })}
                 ></input>
+                <input {...registerData("files")} type="file" />
 
                 <input type="submit" value={"change"}></input>
               </form>

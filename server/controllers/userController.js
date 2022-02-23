@@ -1,5 +1,8 @@
 const db = require("../models");
 
+const uuid = require("uuid");
+const path = require("path");
+
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -139,22 +142,32 @@ class UserController {
   // --- UPDATE USER INFORMATION --- --- ---
   async updateUser(req, res) {
     try {
+      //file upload
+      //const { file } = req.file;
+      console.log(req.body);
+      //let fileName = "user_avatar_" + uuid.v4() + ".jpg";
+      //file.mv(path.resolve(__dirname, "..", "static/user", fileName));
+
       //getting user.id from middleware injection
       const { id } = req.user;
+      console.log(id);
+      //console.log(id);
       //console.log("User from token", req.user);
 
       //getting new user data from request body
       const { email, name, img } = req.body;
+      //img = fileName;
 
+      //console.log(req.body);
       const candidate = await db.User.findOne({ where: { email: email } });
 
       //check existing email
-      if (candidate) {
-        return res.status(400).json({
-          status: false,
-          message: "Email alredy exist",
-        });
-      }
+      // if (candidate) {
+      //   return res.status(400).json({
+      //     status: false,
+      //     message: "Email alredy exist",
+      //   });
+      // }
 
       if (typeof id !== "number") {
         return res
@@ -162,7 +175,8 @@ class UserController {
           .json({ status: false, message: `Incorrect user id` });
       }
 
-      const user = await db.User.findByPk(id, { raw: true });
+      const user = await db.User.finedOne({ where: { id } });
+      console.log(user);
       if (!user) {
         return res
           .status(400)
@@ -201,6 +215,7 @@ class UserController {
     try {
       //getting user.id from middleware injection
       const { id } = req.user;
+      console.log(id);
       //console.log("User from token", req.user);
       //getting new user data from request body
       const { oldPassword, newPassword } = req.body;

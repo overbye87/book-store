@@ -12,6 +12,7 @@ class BookController {
       const { img } = req.files;
       let fileName = "img_" + uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
+
       const book = await db.Book.create({
         name,
         price,

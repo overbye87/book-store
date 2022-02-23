@@ -57,12 +57,21 @@ export const updatePassword = async (
 };
 
 // --- UPDATE USER DATA --- --- ---
-export const updateUser = async (email: string, name: string, img: string) => {
-  const response = await $host.put("api/user/update", {
-    email,
-    name,
-    img,
-  });
+export const updateUser = async (
+  email: string,
+  name: string,
+  img: string,
+  file: File
+) => {
+  console.log(file);
+  const reqData = new FormData();
+  reqData.append("file", file);
+  reqData.append("email", email);
+  reqData.append("name", name);
+  reqData.append("img", img);
+
+  const response = await $host.put("api/user/update", reqData);
+
   localStorage.setItem("accessToken", response.data.token);
   const { data } = response;
   const token_decode: any = jwt_decode(data.token);
