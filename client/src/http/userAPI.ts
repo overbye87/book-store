@@ -5,15 +5,13 @@ import jwt_decode from "jwt-decode";
 export const registration = async (
   email: string,
   password: string,
-  name: string,
-  img: string
+  name: string
 ) => {
   const response = await $host.post("api/user/registration", {
     email,
     password,
     name,
     role: "ADMIN",
-    img,
   });
   localStorage.setItem("accessToken", response.data.token);
   const { data } = response;
@@ -46,10 +44,19 @@ export const updatePassword = async (
   oldPassword: string,
   newPassword: string
 ) => {
-  const response = await $host.put("api/user/updatepassword", {
+  console.log(oldPassword, newPassword);
+
+  const reqData = new FormData();
+  reqData.append("oldPassword", oldPassword);
+  reqData.append("newPassword", newPassword);
+  const response = await $host.put("api/user/updatepassword", reqData);
+
+  const response2 = await $host.post("api/user/registration", {
     oldPassword,
     newPassword,
   });
+
+  console.log(response);
   localStorage.setItem("accessToken", response.data.token);
   const { data } = response;
   const token_decode: any = jwt_decode(data.token);
@@ -57,21 +64,12 @@ export const updatePassword = async (
 };
 
 // --- UPDATE USER DATA --- --- ---
-export const updateUser = async (
-  email: string,
-  name: string,
-  img: string,
-  file: File
-) => {
+export const updateUser = async (name: string, file: File) => {
   console.log(file);
   const reqData = new FormData();
-  reqData.append("file", file);
-  reqData.append("email", email);
   reqData.append("name", name);
-  reqData.append("img", img);
-
+  reqData.append("file", file);
   const response = await $host.put("api/user/update", reqData);
-
   localStorage.setItem("accessToken", response.data.token);
   const { data } = response;
   const token_decode: any = jwt_decode(data.token);

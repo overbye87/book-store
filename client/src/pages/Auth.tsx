@@ -16,7 +16,6 @@ type Inputs = {
   email: string;
   password: string;
   name: string;
-  img: string;
 };
 
 const Auth = () => {
@@ -36,11 +35,11 @@ const Auth = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const { email, password, name, img } = data;
+      const { email, password, name } = data;
       if (isLogin) {
         var responseUser = await login(email, password);
       } else {
-        var responseUser = await registration(email, password, name, img);
+        var responseUser = await registration(email, password, name);
       }
       console.log(localStorage.getItem("accessToken"));
       console.log(responseUser);
@@ -100,15 +99,6 @@ const Auth = () => {
                       })}
                     />
                   )}
-                  {!isLogin && <Label>img</Label>}
-                  {!isLogin && (
-                    <Input
-                      {...register("img", {
-                        required: 'Field "img" cannot be empty',
-                      })}
-                    />
-                  )}
-                  <br />
                   {/* {errors.email && errors.password && <p>Fill in all the fields</p>} */}
                   <Input
                     type="submit"

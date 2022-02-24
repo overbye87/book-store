@@ -2,7 +2,7 @@ import { UserActionTypes, UserAction, IUserState } from "../../types/users";
 
 const initialState: IUserState = {
   isAuth: false,
-  user: {},
+  user: null,
   error: null,
 };
 

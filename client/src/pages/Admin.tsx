@@ -1,17 +1,16 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 import { styled as styledMUI } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { updatePassword, updateUser } from "../http/userAPI";
 import { setIsAuthAction, setUserAction } from "../store/actions/user";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 interface DataChangeInputs {
-  email: string;
   name: string;
-  img: string;
   files: FileList;
 }
 interface PasswordChangeInputs {
@@ -19,11 +18,13 @@ interface PasswordChangeInputs {
   newPassword: string;
 }
 
-const Admin = () => {
+const Admin: React.FC = () => {
+  const { isAuth, user } = useTypedSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const {
     register: registerData,
+    setValue: setValueData,
     handleSubmit: handleSubmitData,
     reset: resetData,
     formState: { errors: errorsData, isValid: isValidData },
@@ -39,8 +40,8 @@ const Admin = () => {
   // --- DATA CHANGE --- --- ---
   const onSubmitDataChange: SubmitHandler<DataChangeInputs> = async (data) => {
     try {
-      const { email, name, img, files } = data;
-      const responseUser = await updateUser(email, name, img, files[0]);
+      const { name, files } = data;
+      const responseUser = await updateUser(name, files[0]);
       dispatch(setUserAction(responseUser));
       console.log(files[0]);
       //resetData();
@@ -74,29 +75,19 @@ const Admin = () => {
             <h2>Change user data</h2>
             <div className="card">
               <form key={1} onSubmit={handleSubmitData(onSubmitDataChange)}>
-                <label>Email:</label>
-                <input
-                  type="email"
-                  {...registerData("email", {
-                    required: 'Field "email" cannot be empty',
-                  })}
-                ></input>
-
                 <label>Name:</label>
                 <input
+                  defaultValue={user ? user.name : ""}
                   {...registerData("name", {
                     required: 'Field "name" cannot be empty',
                   })}
                 ></input>
-
-                <label>Img:</label>
-                <input
-                  {...registerData("img", {
-                    required: 'Field "img" cannot be empty',
-                  })}
-                ></input>
+                <label>Avatar:</label>
+                <img
+                  width={400}
+                  src={user ? process.env.REACT_APP_API_URL + user.img : ""}
+                ></img>
                 <input {...registerData("files")} type="file" />
-
                 <input type="submit" value={"change"}></input>
               </form>
             </div>
@@ -119,7 +110,6 @@ const Admin = () => {
                     required: 'Field "old password" cannot be empty',
                   })}
                 ></input>
-
                 <label>New password</label>
                 <input
                   type="password"
@@ -127,7 +117,6 @@ const Admin = () => {
                     required: 'Field "new password" cannot be empty',
                   })}
                 ></input>
-
                 <input type="submit" value={"change"}></input>
               </form>
             </div>

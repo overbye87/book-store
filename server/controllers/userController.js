@@ -143,56 +143,39 @@ class UserController {
   async updateUser(req, res) {
     try {
       //file upload
-      //const { file } = req.files;
-      //console.log(file);
-      //let fileName = "user_avatar_" + uuid.v4() + ".jpg";
-      //file.mv(path.resolve(__dirname, "..", "static/user", fileName));
+      let img = "";
+      const { file } = req.files;
+      console.log("Update file:", file);
+      let fileName = "user_avatar_" + uuid.v4() + ".jpg";
+      file.mv(path.resolve(__dirname, "..", "static", fileName));
 
       //getting user.id from middleware injection
-      const { id } = req.user;
-      console.log(id);
-      //console.log(id);
-      //console.log("User from token", req.user);
+      const { id, email } = req.user;
+      console.log(id, email);
 
       //getting new user data from request body
-      const { email, name, img } = req.body;
-      //img = fileName;
+      const { name } = req.body;
 
       console.log(req.body);
-      const candidate = await db.User.findOne({ where: { email: email } });
+      const user = await db.User.findOne({ where: { email: email } });
 
-      //check existing email
-      // if (candidate) {
-      //   return res.status(400).json({
-      //     status: false,
-      //     message: "Email alredy exist",
-      //   });
-      // }
-
-      if (typeof id !== "number") {
-        return res
-          .status(400)
-          .json({ status: false, message: `Incorrect user id` });
-      }
-
-      const user = await db.User.findOne({ where: { id } });
-      //console.log(user);
       if (!user) {
-        return res
-          .status(400)
-          .json({ status: false, message: `Can not get user with id:${id}` });
+        return res.status(400).json({
+          status: false,
+          message: `Can not get user with email:${email}`,
+        });
       }
       // ok - update ) may be
+      console.log(img);
       const status = await db.User.update(
         {
           name,
-          email,
-          img,
+          img: fileName,
         },
-        { where: { id: id } }
+        { where: { email: email } }
       );
       // get this updated user for response and new token generation
-      const updatedUser = await db.User.findByPk(id, { raw: true });
+      const updatedUser = await db.User.findOne({ where: { email: email } });
       delete updatedUser.password;
       // generate new token from updated user
       const token = generateAccessToken(updatedUser);
@@ -213,17 +196,17 @@ class UserController {
   // --- UPDATE USER PASSWORD --- --- ---
   async updatePassword(req, res) {
     try {
-      //getting user.id from middleware injection
-      const { id } = req.user;
-      console.log(id);
-      //console.log("User from token", req.user);
+      //getting id and email from middleware injection
+      const { id, email } = req.user;
+      console.log("Change pasword for:", id, email);
       //getting new user data from request body
       const { oldPassword, newPassword } = req.body;
+      console.log("req.body:", req.body);
       if (typeof id !== "number") {
         return res.status(400).json({ status: false, message: `Incorrect id` });
       }
       // get user from db
-      const user = await db.User.findByPk(id, { raw: true });
+      const user = await db.User.findOne({ where: { email: email } });
       if (!user) {
         return res
           .status(400)
@@ -244,9 +227,9 @@ class UserController {
         {
           password: hash,
         },
-        { where: { id: id } }
+        { where: { email: email } }
       );
-      const updatedUser = await db.User.findByPk(id, { raw: true });
+      const updatedUser = await db.User.findOne({ where: { email: email } });
       delete updatedUser.password;
       // generate new token from updated user
       const token = generateAccessToken(updatedUser);
@@ -257,9 +240,10 @@ class UserController {
         message: `Password for user with id:${id} successfully updated. Token successfully refreshed`,
       });
     } catch (error) {
+      //console.log(id);
       return res.status(400).json({
         status: false,
-        message: `Can not change data of user with id:${id}`,
+        message: `Can not change data of user`,
       });
     }
   }

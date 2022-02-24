@@ -46,9 +46,7 @@ const NavBar: React.FC = () => {
       </NavLink>
       {isAuth ? (
         <Stack spacing={1} direction="row">
-          <h2>
-            Welcome {"name" in user ? user.name : <p>error</p>}! &#128512;
-          </h2>
+          <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
           {/* <Button
             onClick={() => {
               dispatch(setIsAuthAction(false));
