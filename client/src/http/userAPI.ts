@@ -51,11 +51,6 @@ export const updatePassword = async (
   reqData.append("newPassword", newPassword);
   const response = await $host.put("api/user/updatepassword", reqData);
 
-  const response2 = await $host.post("api/user/registration", {
-    oldPassword,
-    newPassword,
-  });
-
   console.log(response);
   localStorage.setItem("accessToken", response.data.token);
   const { data } = response;

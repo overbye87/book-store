@@ -46,6 +46,11 @@ const NavBar: React.FC = () => {
       </NavLink>
       {isAuth ? (
         <Stack spacing={1} direction="row">
+          <img
+            style={{ borderRadius: "50%" }}
+            height={50}
+            src={user ? process.env.REACT_APP_API_URL + user.img : ""}
+          ></img>
           <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
           {/* <Button
             onClick={() => {
