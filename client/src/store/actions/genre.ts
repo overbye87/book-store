@@ -1,14 +1,13 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { $host } from "../../http";
 import { GenreAction, GenreActionTypes } from "../../types/genres";
 
 export const fetchGenres = () => {
   return async (dispatch: Dispatch<GenreAction>) => {
     try {
       dispatch({ type: GenreActionTypes.FETCH_GENRES });
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/users_genres"
-      );
+      const response = await $host.get("api/genre");
       dispatch({
         type: GenreActionTypes.FETCH_GENRES_SUCCESS,
         payload: response.data,

@@ -6,12 +6,10 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        foreignKey: true,
         type: Sequelize.INTEGER,
       },
       name: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false,
       },
       price: {
@@ -24,6 +22,10 @@ module.exports = {
         defaultValue: 0,
       },
       img: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      description: {
         type: Sequelize.STRING,
         allowNull: false,
       },

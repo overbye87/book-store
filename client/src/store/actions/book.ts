@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { $host } from "../../http";
 import { BookAction, BookActionTypes } from "../../types/books";
 
 export const fetchBooks = () => {
@@ -8,9 +9,7 @@ export const fetchBooks = () => {
       // set state.book.loading to true
       dispatch({ type: BookActionTypes.FETCH_BOOKS });
       // start fetch
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/users"
-      );
+      const response = await $host.get("api/book");
       // if fetch success put data into state.book.books
       dispatch({
         type: BookActionTypes.FETCH_BOOKS_SUCCESS,

@@ -1,14 +1,13 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { $host } from "../../http";
 import { AuthorAction, AuthorActionTypes } from "../../types/authors";
 
 export const fetchAuthors = () => {
   return async (dispatch: Dispatch<AuthorAction>) => {
     try {
       dispatch({ type: AuthorActionTypes.FETCH_AUTHORS });
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/users_authors"
-      );
+      const response = await $host.get("api/author");
       dispatch({
         type: AuthorActionTypes.FETCH_AUTHORS_SUCCESS,
         payload: response.data,

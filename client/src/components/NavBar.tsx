@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { setIsAuthAction } from "../store/actions/user";
 
-import { styled } from "@mui/material/styles";
+import { styled as styledMUI } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 
@@ -30,14 +30,6 @@ const NavBar: React.FC = () => {
 
   return (
     <Stack spacing={1} direction="row">
-      {/* <Button
-        onClick={() => {
-          navigate(SHOP_ROUTE, { replace: false });
-        }}
-        variant="outlined"
-      >
-        Home
-      </Button> */}
       <NavLink
         to={SHOP_ROUTE}
         // style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -52,49 +44,22 @@ const NavBar: React.FC = () => {
             src={user ? process.env.REACT_APP_API_URL + user.img : ""}
           ></img>
           <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
-          {/* <Button
-            onClick={() => {
-              dispatch(setIsAuthAction(false));
-              localStorage.removeItem("accessToken");
-              navigate(SHOP_ROUTE, { replace: false });
-            }}
-            variant="outlined"
-          >
-            Logout
-          </Button> */}
           <NavLink
             to={SHOP_ROUTE}
             onClick={() => {
               dispatch(setIsAuthAction(false));
               localStorage.removeItem("accessToken");
-              //navigate(SHOP_ROUTE, { replace: false });
             }}
             // style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Logout
           </NavLink>
-          {/* <Button
-            onClick={() => {
-              navigate(ADMIN_ROUTE, { replace: false });
-            }}
-            variant="outlined"
-          >
-            Admin
-          </Button> */}
           <NavLink
             to={ADMIN_ROUTE}
             // style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Admin
           </NavLink>
-          {/* <Button
-            onClick={() => {
-              navigate(BASKET_ROUTE, { replace: false });
-            }}
-            variant="outlined"
-          >
-            Basket
-          </Button> */}
           <NavLink
             to={BASKET_ROUTE}
             // style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -104,14 +69,6 @@ const NavBar: React.FC = () => {
         </Stack>
       ) : (
         <Stack spacing={1} direction="row">
-          {/* <Button
-            onClick={() => {
-              navigate(LOGIN_ROUTE, { replace: false });
-            }}
-            variant="outlined"
-          >
-            Login
-          </Button> */}
           <NavLink
             to={LOGIN_ROUTE}
             // style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -125,3 +82,10 @@ const NavBar: React.FC = () => {
 };
 
 export default NavBar;
+
+// const NavLink = styledMUI(Button)({
+//   color: "darkslategray",
+//   backgroundColor: "papayawhip",
+//   padding: 8,
+//   borderRadius: 4,
+// });

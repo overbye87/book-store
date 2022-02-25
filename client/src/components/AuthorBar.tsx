@@ -2,10 +2,10 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
-import { setSelectedAuthors } from "../store/actions/author";
+import { fetchAuthors, setSelectedAuthors } from "../store/actions/author";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
@@ -14,6 +14,10 @@ const AuthorBar: React.FC = () => {
   const { authors, error, loading, selectedAuthors } = useTypedSelector(
     (state) => state.author
   );
+
+  useEffect(() => {
+    dispatch(fetchAuthors());
+  }, []);
 
   return (
     <nav aria-label="secondary mailbox folders">
