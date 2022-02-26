@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { fetchBooks } from "../store/actions/book";
 import BookItem from "./BookItem";
+import { useSearchParams } from "react-router-dom";
 
 const BookCard = styled(Paper)({
   color: "darkslategray",
@@ -17,19 +18,27 @@ const BookCard = styled(Paper)({
 const BookList: React.FC = () => {
   const dispatch = useDispatch();
   const { books, error, loading } = useTypedSelector((state) => state.book);
+  const { selectedGenres } = useTypedSelector((state) => state.genre);
+  const { selectedAuthors } = useTypedSelector((state) => state.author);
 
+  let [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
-    dispatch(fetchBooks());
-  }, []);
+    dispatch(
+      fetchBooks(
+        Number(searchParams.get("author")),
+        Number(searchParams.get("genre"))
+      )
+    );
+  }, [selectedAuthors, selectedGenres]);
 
   //console.log(state);
   if (loading) return <h3>Loading, please wait...</h3>;
   if (error) return <h3>{error}</h3>;
   return (
     <Grid container spacing={1}>
-      {books.map((book) => (
-        <BookItem key={book.id} book={book} />
-      ))}
+      {books
+        ? books.map((book) => <BookItem key={book.id} book={book} />)
+        : "Book list display error!"}
     </Grid>
   );
 };

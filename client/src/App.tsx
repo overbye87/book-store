@@ -17,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      check()
+      check() //load user
         .then((user) => {
           dispatch(setIsAuthAction(true));
           dispatch(setUserAction(user));

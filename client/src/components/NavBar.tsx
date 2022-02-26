@@ -1,91 +1,106 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { setIsAuthAction } from "../store/actions/user";
-
-import { styled as styledMUI } from "@mui/material/styles";
-import { Button } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import styled from "styled-components";
 
 import {
   ADMIN_ROUTE,
   BASKET_ROUTE,
   LOGIN_ROUTE,
-  REGISTRATION_ROUTE,
   SHOP_ROUTE,
 } from "../constants";
 
 const NavBar: React.FC = () => {
   let navigate = useNavigate();
   const { isAuth, user } = useTypedSelector((state) => state.user);
-  //let isAuth = true;
-  //console.log(isAuth);
-
   const dispatch = useDispatch();
 
-  let activeStyle = {
-    textDecoration: "underline",
-  };
-
   return (
-    <Stack spacing={1} direction="row">
+    <Nav>
       <NavLink
         to={SHOP_ROUTE}
-        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+        className={({ isActive }) => (isActive ? "link link--active" : "link")}
       >
         Home
       </NavLink>
       {isAuth ? (
-        <Stack spacing={1} direction="row">
-          <img
-            style={{ borderRadius: "50%" }}
-            height={50}
-            src={user ? process.env.REACT_APP_API_URL + user.img : ""}
-          ></img>
+        <Nav>
+          <img src={user ? process.env.REACT_APP_API_URL + user.img : ""}></img>
           <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
           <NavLink
+            className={({ isActive }) =>
+              isActive ? "link link--active" : "link"
+            }
             to={SHOP_ROUTE}
             onClick={() => {
               dispatch(setIsAuthAction(false));
               localStorage.removeItem("accessToken");
             }}
-            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Logout
           </NavLink>
           <NavLink
+            className={({ isActive }) =>
+              isActive ? "link link--active" : "link"
+            }
             to={ADMIN_ROUTE}
-            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Admin
           </NavLink>
           <NavLink
+            className={({ isActive }) =>
+              isActive ? "link link--active" : "link"
+            }
             to={BASKET_ROUTE}
-            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Basket
           </NavLink>
-        </Stack>
+        </Nav>
       ) : (
-        <Stack spacing={1} direction="row">
+        <Nav>
           <NavLink
+            className={({ isActive }) =>
+              isActive ? "link link--active" : "link"
+            }
             to={LOGIN_ROUTE}
-            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Login
           </NavLink>
-        </Stack>
+        </Nav>
       )}
-    </Stack>
+    </Nav>
   );
 };
 
 export default NavBar;
 
-// const NavLink = styledMUI(Button)({
-//   color: "darkslategray",
-//   backgroundColor: "papayawhip",
-//   padding: 8,
-//   borderRadius: 4,
-// });
+const Nav = styled.nav`
+  color: "darkslategray";
+  height: 50px;
+  //font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  img {
+    height: 50px;
+    border-radius: 50%;
+  }
+  .link {
+    text-decoration: none;
+    border: 2px solid palevioletred;
+    padding: 10px 15px;
+    border-radius: 5px;
+    &--active {
+      color: papayawhip;
+      background-color: palevioletred;
+    }
+    :hover {
+      background-color: darkslategray;
+      color: papayawhip;
+      border-color: darkslategray;
+    }
+  }
+`;

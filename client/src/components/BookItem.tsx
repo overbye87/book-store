@@ -16,10 +16,13 @@ interface IBookItemProps {
     id: number;
     name: string;
     price: number;
+    description: string;
     img: string;
     rating: number;
     authorId: number;
     genreId: number;
+    author: { id: number; name: string };
+    genre: { id: number; name: string };
   };
 }
 
@@ -28,23 +31,26 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
 
   return (
     <Grid item>
-      <Card sx={{ width: 220, height: 500 }}>
+      <Card sx={{ width: 280 }}>
         <CardMedia
           component="img"
           height="200"
-          image={bookImg}
+          image={book ? process.env.REACT_APP_API_URL + book.img : ""}
           alt="book picture"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {book.name}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
-            {book.price}
+          <Typography gutterBottom variant="h6" component="div" textAlign="end">
+            Price: {book.price}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            authorId: {book.authorId} <br />
-            genreId: {book.genreId}
+            Author: {book.author.name} <br />
+            Genre: {book.genre.name}
+          </Typography>
+          <Typography gutterBottom variant="inherit" component="div">
+            {book.description}
           </Typography>
           <Typography variant="h4" color="text.secondary" textAlign="end">
             &#9734;{book.rating}

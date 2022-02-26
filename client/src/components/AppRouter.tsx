@@ -2,7 +2,14 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import React from "react";
-import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 //import { authRoutes, publicRoutes } from "../routes";
 
@@ -44,6 +51,7 @@ const AppRouter: React.FC = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Shop />} />
+          <Route path={BOOK_ROUTE} element={<Shop />} />
           <Route path={BOOK_ROUTE + "/:id"} element={<BookPage />} />
           <Route path={LOGIN_ROUTE} element={<Auth />} />
           <Route path={REGISTRATION_ROUTE} element={<Auth />} />

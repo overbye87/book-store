@@ -29,7 +29,20 @@ class BookController {
 
   async getAll(req, res, next) {
     try {
-      const books = await db.Book.findAll({ include: ["genre", "author"] });
+      // api/book?author=1&genre=1
+      const { author, genre } = req.query;
+      console.log("Query:", author, genre);
+      const where = {};
+      if (author) {
+        where.authorId = author;
+      }
+      if (genre) {
+        where.genreId = genre;
+      }
+      const books = await db.Book.findAll({
+        include: ["genre", "author"],
+        where,
+      });
       return res.json(books);
     } catch (e) {
       next(ApiError.badRequest(e.message));

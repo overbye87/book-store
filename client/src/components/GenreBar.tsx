@@ -6,19 +6,22 @@ import React, { useEffect } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { fetchGenres, setSelectedGenres } from "../store/actions/genre";
+import { useSearchParams } from "react-router-dom";
 
 const GenreBar: React.FC = () => {
   const dispatch = useDispatch();
   const { genres, error, loading, selectedGenres } = useTypedSelector(
     (state) => state.genre
   );
+  const { selectedAuthors } = useTypedSelector((state) => state.author);
+  let [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     dispatch(fetchGenres());
+    dispatch(setSelectedGenres(Number(localStorage.getItem("genreId"))));
   }, []);
-
   return (
-    <nav aria-label="secondary mailbox folders">
+    <nav aria-label="genre">
       <List>
         {genres.map((genre: any) => (
           <ListItem key={genre.id} disablePadding>
@@ -26,6 +29,11 @@ const GenreBar: React.FC = () => {
               selected={genre.id === selectedGenres.id}
               onClick={() => {
                 dispatch(setSelectedGenres(genre.id));
+                localStorage.setItem("genreId", genre.id);
+                setSearchParams({
+                  author: String(selectedAuthors.id),
+                  genre: String(genre.id),
+                });
               }}
             >
               <ListItemText primary={genre.name} />

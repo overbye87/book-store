@@ -24,7 +24,7 @@ export type BookAction =
   | IFetchBooksErrorAction;
 
 export interface IBookState {
-  books: any[];
+  books: null | any[];
   loading: boolean;
   error: null | string | object;
 }
