@@ -29,20 +29,34 @@ class BookController {
 
   async getAll(req, res, next) {
     try {
-      // api/book?author=1&genre=1
-      const { author, genre } = req.query;
-      console.log("Query:", author, genre);
+      // api/book?author=2&genre=1&page=1
+      let { limit, page } = req.query;
+      if (page <= 0) {
+        page = 1;
+      }
+      page = page || 1;
+      limit = limit || 4;
+      let offset = page * limit - limit;
+      console.log("Query:", req.query);
       const where = {};
-      if (author) {
+      if (req.query.author) {
+        let author = String(req.query.author).split(",");
+
         where.authorId = author;
       }
-      if (genre) {
+      if (req.query.genre) {
+        let genre = String(req.query.genre).split(",");
         where.genreId = genre;
       }
-      const books = await db.Book.findAll({
+      const books = await db.Book.findAndCountAll({
         include: ["genre", "author"],
         where,
+        limit,
+        offset,
       });
+
+      books.page = page;
+      books.limit = limit;
       return res.json(books);
     } catch (e) {
       next(ApiError.badRequest(e.message));

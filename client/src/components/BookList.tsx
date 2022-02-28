@@ -18,18 +18,11 @@ const BookCard = styled(Paper)({
 const BookList: React.FC = () => {
   const dispatch = useDispatch();
   const { books, error, loading } = useTypedSelector((state) => state.book);
-  const { selectedGenres } = useTypedSelector((state) => state.genre);
-  const { selectedAuthors } = useTypedSelector((state) => state.author);
 
   let [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
-    dispatch(
-      fetchBooks(
-        Number(searchParams.get("author")),
-        Number(searchParams.get("genre"))
-      )
-    );
-  }, [selectedAuthors, selectedGenres]);
+    dispatch(fetchBooks(searchParams));
+  }, [searchParams]);
 
   //console.log(state);
   if (loading) return <h3>Loading, please wait...</h3>;
@@ -37,7 +30,7 @@ const BookList: React.FC = () => {
   return (
     <Grid container spacing={1}>
       {books
-        ? books.map((book) => <BookItem key={book.id} book={book} />)
+        ? books.rows.map((book) => <BookItem key={book.id} book={book} />)
         : "Book list display error!"}
     </Grid>
   );

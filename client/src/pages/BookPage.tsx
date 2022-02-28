@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Item = styled(Paper)({
   color: "darkslategray",
@@ -11,6 +11,9 @@ const Item = styled(Paper)({
 });
 
 const BookPage = () => {
+  useEffect(() => {
+    console.log("BP");
+  }, []);
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>

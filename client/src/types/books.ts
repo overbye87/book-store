@@ -10,7 +10,7 @@ interface IFetchBooksAction {
 
 interface IFetchBooksSuccessAction {
   type: BookActionTypes.FETCH_BOOKS_SUCCESS;
-  payload: any[];
+  payload: { rows: any[]; count: number; page: number; limit: number };
 }
 
 interface IFetchBooksErrorAction {
@@ -24,7 +24,7 @@ export type BookAction =
   | IFetchBooksErrorAction;
 
 export interface IBookState {
-  books: null | any[];
+  books: null | { rows: any[]; count: number; page: number; limit: number };
   loading: boolean;
   error: null | string | object;
 }

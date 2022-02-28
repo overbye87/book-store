@@ -8,21 +8,44 @@ import { useDispatch } from "react-redux";
 import { fetchAuthors, setSelectedAuthors } from "../store/actions/author";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import Paper from "@mui/material/Paper";
+import queryString from "query-string";
 
 const AuthorBar: React.FC = () => {
   const dispatch = useDispatch();
+  let [searchParams, setSearchParams] = useSearchParams();
   const { authors, error, loading, selectedAuthors } = useTypedSelector(
     (state) => state.author
   );
-  const { selectedGenres } = useTypedSelector((state) => state.genre);
 
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [selected, setSelected] = React.useState<any[]>([0]);
 
   useEffect(() => {
-    dispatch(fetchAuthors());
-    dispatch(setSelectedAuthors(Number(localStorage.getItem("authorId"))));
+    setTimeout(() => {
+      dispatch(fetchAuthors());
+    }, 1000);
+    const parsed = queryString.parse(searchParams.toString(), {
+      arrayFormat: "comma",
+      parseNumbers: true,
+    });
+
+    console.log(parsed);
+    if (Array.isArray(parsed.author)) {
+      parsed.author.unshift(0);
+      console.log(parsed.author);
+      setSelected(parsed.author);
+    }
   }, []);
+
+  useEffect(() => {
+    console.log(selected);
+    if (selected.length <= 1) {
+      //searchParams.delete("author");
+      setSearchParams(searchParams);
+    } else {
+      searchParams.set("author", selected.slice(1).join());
+      setSearchParams(searchParams);
+    }
+  }, [selected]);
 
   return (
     <Nav aria-label="author">
@@ -31,14 +54,18 @@ const AuthorBar: React.FC = () => {
           <ListItem key={author.id} disablePadding>
             <ListItemButton
               className={"lb"}
-              selected={author.id === selectedAuthors.id}
+              selected={selected.indexOf(author.id) !== -1}
               onClick={() => {
-                dispatch(setSelectedAuthors(author.id));
-                localStorage.setItem("authorId", author.id);
-                setSearchParams({
-                  author: String(author.id),
-                  genre: String(selectedGenres.id),
-                });
+                const currentIndex = selected.indexOf(author.id);
+                const newSelected = [...selected];
+                if (currentIndex === -1) {
+                  newSelected.push(author.id);
+                } else {
+                  newSelected.splice(currentIndex, 1);
+                }
+                setSelected(newSelected);
+                //set page to 1
+                searchParams.delete("page");
               }}
             >
               <ListItemText primary={author.name} />

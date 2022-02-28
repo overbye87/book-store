@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import TypeBar from "../components/AuthorBar";
 import GenreBar from "../components/GenreBar";
+import Pages from "../components/PagesBar";
 
 const Item = styled(Paper)({
   color: "darkslategray",
@@ -31,10 +32,17 @@ const Shop = () => {
           <GenreBar />
         </Item>
       </Grid>
-      <Grid item xs={8}>
-        <Item>
-          <BookList />
-        </Item>
+      <Grid container item xs={8} spacing={1}>
+        <Grid item xs={12}>
+          <Item>
+            <Pages />
+          </Item>
+        </Grid>
+        <Grid item xs={12}>
+          <Item>
+            <BookList />
+          </Item>
+        </Grid>
       </Grid>
     </Grid>
   );
