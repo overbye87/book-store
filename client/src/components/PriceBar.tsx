@@ -12,15 +12,13 @@ const PriceBar: React.FC = () => {
   const minDistance = 100;
 
   let [searchParams, setSearchParams] = useSearchParams();
-  const [value, setvalue] = React.useState<number[]>([minp, maxp]);
+  const [value, setValue] = React.useState<number[]>([minp, maxp]);
 
   useEffect(() => {
-    if (searchParams.get("minp")) {
-      setvalue([Number(searchParams.get("minp")), value[1]]);
-    }
-
-    if (searchParams.get("maxp")) {
-      setvalue([value[0], Number(searchParams.get("maxp"))]);
+    if (searchParams.get("minp") && searchParams.get("maxp")) {
+      minp = Number(searchParams.get("minp"));
+      maxp = Number(searchParams.get("maxp"));
+      setValue([minp, maxp]);
     }
   }, []);
 
@@ -34,25 +32,21 @@ const PriceBar: React.FC = () => {
     }
 
     if (activeThumb === 0) {
-      setvalue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
+      setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
     } else {
-      setvalue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
+      setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
     }
   };
 
   const handleCommitted = () => {
-    if (value[0] <= minPrice) {
+    if (value[0] === minPrice && value[1] === maxPrice) {
       searchParams.delete("minp");
-    } else {
-      searchParams.set("minp", `${value[0]}`);
-    }
-
-    if (value[1] >= maxPrice) {
       searchParams.delete("maxp");
-    } else {
-      searchParams.set("maxp", `${value[1]}`);
     }
+    searchParams.set("minp", `${value[0]}`);
+    searchParams.set("maxp", `${value[1]}`);
     setSearchParams(searchParams);
+    console.log(value);
     //set page to 1
     searchParams.delete("page");
   };
@@ -68,7 +62,9 @@ const PriceBar: React.FC = () => {
         gap: 5,
       }}
     >
-      <h3>Price:</h3>
+      <h3 style={{ width: 350 }}>
+        Price from {value[0]} to {value[1]}
+      </h3>
       <Slider
         getAriaLabel={() => "Price slider"}
         value={value}
