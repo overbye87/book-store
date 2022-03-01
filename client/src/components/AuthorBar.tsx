@@ -23,30 +23,30 @@ const AuthorBar: React.FC = () => {
     setTimeout(() => {
       dispatch(fetchAuthors());
     }, 1000);
+
     const parsed = queryString.parse(searchParams.toString(), {
       arrayFormat: "comma",
       parseNumbers: true,
     });
-
-    console.log(parsed);
     if (Array.isArray(parsed.author)) {
-      parsed.author.unshift(0);
-      console.log(parsed.author);
-      setSelected(parsed.author);
+      setSelected([0, ...parsed.author]);
+    } else {
+      if (parsed.author) {
+        setSelected([0, parsed.author]);
+      } else setSelected([0]);
     }
   }, []);
 
   useEffect(() => {
-    console.log(selected);
     if (selected.length <= 1) {
-      //searchParams.delete("author");
+      searchParams.delete("author");
       setSearchParams(searchParams);
     } else {
       searchParams.set("author", selected.slice(1).join());
       setSearchParams(searchParams);
     }
   }, [selected]);
-
+  if (authors.length === 0) return <h3>Loading...</h3>;
   return (
     <Nav aria-label="author">
       <List>

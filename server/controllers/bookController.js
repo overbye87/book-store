@@ -1,4 +1,6 @@
 const db = require("../models");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 const uuid = require("uuid");
 const path = require("path");
@@ -30,7 +32,7 @@ class BookController {
   async getAll(req, res, next) {
     try {
       // api/book?author=2&genre=1&page=1
-      let { limit, page } = req.query;
+      let { limit, page, minp, maxp } = req.query;
       if (page <= 0) {
         page = 1;
       }
@@ -39,9 +41,14 @@ class BookController {
       let offset = page * limit - limit;
       console.log("Query:", req.query);
       const where = {};
+
+      if (minp && maxp) {
+        console.log(maxp);
+        where.price = { [Op.between]: [Number(minp), Number(maxp)] };
+      }
+
       if (req.query.author) {
         let author = String(req.query.author).split(",");
-
         where.authorId = author;
       }
       if (req.query.genre) {

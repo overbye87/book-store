@@ -2,11 +2,11 @@ import { GenreAction, GenreActionTypes, IGenreState } from "../../types/genres";
 
 const initialState: IGenreState = {
   genres: [
-    { id: 1, name: "Adventures" },
-    { id: 2, name: "Fairy tale" },
-    { id: 3, name: "Genre 3" },
-    { id: 4, name: "Genre 4" },
-    { id: 5, name: "Genre 5" },
+    // { id: 1, name: "Adventures" },
+    // { id: 2, name: "Fairy tale" },
+    // { id: 3, name: "Genre 3" },
+    // { id: 4, name: "Genre 4" },
+    // { id: 5, name: "Genre 5" },
   ],
   selectedGenres: { id: null },
   loading: false,

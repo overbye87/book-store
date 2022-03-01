@@ -10,6 +10,7 @@ import bookImg from "../assets/book.jpg";
 
 import { useNavigate } from "react-router-dom";
 import { BOOK_ROUTE } from "../constants";
+import { height } from "@mui/system";
 
 interface IBookItemProps {
   book: {

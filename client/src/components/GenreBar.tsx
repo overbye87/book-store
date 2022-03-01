@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { fetchGenres, setSelectedGenres } from "../store/actions/genre";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import queryString from "query-string";
 
 const GenreBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,27 +16,57 @@ const GenreBar: React.FC = () => {
   const { genres, error, loading, selectedGenres } = useTypedSelector(
     (state) => state.genre
   );
+
+  const [selected, setSelected] = React.useState<any[]>([0]);
+
   useEffect(() => {
-    dispatch(fetchGenres());
+    setTimeout(() => {
+      dispatch(fetchGenres());
+    }, 1000);
+
+    const parsed = queryString.parse(searchParams.toString(), {
+      arrayFormat: "comma",
+      parseNumbers: true,
+    });
+    if (Array.isArray(parsed.genre)) {
+      setSelected([0, ...parsed.genre]);
+    } else {
+      if (parsed.genre) {
+        setSelected([0, parsed.genre]);
+      } else setSelected([0]);
+    }
+    console.log("from URL", selected);
   }, []);
 
+  useEffect(() => {
+    if (selected.length <= 1) {
+      searchParams.delete("genre");
+      setSearchParams(searchParams);
+    } else {
+      searchParams.set("genre", selected.slice(1).join());
+      setSearchParams(searchParams);
+    }
+  }, [selected]);
+  if (genres.length === 0) return <h3>Loading...</h3>;
   return (
     <Nav aria-label="genre">
       <List>
         {genres.map((genre: any) => (
           <ListItem key={genre.id} disablePadding>
             <ListItemButton
-              selected={genre.id === Number(searchParams.get("genre"))}
+              className={"lb"}
+              selected={selected.indexOf(genre.id) !== -1}
               onClick={() => {
-                searchParams.delete("page");
-                if (genre.id === Number(searchParams.get("genre"))) {
-                  //searchParams.delete("genre");
-                  setSearchParams(searchParams);
+                const currentIndex = selected.indexOf(genre.id);
+                const newSelected = [...selected];
+                if (currentIndex === -1) {
+                  newSelected.push(genre.id);
                 } else {
-                  //set genre to URL first
-                  searchParams.set("genre", String(genre.id));
-                  setSearchParams(searchParams);
+                  newSelected.splice(currentIndex, 1);
                 }
+                setSelected(newSelected);
+                //set page to 1
+                searchParams.delete("page");
               }}
             >
               <ListItemText primary={genre.name} />
