@@ -11,6 +11,7 @@ import Grid from "@mui/material/Grid";
 import TypeBar from "../components/AuthorBar";
 import GenreBar from "../components/GenreBar";
 import Pages from "../components/PagesBar";
+import PriceBar from "../components/PriceBar";
 
 const Item = styled(Paper)({
   color: "darkslategray",
@@ -22,22 +23,35 @@ const Item = styled(Paper)({
 const Shop = () => {
   return (
     <Grid container spacing={1}>
-      <Grid item xs={2}>
-        <Item>
-          <TypeBar />
-        </Item>
+      <Grid item container xs={4} spacing={1}>
+        <Grid item container xs={12} spacing={1}>
+          <Grid container item xs={12} spacing={1}>
+            <Grid item xs={6}>
+              <Item>
+                <TypeBar />
+              </Item>
+            </Grid>
+            <Grid item xs={6}>
+              <Item>
+                <GenreBar />
+              </Item>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item xs={2}>
-        <Item>
-          <GenreBar />
-        </Item>
-      </Grid>
-      <Grid container item xs={8} spacing={1}>
+
+      <Grid item container xs={8} spacing={1}>
+        <Grid item xs={12}>
+          <Item>
+            <PriceBar />
+          </Item>
+        </Grid>
         <Grid item xs={12}>
           <Item>
             <Pages />
           </Item>
         </Grid>
+
         <Grid item xs={12}>
           <Item>
             <BookList />

@@ -35,7 +35,7 @@ const GenreBar: React.FC = () => {
         setSelected([0, parsed.genre]);
       } else setSelected([0]);
     }
-    console.log("from URL", selected);
+    //console.log("from URL", selected);
   }, []);
 
   useEffect(() => {
