@@ -22,7 +22,7 @@ const Item = styled(Paper)({
 
 const Shop = () => {
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} sx={{ backgroundColor: "red", height: "100%" }}>
       <Grid
         item
         container
@@ -31,7 +31,7 @@ const Shop = () => {
         direction="column"
         alignItems="stretch"
       >
-        <Grid item>
+        <Grid item sx={{ backgroundColor: "green" }}>
           <Item>
             <PriceBar />
           </Item>
@@ -58,8 +58,8 @@ const Shop = () => {
           </Item>
         </Grid>
 
-        <Grid item xs={12}>
-          <Item>
+        <Grid item xs={12} sx={{ flexGrow: 1 }}>
+          <Item sx={{ height: "100%" }}>
             <BookList />
           </Item>
         </Grid>

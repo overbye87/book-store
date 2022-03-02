@@ -32,7 +32,7 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
 
   return (
     <Grid item sx={{}}>
-      <Card sx={{ width: 240, height: "100%" }}>
+      <Card sx={{ width: 200, height: "100%" }}>
         <CardMedia
           component="img"
           height="200"
