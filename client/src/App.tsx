@@ -1,17 +1,12 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import styled from "styled-components";
-
 import AppRouter from "./components/AppRouter";
 import { useTypedSelector } from "./hooks/useTypedSelector";
 import { check } from "./http/userAPI";
 import { setIsAuthAction, setUserAction } from "./store/actions/user";
-import { UserActionTypes } from "./types/users";
 
 const App = () => {
-  const { isAuth, user } = useTypedSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
@@ -27,21 +22,14 @@ const App = () => {
   }, []);
 
   if (loading) {
-    return <h1>LOADING PLEASE WAIT...</h1>;
+    return <h1>APP LOADING PLEASE WAIT...</h1>;
   }
 
   return (
-    <AppWrapper>
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
-    </AppWrapper>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
   );
 };
 
 export default App;
-
-const AppWrapper = styled.div`
-  font-family: sans-serif;
-  height: 100vh;
-`;

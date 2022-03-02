@@ -36,28 +36,53 @@ const AuthorBar: React.FC = () => {
   const dispatch = useDispatch();
   let [searchParams, setSearchParams] = useSearchParams();
   const { authors } = useTypedSelector((state) => state.author);
-  const [selected, setSelected] = React.useState<number[]>([]);
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [authorId, setAuthorId] = React.useState<(string | null)[]>([]);
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(fetchAuthors());
     }, 1000);
+
+    const parsed = queryString.parse(searchParams.toString(), {
+      arrayFormat: "comma",
+      parseNumbers: false,
+    });
+    console.log(parsed);
+
+    if (Array.isArray(parsed.author)) {
+      setAuthorId([...parsed.author]);
+    } else {
+      if (parsed.author) {
+        setAuthorId([parsed.author]);
+      } else setAuthorId([]);
+    }
   }, []);
+
+  useEffect(() => {
+    console.log(authorId.length);
+
+    if (!authorId.length) {
+      searchParams.delete("author");
+      setSearchParams(searchParams);
+    } else {
+      searchParams.set("author", authorId.join());
+      setSearchParams(searchParams);
+    }
+  }, [authorId]);
 
   if (authors.length === 0) return <p>Loading...</p>;
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChange = (event: SelectChangeEvent<typeof authorId>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    console.log(typeof value[0]);
+    setAuthorId(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
-
-  console.log(personName);
+  console.log(authorId);
   return (
     <Div>
       <div>
@@ -67,7 +92,7 @@ const AuthorBar: React.FC = () => {
             labelId="author-select-lebel"
             id="author-select"
             multiple
-            value={personName}
+            value={authorId}
             onChange={handleChange}
             input={<OutlinedInput label="Author" />}
           >

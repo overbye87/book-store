@@ -46,6 +46,7 @@ const AuthorBar: React.FC = () => {
       setSearchParams(searchParams);
     }
   }, [selected]);
+
   if (authors.length === 0) return <h3>Loading...</h3>;
   return (
     <Nav aria-label="author">

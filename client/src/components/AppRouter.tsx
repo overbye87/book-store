@@ -35,34 +35,36 @@ export const publicRoutes = [
 const AppRouter: React.FC = () => {
   const isAuth = true;
   return (
-    <Container maxWidth="lg">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Shop />} />
-          <Route path={BOOK_ROUTE} element={<Shop />} />
-          <Route path={BOOK_ROUTE + "/:id"} element={<BookPage />} />
-          <Route path={LOGIN_ROUTE} element={<Auth />} />
-          <Route path={REGISTRATION_ROUTE} element={<Auth />} />
-          <Route
-            path={ADMIN_ROUTE}
-            element={
-              <RequireAuth>
-                <Admin />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path={BASKET_ROUTE}
-            element={
-              <RequireAuth>
-                <Basket />
-              </RequireAuth>
-            }
-          />
-          <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
-        </Route>
-      </Routes>
-    </Container>
+    <Div>
+      <Container maxWidth="lg">
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Shop />} />
+            <Route path={BOOK_ROUTE} element={<Shop />} />
+            <Route path={BOOK_ROUTE + "/:id"} element={<BookPage />} />
+            <Route path={LOGIN_ROUTE} element={<Auth />} />
+            <Route path={REGISTRATION_ROUTE} element={<Auth />} />
+            <Route
+              path={ADMIN_ROUTE}
+              element={
+                <RequireAuth>
+                  <Admin />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path={BASKET_ROUTE}
+              element={
+                <RequireAuth>
+                  <Basket />
+                </RequireAuth>
+              }
+            />
+            <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
+          </Route>
+        </Routes>
+      </Container>
+    </Div>
   );
 };
 
@@ -77,31 +79,8 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 
 export default AppRouter;
 
+document.body.style.margin = "0";
+
 const Div = styled.div`
-  color: "darkslategray";
-  height: 50px;
-  //font-size: 1.2em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1em;
-  img {
-    height: 50px;
-    border-radius: 50%;
-  }
-  .link {
-    text-decoration: none;
-    border: 2px solid palevioletred;
-    padding: 10px 15px;
-    border-radius: 5px;
-    &--active {
-      color: papayawhip;
-      background-color: palevioletred;
-    }
-    :hover {
-      background-color: darkslategray;
-      color: papayawhip;
-      border-color: darkslategray;
-    }
-  }
+  font-family: sans-serif;
 `;

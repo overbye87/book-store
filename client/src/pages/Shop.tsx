@@ -46,6 +46,9 @@ const Shop = () => {
             <GenreBar />
           </Item>
         </Grid>
+        <Grid item sx={{ flexGrow: 1 }}>
+          <Item sx={{ height: "100%" }}></Item>
+        </Grid>
       </Grid>
 
       <Grid item container xs={8} spacing={1}>
