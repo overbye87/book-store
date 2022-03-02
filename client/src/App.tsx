@@ -43,4 +43,5 @@ export default App;
 
 const AppWrapper = styled.div`
   font-family: sans-serif;
+  height: 100vh;
 `;

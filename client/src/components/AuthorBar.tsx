@@ -9,76 +9,81 @@ import { fetchAuthors, setSelectedAuthors } from "../store/actions/author";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import queryString from "query-string";
+import {
+  Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+
+const names = [
+  "Oliver Hansen",
+  "Van Henry",
+  "April Tucker",
+  "Ralph Hubbard",
+  "Omar Alexander",
+  "Carlos Abbott",
+  "Miriam Wagner",
+  "Bradley Wilkerson",
+  "Virginia Andrews",
+  "Kelly Snyder",
+];
 
 const AuthorBar: React.FC = () => {
   const dispatch = useDispatch();
   let [searchParams, setSearchParams] = useSearchParams();
-  const { authors, error, loading, selectedAuthors } = useTypedSelector(
-    (state) => state.author
-  );
-
-  const [selected, setSelected] = React.useState<any[]>([0]);
+  const { authors } = useTypedSelector((state) => state.author);
+  const [selected, setSelected] = React.useState<number[]>([]);
+  const [personName, setPersonName] = React.useState<string[]>([]);
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(fetchAuthors());
     }, 1000);
-
-    const parsed = queryString.parse(searchParams.toString(), {
-      arrayFormat: "comma",
-      parseNumbers: true,
-    });
-    if (Array.isArray(parsed.author)) {
-      setSelected([0, ...parsed.author]);
-    } else {
-      if (parsed.author) {
-        setSelected([0, parsed.author]);
-      } else setSelected([0]);
-    }
   }, []);
 
-  useEffect(() => {
-    if (selected.length <= 1) {
-      searchParams.delete("author");
-      setSearchParams(searchParams);
-    } else {
-      searchParams.set("author", selected.slice(1).join());
-      setSearchParams(searchParams);
-    }
-  }, [selected]);
-  if (authors.length === 0) return <h3>Loading...</h3>;
+  if (authors.length === 0) return <p>Loading...</p>;
+
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  console.log(personName);
   return (
-    <Nav aria-label="author">
-      <List>
-        {authors.map((author: any) => (
-          <ListItem key={author.id} disablePadding>
-            <ListItemButton
-              className={"lb"}
-              selected={selected.indexOf(author.id) !== -1}
-              onClick={() => {
-                const currentIndex = selected.indexOf(author.id);
-                const newSelected = [...selected];
-                if (currentIndex === -1) {
-                  newSelected.push(author.id);
-                } else {
-                  newSelected.splice(currentIndex, 1);
-                }
-                setSelected(newSelected);
-                //set page to 1
-                searchParams.delete("page");
-              }}
-            >
-              <ListItemText primary={author.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Nav>
+    <Div>
+      <div>
+        <FormControl sx={{ m: 1, width: 300 }}>
+          <InputLabel id="author-select-lebel">Author</InputLabel>
+          <Select
+            labelId="author-select-lebel"
+            id="author-select"
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput label="Author" />}
+          >
+            {authors.map((author) => (
+              <MenuItem key={author.id} value={author.id}>
+                {author.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+    </Div>
   );
 };
 
 export default AuthorBar;
-const Nav = styled.nav`
-  .lb {
-  }
+const Div = styled.div`
+  //color: red;
 `;

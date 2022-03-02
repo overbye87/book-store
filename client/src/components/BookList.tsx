@@ -29,7 +29,7 @@ const BookList: React.FC = () => {
   if (books?.rows.length === 0) return <h3>Nothing to show...</h3>;
   if (error) return <h3>{error}</h3>;
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} sx={{ justifyContent: "space-around" }}>
       {books
         ? books.rows.map((book) => <BookItem key={book.id} book={book} />)
         : "Book list display error!"}

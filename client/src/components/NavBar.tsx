@@ -27,7 +27,16 @@ const NavBar: React.FC = () => {
       </NavLink>
       {isAuth ? (
         <Nav>
-          <img src={user ? process.env.REACT_APP_API_URL + user.img : ""}></img>
+          <img
+            src={
+              user
+                ? user.img
+                  ? process.env.REACT_APP_API_URL + user.img
+                  : process.env.REACT_APP_API_URL + "avatar.png"
+                : ""
+            }
+          ></img>
+
           <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
           <NavLink
             className={({ isActive }) =>

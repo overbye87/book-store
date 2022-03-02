@@ -62,7 +62,7 @@ const PriceBar: React.FC = () => {
         gap: 5,
       }}
     >
-      <h3 style={{ width: 350 }}>
+      <h3>
         Price from {value[0]} to {value[1]}
       </h3>
       <Slider

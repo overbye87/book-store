@@ -14,7 +14,7 @@ const Pages: React.FC = () => {
     <Stack spacing={2}>
       <Pagination
         count={books ? Math.ceil(books.count / books.limit) : 0}
-        page={Number(searchParams.get("page"))}
+        page={Number(searchParams.get("page")) || 1}
         onChange={(e, value) => {
           //set page to URL first
           searchParams.set("page", String(value));

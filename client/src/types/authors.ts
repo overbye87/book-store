@@ -1,5 +1,9 @@
+type IAuthor = {
+  id: number;
+  name: string;
+};
 export interface IAuthorState {
-  authors: any[];
+  authors: IAuthor[];
   loading: boolean;
   selectedAuthors: { id: number | null };
   error: null | string | object;

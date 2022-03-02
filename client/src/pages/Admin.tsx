@@ -85,7 +85,13 @@ const Admin: React.FC = () => {
                 <label>Avatar:</label>
                 <img
                   width={400}
-                  src={user ? process.env.REACT_APP_API_URL + user.img : ""}
+                  src={
+                    user
+                      ? user.img
+                        ? process.env.REACT_APP_API_URL + user.img
+                        : process.env.REACT_APP_API_URL + "avatar.png"
+                      : ""
+                  }
                 ></img>
                 <input {...registerData("files")} type="file" />
                 <input type="submit" value={"change"}></input>

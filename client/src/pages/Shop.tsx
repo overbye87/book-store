@@ -23,29 +23,32 @@ const Item = styled(Paper)({
 const Shop = () => {
   return (
     <Grid container spacing={1}>
-      <Grid item container xs={4} spacing={1}>
-        <Grid item container xs={12} spacing={1}>
-          <Grid container item xs={12} spacing={1}>
-            <Grid item xs={6}>
-              <Item>
-                <TypeBar />
-              </Item>
-            </Grid>
-            <Grid item xs={6}>
-              <Item>
-                <GenreBar />
-              </Item>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid item container xs={8} spacing={1}>
-        <Grid item xs={12}>
+      <Grid
+        item
+        container
+        xs={4}
+        spacing={1}
+        direction="column"
+        alignItems="stretch"
+      >
+        <Grid item>
           <Item>
             <PriceBar />
           </Item>
         </Grid>
+        <Grid item>
+          <Item>
+            <TypeBar />
+          </Item>
+        </Grid>
+        <Grid item>
+          <Item>
+            <GenreBar />
+          </Item>
+        </Grid>
+      </Grid>
+
+      <Grid item container xs={8} spacing={1}>
         <Grid item xs={12}>
           <Item>
             <Pages />

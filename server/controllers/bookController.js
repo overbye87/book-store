@@ -37,7 +37,7 @@ class BookController {
         page = 1;
       }
       page = page || 1;
-      limit = limit || 4;
+      limit = limit || 3;
       let offset = page * limit - limit;
       console.log("Query:", req.query);
       const where = {};

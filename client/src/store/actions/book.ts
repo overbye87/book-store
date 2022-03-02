@@ -9,22 +9,12 @@ export const fetchBooks = (searchParams: URLSearchParams) => {
       // set state.book.loading to true
       dispatch({ type: BookActionTypes.FETCH_BOOKS });
       // start fetch
+      //console.log(Object.fromEntries(searchParams));
       let url = "api/book/?" + searchParams.toString();
-      //console.log(url);
-      // if (author) {
-      //   url += `&author=${author}`;
-      // }
-      // if (genre) {
-      //   url += `&genre=${genre}`;
-      // }
-      // if (limit) {
-      //   url += `&author=${limit}`;
-      // }
-      // if (page) {
-      //   url += `&genre=${page}`;
-      // }
-      //console.log("fetchBookURL:", url);
-      const response = await $host.get(url);
+
+      const response = await $host.get("api/book", {
+        params: Object.fromEntries(searchParams),
+      });
       // if fetch success put data into state.book.books
       dispatch({
         type: BookActionTypes.FETCH_BOOKS_SUCCESS,

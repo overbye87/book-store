@@ -1,23 +1,12 @@
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 import React from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  Outlet,
-  useLocation,
-  useSearchParams,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useTypedSelector } from "../hooks/useTypedSelector";
-//import { authRoutes, publicRoutes } from "../routes";
-
 import Admin from "../pages/Admin";
 import Auth from "../pages/Auth";
 import Basket from "../pages/Basket";
 import BookPage from "../pages/BookPage";
 import Shop from "../pages/Shop";
+import styled from "styled-components";
 
 import {
   ADMIN_ROUTE,
@@ -28,9 +17,8 @@ import {
   SHOP_ROUTE,
 } from "../constants";
 
-import Footer from "./Footer";
-import Header from "./Header";
-import NavBar from "./NavBar";
+import Layout from "./Layout";
+import { Container } from "@mui/material";
 
 export const authRoutes = [
   { path: ADMIN_ROUTE, Component: Admin },
@@ -47,7 +35,7 @@ export const publicRoutes = [
 const AppRouter: React.FC = () => {
   const isAuth = true;
   return (
-    <div>
+    <Container maxWidth="lg">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Shop />} />
@@ -55,7 +43,6 @@ const AppRouter: React.FC = () => {
           <Route path={BOOK_ROUTE + "/:id"} element={<BookPage />} />
           <Route path={LOGIN_ROUTE} element={<Auth />} />
           <Route path={REGISTRATION_ROUTE} element={<Auth />} />
-
           <Route
             path={ADMIN_ROUTE}
             element={
@@ -72,11 +59,10 @@ const AppRouter: React.FC = () => {
               </RequireAuth>
             }
           />
-
           <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
         </Route>
       </Routes>
-    </div>
+    </Container>
   );
 };
 
@@ -86,44 +72,36 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   if (!isAuth) {
     return <Navigate to={LOGIN_ROUTE} state={{ from: location }} replace />;
   }
-
   return children;
-}
-
-function Layout() {
-  return (
-    <div>
-      <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <Item>
-            <Header />
-          </Item>
-        </Grid>
-        <Grid item xs={12}>
-          <Item>
-            <NavBar />
-          </Item>
-        </Grid>
-        {/* --- */}
-        <Grid item container>
-          <Outlet />
-        </Grid>
-        {/* --- */}
-        <Grid item xs={12}>
-          <Item>
-            <Footer />
-          </Item>
-        </Grid>
-      </Grid>
-    </div>
-  );
 }
 
 export default AppRouter;
 
-const Item = styled(Paper)({
-  color: "darkslategray",
-  backgroundColor: "papayawhip",
-  padding: 8,
-  borderRadius: 4,
-});
+const Div = styled.div`
+  color: "darkslategray";
+  height: 50px;
+  //font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  img {
+    height: 50px;
+    border-radius: 50%;
+  }
+  .link {
+    text-decoration: none;
+    border: 2px solid palevioletred;
+    padding: 10px 15px;
+    border-radius: 5px;
+    &--active {
+      color: papayawhip;
+      background-color: palevioletred;
+    }
+    :hover {
+      background-color: darkslategray;
+      color: papayawhip;
+      border-color: darkslategray;
+    }
+  }
+`;
