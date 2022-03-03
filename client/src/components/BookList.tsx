@@ -17,8 +17,18 @@ const BookList: React.FC = () => {
   }, [searchParams]);
 
   //console.log(state);
-  if (loading) return <h3>Loading, please wait...</h3>;
-  if (books?.rows.length === 0) return <h3>Nothing to show...</h3>;
+  if (loading)
+    return (
+      <Div>
+        <h3>Loading, please wait...</h3>
+      </Div>
+    );
+  if (books?.rows.length === 0)
+    return (
+      <Div>
+        <h3>Nothing to show...</h3>
+      </Div>
+    );
   if (error) return <h3>{error}</h3>;
   return (
     <Div>

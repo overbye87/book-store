@@ -52,7 +52,12 @@ const AuthorBar: React.FC = () => {
     }
   }, [authorId]);
 
-  if (authors.length === 0) return <p>Loading...</p>;
+  if (authors.length === 0)
+    return (
+      <Div>
+        <p>Loading...</p>
+      </Div>
+    );
 
   const handleChange = (event: SelectChangeEvent<typeof authorId>) => {
     const {

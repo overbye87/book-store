@@ -52,7 +52,12 @@ const GenreBar: React.FC = () => {
     }
   }, [genreId]);
 
-  if (genres.length === 0) return <p>Loading...</p>;
+  if (genres.length === 0)
+    return (
+      <Div>
+        <p>Loading...</p>
+      </Div>
+    );
 
   const handleChange = (event: SelectChangeEvent<typeof genreId>) => {
     const {
