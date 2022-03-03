@@ -36,34 +36,32 @@ const AppRouter: React.FC = () => {
   const isAuth = true;
   return (
     <Div>
-      <Container maxWidth="lg">
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Shop />} />
-            <Route path={BOOK_ROUTE} element={<Shop />} />
-            <Route path={BOOK_ROUTE + "/:id"} element={<BookPage />} />
-            <Route path={LOGIN_ROUTE} element={<Auth />} />
-            <Route path={REGISTRATION_ROUTE} element={<Auth />} />
-            <Route
-              path={ADMIN_ROUTE}
-              element={
-                <RequireAuth>
-                  <Admin />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path={BASKET_ROUTE}
-              element={
-                <RequireAuth>
-                  <Basket />
-                </RequireAuth>
-              }
-            />
-            <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
-          </Route>
-        </Routes>
-      </Container>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Shop />} />
+          <Route path={BOOK_ROUTE} element={<Shop />} />
+          <Route path={BOOK_ROUTE + "/:id"} element={<BookPage />} />
+          <Route path={LOGIN_ROUTE} element={<Auth />} />
+          <Route path={REGISTRATION_ROUTE} element={<Auth />} />
+          <Route
+            path={ADMIN_ROUTE}
+            element={
+              <RequireAuth>
+                <Admin />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={BASKET_ROUTE}
+            element={
+              <RequireAuth>
+                <Basket />
+              </RequireAuth>
+            }
+          />
+          <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
+        </Route>
+      </Routes>
     </Div>
   );
 };
@@ -82,5 +80,7 @@ export default AppRouter;
 document.body.style.margin = "0";
 
 const Div = styled.div`
+  width: 1150px;
+  margin: 0 auto;
   font-family: sans-serif;
 `;

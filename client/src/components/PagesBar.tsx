@@ -1,17 +1,15 @@
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import Stack from "@mui/material/Stack";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+
+import Pagination from "@mui/material/Pagination";
 
 const Pages: React.FC = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  //let [page, setPage] = React.useState(searchParams.get("page"));
-  //let [limit, setLimit] = React.useState(searchParams.get("limit"));
   const { books, error, loading } = useTypedSelector((state) => state.book);
   return (
-    <Stack spacing={2}>
+    <Div>
       <Pagination
         count={books ? Math.ceil(books.count / books.limit) : 0}
         page={Number(searchParams.get("page")) || 1}
@@ -22,8 +20,16 @@ const Pages: React.FC = () => {
           setSearchParams(searchParams);
         }}
       />
-    </Stack>
+    </Div>
   );
 };
 
 export default Pages;
+
+const Div = styled.div`
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: solid 1px gray;
+`;

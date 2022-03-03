@@ -1,16 +1,11 @@
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import React, { useEffect } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
-import { fetchAuthors, setSelectedAuthors } from "../store/actions/author";
+import { fetchAuthors } from "../store/actions/author";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import queryString from "query-string";
 import {
-  Checkbox,
   FormControl,
   InputLabel,
   MenuItem,
@@ -18,19 +13,6 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
 
 const AuthorBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -76,7 +58,7 @@ const AuthorBar: React.FC = () => {
     const {
       target: { value },
     } = event;
-    console.log(typeof value[0]);
+    console.log(value);
     setAuthorId(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
@@ -85,30 +67,32 @@ const AuthorBar: React.FC = () => {
   console.log(authorId);
   return (
     <Div>
-      <div>
-        <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id="author-select-lebel">Author</InputLabel>
-          <Select
-            labelId="author-select-lebel"
-            id="author-select"
-            multiple
-            value={authorId}
-            onChange={handleChange}
-            input={<OutlinedInput label="Author" />}
-          >
-            {authors.map((author) => (
-              <MenuItem key={author.id} value={author.id}>
-                {author.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
+      <FormControl className="formcontroll">
+        <InputLabel id="author-select-lebel">Author</InputLabel>
+        <Select
+          labelId="author-select-lebel"
+          id="author-select"
+          multiple
+          value={authorId}
+          onChange={handleChange}
+          input={<OutlinedInput label="Author" />}
+        >
+          {authors.map((author) => (
+            <MenuItem key={author.id} value={author.id}>
+              {author.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Div>
   );
 };
 
 export default AuthorBar;
 const Div = styled.div`
-  //color: red;
+  display: flex;
+  .formcontroll {
+    margin: 5px;
+    flex-grow: 1;
+  }
 `;

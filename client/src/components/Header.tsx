@@ -1,30 +1,18 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setIsAuthAction } from "../store/actions/user";
+import styled from "styled-components";
 
 const Header: React.FC = () => {
-  const dispatch = useDispatch();
   return (
-    <div>
+    <Div>
       <h1>Book - Store</h1>
-      {/* <button
-        onClick={() => {
-          dispatch(setIsAuthAction(true));
-        }}
-        color="inherit"
-      >
-        set isAuth to true
-      </button>
-      <button
-        onClick={() => {
-          dispatch(setIsAuthAction(false));
-        }}
-        color="inherit"
-      >
-        set isAuth to false
-      </button> */}
-    </div>
+    </Div>
   );
 };
 
 export default Header;
+
+const Div = styled.div`
+  height: 50px;
+  padding: 5px;
+  border-bottom: solid 3px black;
+`;

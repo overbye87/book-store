@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { setIsAuthAction } from "../store/actions/user";
 import styled from "styled-components";
@@ -13,7 +13,6 @@ import {
 } from "../constants";
 
 const NavBar: React.FC = () => {
-  let navigate = useNavigate();
   const { isAuth, user } = useTypedSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -86,9 +85,8 @@ const NavBar: React.FC = () => {
 export default NavBar;
 
 const Nav = styled.nav`
-  color: "darkslategray";
   height: 50px;
-  //font-size: 1.2em;
+  padding: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -103,13 +101,13 @@ const Nav = styled.nav`
     padding: 10px 15px;
     border-radius: 5px;
     &--active {
-      color: papayawhip;
+      color: white;
       background-color: palevioletred;
     }
     :hover {
-      background-color: darkslategray;
-      color: papayawhip;
-      border-color: darkslategray;
+      background-color: gray;
+      color: white;
+      border-color: gray;
     }
   }
 `;

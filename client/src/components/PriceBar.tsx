@@ -1,7 +1,7 @@
-import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
 const PriceBar: React.FC = () => {
   const minPrice = 0;
@@ -52,32 +52,34 @@ const PriceBar: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        marginLeft: 1,
-        marginRight: 2,
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        gap: 5,
-      }}
-    >
-      <h3>
+    <Div>
+      <p>
         Price from {value[0]} to {value[1]}
-      </h3>
-      <Slider
-        getAriaLabel={() => "Price slider"}
-        value={value}
-        onChange={handleChange}
-        onChangeCommitted={handleCommitted}
-        valueLabelDisplay="auto"
-        min={minPrice}
-        max={maxPrice}
-        step={stepPrice}
-        disableSwap
-      />
-    </Box>
+      </p>
+      <div>
+        <Slider
+          getAriaLabel={() => "Price slider"}
+          value={value}
+          onChange={handleChange}
+          onChangeCommitted={handleCommitted}
+          valueLabelDisplay="auto"
+          min={minPrice}
+          max={maxPrice}
+          step={stepPrice}
+          disableSwap
+        />
+      </div>
+    </Div>
   );
 };
 
 export default PriceBar;
+
+const Div = styled.div`
+  p {
+    margin-left: 5px;
+  }
+  div {
+    margin: 0 15px;
+  }
+`;
