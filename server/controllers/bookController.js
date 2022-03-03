@@ -69,7 +69,27 @@ class BookController {
       next(ApiError.badRequest(e.message));
     }
   }
-  async getOne(req, res) {}
+  async getOne(req, res) {
+    try {
+      const { id } = req.params;
+      if (!Number(id)) {
+        return res.status(400).json({
+          status: false,
+          message: "id is incorrect",
+        });
+      }
+      const book = await db.Book.findByPk(id, { include: ["genre", "author"] });
+      if (!book) {
+        return res.status(400).json({
+          status: false,
+          message: `there is no book with id:${id}`,
+        });
+      }
+      return res.json(book);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
 }
 
 module.exports = new BookController();

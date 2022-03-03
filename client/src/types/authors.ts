@@ -1,4 +1,4 @@
-type IAuthor = {
+export type IAuthor = {
   id: number;
   name: string;
 };

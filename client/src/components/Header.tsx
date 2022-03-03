@@ -12,7 +12,7 @@ const Header: React.FC = () => {
 export default Header;
 
 const Div = styled.div`
-  height: 50px;
+  height: 70px;
   padding: 5px;
   border-bottom: solid 3px black;
 `;

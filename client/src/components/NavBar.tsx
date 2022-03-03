@@ -38,9 +38,7 @@ const NavBar: React.FC = () => {
 
           <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
           <NavLink
-            className={({ isActive }) =>
-              isActive ? "link link--active" : "link"
-            }
+            className={"link"}
             to={SHOP_ROUTE}
             onClick={() => {
               dispatch(setIsAuthAction(false));

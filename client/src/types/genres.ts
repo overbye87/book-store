@@ -1,5 +1,9 @@
+export type IGenre = {
+  id: number;
+  name: string;
+};
 export interface IGenreState {
-  genres: any[];
+  genres: IGenre[];
   loading: boolean;
   selectedGenres: { id: number | null };
   error: null | string | object;
