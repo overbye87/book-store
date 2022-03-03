@@ -1,7 +1,3 @@
-import { Email } from "@mui/icons-material";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import { styled as styledmui } from "@mui/material/styles";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -28,8 +24,6 @@ const Auth = () => {
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
     formState: { errors, isValid },
   } = useForm<Inputs>({ mode: "onBlur" });
 

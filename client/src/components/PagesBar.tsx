@@ -32,4 +32,5 @@ const Div = styled.div`
   align-items: center;
   justify-content: center;
   border-bottom: solid 1px gray;
+  margin: 0 20px;
 `;

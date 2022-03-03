@@ -34,32 +34,21 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
   return (
     <Card>
       <img src={book ? process.env.REACT_APP_API_URL + book.img : ""}></img>
-      <div className="card--content">
-        <Typography gutterBottom variant="h5" component="div">
-          {book.name}
-        </Typography>
-        <Typography gutterBottom variant="h6" component="div" textAlign="end">
-          Price: {book.price}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Author: {book.author.name} <br />
-          Genre: {book.genre.name}
-        </Typography>
-        <Typography gutterBottom variant="inherit" component="div">
-          {book.description}
-        </Typography>
-        <Typography
-          variant="h4"
-          color="text.secondary"
-          textAlign="end"
-        ></Typography>
+      <div className="card__content">
+        <h3 className="name">{book.name}</h3>
+        <p className="price">
+          Price: <b>{book.price}</b>
+        </p>
+        <p className="filter">Author: {book.author.name}</p>
+        <p className="filter">Genre: {book.genre.name}</p>
+        <p className="description">{book.description}</p>
       </div>
-      <div className="card--rating">
+      <div className="card__rating">
         <span>&#9734;{book.rating}</span>
       </div>
-      <div className="card--actions">
+      <div className="card__actions">
         <NavLink className={"link"} to={BOOK_ROUTE + "/" + book.id}>
-          Learn More
+          Read more...
         </NavLink>
       </div>
     </Card>
@@ -69,21 +58,57 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
 export default BookItem;
 
 const Card = styled.div`
-  width: 260px;
+  position: relative;
+  width: 200px;
+  height: 450px;
   display: flex;
   flex-direction: column;
-  background-color: aqua;
+  //background-color: aqua;
+  border: solid 1px gray;
+  border-radius: 5px;
+  padding: 15px;
   img {
-    width: 260px;
+    padding: 5px;
+    width: 190px;
   }
-  .card--content {
+  .card__content {
     flex-grow: 1;
+    .name {
+      margin: 5px 0;
+      font-size: 1.5em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .price {
+      color: #1976d2;
+      margin: 5px 0;
+      text-align: right;
+      font-size: 1.5em;
+    }
+    .filter {
+      color: gray;
+      font-size: 1em;
+      margin: 0;
+    }
+    .description {
+      margin: 10px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      text-indent: 1.5em;
+      //text-align: justify;
+      overflow: hidden;
+    }
   }
-  .card--rating {
-    text-align: right;
-    font-size: 2em;
+  .card__rating {
+    position: absolute;
+    top: 150px;
+    right: 15px;
+    color: palevioletred;
+    font-size: 2.5em;
   }
-  .card--actions {
+  .card__actions {
     display: flex;
     justify-content: center;
     .link {
