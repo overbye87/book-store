@@ -45,10 +45,9 @@ const PriceBar: React.FC = () => {
     }
     searchParams.set("minp", `${value[0]}`);
     searchParams.set("maxp", `${value[1]}`);
-    setSearchParams(searchParams);
-    console.log(value);
     //set page to 1
     searchParams.delete("page");
+    setSearchParams(searchParams);
   };
 
   return (

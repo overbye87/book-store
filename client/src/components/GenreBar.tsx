@@ -41,8 +41,7 @@ const GenreBar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(genreId.length);
-
+    searchParams.delete("page");
     if (!genreId.length) {
       searchParams.delete("genre");
       setSearchParams(searchParams);

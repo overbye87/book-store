@@ -41,8 +41,7 @@ const AuthorBar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(authorId.length);
-
+    searchParams.delete("page");
     if (!authorId.length) {
       searchParams.delete("author");
       setSearchParams(searchParams);
