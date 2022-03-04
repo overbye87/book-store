@@ -92,6 +92,31 @@ class BookController {
       next(ApiError.badRequest(e.message));
     }
   }
+
+  async updateRateBook(req, res, next) {
+    try {
+      const { bookId, userId, rate } = req.body;
+      console.log(bookId, userId, rate);
+      const candidate = await db.Rating.findOne({
+        where: { bookId: bookId, userId: userId },
+      });
+      if (candidate) {
+        var rating = await db.Rating.update(
+          { rate },
+          { where: { bookId: bookId, userId: userId } }
+        );
+      } else {
+        var rating = await db.Rating.create({
+          rate,
+          bookId,
+          userId,
+        });
+      }
+      return res.json(rating);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
 }
 
 module.exports = new BookController();
