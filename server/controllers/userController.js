@@ -109,7 +109,8 @@ class UserController {
   async getUsers(req, res) {
     try {
       const users = await db.User.findAll({
-        raw: true,
+        include: ["rating"],
+        //raw: true,
       });
       const responseUsers = users.map((user) => {
         delete user.password;

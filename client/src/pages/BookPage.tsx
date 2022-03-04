@@ -3,18 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { $host } from "../http";
 import { IAuthor } from "../types/authors";
+import { IBook } from "../types/books";
 import { IGenre } from "../types/genres";
-
-export interface IBook {
-  id: number;
-  img: string;
-  name: string;
-  price: number;
-  rating: number;
-  description: string;
-  author: IAuthor;
-  genre: IGenre;
-}
 
 async function fetchOneBook(id: string) {
   const response = await $host.get("api/book/" + id);
@@ -58,7 +48,8 @@ const BookPage = () => {
             </div>
             <div className="card__properties">
               <div className="card__rating">
-                <span>&#9734;{book.rating}</span>
+                rating
+                {/* <span>&#9734;{book.rating}</span> */}
               </div>
               <p className="price">
                 Price: <b>{book.price}</b>

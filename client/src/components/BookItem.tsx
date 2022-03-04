@@ -12,20 +12,10 @@ import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BOOK_ROUTE } from "../constants";
 import { height } from "@mui/system";
+import { IBook } from "../types/books";
 
 interface IBookItemProps {
-  book: {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-    img: string;
-    rating: number;
-    authorId: number;
-    genreId: number;
-    author: { id: number; name: string };
-    genre: { id: number; name: string };
-  };
+  book: IBook;
 }
 
 const BookItem: React.FC<IBookItemProps> = ({ book }) => {
@@ -44,7 +34,8 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
         <p className="description">{book.description}</p>
       </div>
       <div className="card__rating">
-        <span>&#9734;{book.rating}</span>
+        rating
+        {/* <span>&#9734;{book.rating}</span> */}
       </div>
       <div className="card__actions">
         <NavLink className={"link"} to={BOOK_ROUTE + "/" + book.id}>

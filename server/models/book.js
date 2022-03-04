@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       Book.belongsTo(models.Author, { as: "author", foreignKey: "authorId" });
       Book.belongsTo(models.Genre, { as: "genre", foreignKey: "genreId" });
 
-      Book.hasMany(models.Rating);
+      Book.hasMany(models.Rating, { as: "rating", foreignKey: "bookId" });
       Book.hasMany(models.BasketBook);
       Book.hasMany(models.BookInfo);
     }
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: { type: DataTypes.STRING, allowNull: false },
       price: { type: DataTypes.INTEGER, allowNull: false },
-      rating: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+      //rating: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
       description: { type: DataTypes.STRING, allowNull: false },
       img: { type: DataTypes.STRING, allowNull: false },
       // authorId: { type: DataTypes.INTEGER, allowNull: false, foreignKey: true },

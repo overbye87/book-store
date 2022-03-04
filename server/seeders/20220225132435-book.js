@@ -19,10 +19,11 @@ module.exports = {
           description:
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis, cupiditate quos?",
           price: 100,
-          rating: 5,
+          //rating: 5,
           img: "book.jpg",
           authorId: 1,
           genreId: 1,
+          ratingId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -31,7 +32,7 @@ module.exports = {
           description:
             "Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. Perspiciatis, cupiditate quos?",
           price: 200,
-          rating: 4,
+          //rating: 4,
           img: "book.jpg",
           authorId: 2,
           genreId: 2,
@@ -43,7 +44,7 @@ module.exports = {
           description:
             "Perspiciatis, cupiditate quos? Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. ",
           price: 300,
-          rating: 2,
+          //rating: 2,
           img: "book.jpg",
           authorId: 1,
           genreId: 2,
@@ -55,7 +56,7 @@ module.exports = {
           description:
             "Dolor harum veritatis aliquid eius esse omnis unde similique. Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
           price: 400,
-          rating: 9,
+          //rating: 9,
           img: "book.jpg",
           authorId: 2,
           genreId: 1,
@@ -67,7 +68,7 @@ module.exports = {
           description:
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. Perspiciatis, cupiditate quos?",
           price: 500,
-          rating: 3,
+          //rating: 3,
           img: "book.jpg",
           authorId: 2,
           genreId: 2,
@@ -79,7 +80,7 @@ module.exports = {
           description:
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis, cupiditate quos?",
           price: 100,
-          rating: 5,
+          //rating: 5,
           img: "book.jpg",
           authorId: 1,
           genreId: 1,
@@ -91,7 +92,7 @@ module.exports = {
           description:
             "Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. Perspiciatis, cupiditate quos?",
           price: 200,
-          rating: 4,
+          //rating: 4,
           img: "book.jpg",
           authorId: 2,
           genreId: 2,
@@ -103,7 +104,7 @@ module.exports = {
           description:
             "Perspiciatis, cupiditate quos? Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. ",
           price: 300,
-          rating: 2,
+          //rating: 2,
           img: "book.jpg",
           authorId: 1,
           genreId: 2,
@@ -115,7 +116,7 @@ module.exports = {
           description:
             "Dolor harum veritatis aliquid eius esse omnis unde similique. Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
           price: 400,
-          rating: 9,
+          //rating: 9,
           img: "book.jpg",
           authorId: 2,
           genreId: 1,
@@ -127,7 +128,7 @@ module.exports = {
           description:
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. Perspiciatis, cupiditate quos?",
           price: 500,
-          rating: 3,
+          //rating: 3,
           img: "book.jpg",
           authorId: 2,
           genreId: 2,
@@ -139,7 +140,7 @@ module.exports = {
           description:
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis, cupiditate quos?",
           price: 100,
-          rating: 5,
+          //rating: 5,
           img: "book.jpg",
           authorId: 1,
           genreId: 1,
@@ -151,7 +152,7 @@ module.exports = {
           description:
             "Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. Perspiciatis, cupiditate quos?",
           price: 200,
-          rating: 4,
+          //rating: 4,
           img: "book.jpg",
           authorId: 2,
           genreId: 2,
@@ -163,7 +164,7 @@ module.exports = {
           description:
             "Perspiciatis, cupiditate quos? Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. ",
           price: 300,
-          rating: 2,
+          //rating: 2,
           img: "book.jpg",
           authorId: 1,
           genreId: 2,
@@ -175,7 +176,7 @@ module.exports = {
           description:
             "Dolor harum veritatis aliquid eius esse omnis unde similique. Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
           price: 400,
-          rating: 9,
+          //rating: 9,
           img: "book.jpg",
           authorId: 2,
           genreId: 1,
@@ -187,7 +188,7 @@ module.exports = {
           description:
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor harum veritatis aliquid eius esse omnis unde similique perspiciatis, quidem, tempore totam quaerat nostrum officia odit molestias dicta. Perspiciatis, cupiditate quos?",
           price: 500,
-          rating: 3,
+          //rating: 3,
           img: "book.jpg",
           authorId: 2,
           genreId: 2,

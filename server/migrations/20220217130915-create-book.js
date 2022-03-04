@@ -16,11 +16,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      rating: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
+      // rating: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: false,
+      //   defaultValue: 0,
+      // },
       img: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -36,6 +36,10 @@ module.exports = {
       genreId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      ratingId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

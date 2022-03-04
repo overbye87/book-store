@@ -1,3 +1,16 @@
+export type IBook = {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  img: string;
+  rating: any[];
+  authorId: number;
+  genreId: number;
+  author: { id: number; name: string };
+  genre: { id: number; name: string };
+};
+
 export enum BookActionTypes {
   FETCH_BOOKS = "FETCH_BOOKS",
   FETCH_BOOKS_SUCCESS = "FETCH_BOOKS_SUCCESS",

@@ -56,7 +56,7 @@ class BookController {
         where.genreId = genre;
       }
       const books = await db.Book.findAndCountAll({
-        include: ["genre", "author"],
+        include: ["genre", "author", "rating"],
         where,
         limit,
         offset,
@@ -78,7 +78,9 @@ class BookController {
           message: "id is incorrect",
         });
       }
-      const book = await db.Book.findByPk(id, { include: ["genre", "author"] });
+      const book = await db.Book.findByPk(id, {
+        include: ["genre", "author", "rating"],
+      });
       if (!book) {
         return res.status(400).json({
           status: false,
