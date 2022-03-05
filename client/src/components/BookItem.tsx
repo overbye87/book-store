@@ -21,8 +21,15 @@ interface IBookItemProps {
 const BookItem: React.FC<IBookItemProps> = ({ book }) => {
   let navigate = useNavigate();
 
-  const calcRating = () =>
-    book.rating.reduce((acc, current) => acc + current.rate, 0);
+  const calcRating = () => {
+    if (book.rating.length) {
+      const calc =
+        book.rating.reduce((acc, current) => acc + current.rate, 0) /
+        book.rating.length;
+      return `\u{2605}` + calc;
+    }
+    return "";
+  };
 
   return (
     <Card>
@@ -37,7 +44,7 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
         <p className="description">{book.description}</p>
       </div>
       <div className="card__rating">
-        <span>&#9734;{calcRating()}</span>
+        <span>{calcRating()}</span>
       </div>
       <div className="card__actions">
         <NavLink className={"link"} to={BOOK_ROUTE + "/" + book.id}>

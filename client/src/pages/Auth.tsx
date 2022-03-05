@@ -40,8 +40,9 @@ const Auth = () => {
       dispatch(setUserAction(responseUser));
       dispatch(setIsAuthAction(true));
       setTimeout(() => {
-        navigate(SHOP_ROUTE, { replace: false });
-      }, 2000);
+        navigate(-1);
+        //navigate(SHOP_ROUTE, { replace: false });
+      }, 1000);
     } catch (e: any) {
       alert(e.response.data.message);
     }

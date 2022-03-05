@@ -24,7 +24,7 @@ const BookPage = () => {
     if (params.id) {
       fetchOneBook(params.id)
         .then((response) => {
-          console.log(response);
+          //console.log(response);
           setBook(response);
           if (user) {
             let userRating = response.rating.find(
@@ -39,20 +39,20 @@ const BookPage = () => {
         .catch((err) => alert(err))
         .finally(() => {});
     }
-  }, []);
+  }, [rating]);
 
   let navigate = useNavigate();
 
-  const onChangeRating = (
+  const onChangeRating = async (
     event: React.SyntheticEvent<Element, Event>,
     newValue: number | null
   ) => {
     if (user) {
       const bookId = Number(params.id);
       const userId = user.id;
-      updateBookRating(bookId, userId, newValue);
+      const result = await updateBookRating(bookId, userId, newValue);
       setRating(newValue);
-      console.log(newValue);
+      console.log(result);
     }
   };
 
@@ -78,8 +78,12 @@ const BookPage = () => {
               <div className="card__rating">
                 <span>
                   &#9734;
-                  {book.rating.reduce((acc, current) => acc + current.rate, 0) /
-                    book.rating.length}
+                  {book.rating.length
+                    ? book.rating.reduce(
+                        (acc, current) => acc + current.rate,
+                        0
+                      ) / book.rating.length
+                    : "no rating yet"}
                 </span>
               </div>
               <div className="card__yourrating">

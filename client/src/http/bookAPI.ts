@@ -8,12 +8,10 @@ export const updateBookRating = async (
   rate: number | null
 ) => {
   const reqData = new FormData();
-  reqData.append("userId", `${bookId}`);
+  reqData.append("bookId", `${bookId}`);
   reqData.append("userId", `${userId}`);
   reqData.append("rate", `${rate}`);
-  const response = await $host.put("api/user/update", reqData);
-  localStorage.setItem("accessToken", response.data.token);
+  const response = await $host.post("api/book/rating", reqData);
   const { data } = response;
-  const token_decode: any = jwt_decode(data.token);
-  return token_decode.user;
+  return data;
 };

@@ -11,14 +11,12 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTimeout(() => {
-      check() //load user
-        .then((user) => {
-          dispatch(setIsAuthAction(true));
-          dispatch(setUserAction(user));
-        })
-        .finally(() => setLoading(false));
-    }, 1000);
+    check() //load user
+      .then((user) => {
+        dispatch(setIsAuthAction(true));
+        dispatch(setUserAction(user));
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {

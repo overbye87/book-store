@@ -94,6 +94,7 @@ class BookController {
   }
 
   async updateRateBook(req, res, next) {
+    console.log("updateRateBook", req.body);
     try {
       const { bookId, userId, rate } = req.body;
       const candidate = await db.Rating.findOne({

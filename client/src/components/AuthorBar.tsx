@@ -21,15 +21,13 @@ const AuthorBar: React.FC = () => {
   const [authorId, setAuthorId] = React.useState<(string | null)[]>([]);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(fetchAuthors());
-    }, 1000);
+    dispatch(fetchAuthors());
 
     const parsed = queryString.parse(searchParams.toString(), {
       arrayFormat: "comma",
       parseNumbers: false,
     });
-    console.log(parsed);
+    //console.log(parsed);
 
     if (Array.isArray(parsed.author)) {
       setAuthorId([...parsed.author]);
@@ -62,13 +60,13 @@ const AuthorBar: React.FC = () => {
     const {
       target: { value },
     } = event;
-    console.log(value);
+    //console.log(value);
     setAuthorId(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
-  console.log(authorId);
+  //console.log(authorId);
   return (
     <Div>
       <FormControl className="formcontroll">

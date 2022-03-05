@@ -21,15 +21,13 @@ const GenreBar: React.FC = () => {
   const [genreId, setGenreId] = React.useState<(string | null)[]>([]);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(fetchGenres());
-    }, 1000);
+    dispatch(fetchGenres());
 
     const parsed = queryString.parse(searchParams.toString(), {
       arrayFormat: "comma",
       parseNumbers: false,
     });
-    console.log(parsed);
+    //console.log(parsed);
 
     if (Array.isArray(parsed.genre)) {
       setGenreId([...parsed.genre]);
@@ -62,13 +60,13 @@ const GenreBar: React.FC = () => {
     const {
       target: { value },
     } = event;
-    console.log(value);
+    //console.log(value);
     setGenreId(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
-  console.log(genreId);
+  //console.log(genreId);
   return (
     <Div>
       <FormControl className="formcontroll">
