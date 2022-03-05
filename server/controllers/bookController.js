@@ -96,23 +96,44 @@ class BookController {
   async updateRateBook(req, res, next) {
     try {
       const { bookId, userId, rate } = req.body;
-      console.log(bookId, userId, rate);
       const candidate = await db.Rating.findOne({
         where: { bookId: bookId, userId: userId },
       });
-      if (candidate) {
-        var rating = await db.Rating.update(
-          { rate },
-          { where: { bookId: bookId, userId: userId } }
-        );
+
+      if (rate == "" || rate == "null") {
+        if (candidate) {
+          const rating = await db.Rating.destroy({
+            where: { bookId: bookId, userId: userId },
+          });
+          return res.json({
+            status: true,
+            message: "rating record deleted successfully",
+          });
+        } else {
+          return res.json({ status: true, message: "nothing to remove" });
+        }
       } else {
-        var rating = await db.Rating.create({
-          rate,
-          bookId,
-          userId,
-        });
+        if (candidate) {
+          const rating = await db.Rating.update(
+            { rate },
+            { where: { bookId: bookId, userId: userId } }
+          );
+          return res.json({
+            status: true,
+            message: "rating record update successfully",
+          });
+        } else {
+          const rating = await db.Rating.create({
+            rate,
+            bookId,
+            userId,
+          });
+          return res.json({
+            status: true,
+            message: "rating record create successfully",
+          });
+        }
       }
-      return res.json(rating);
     } catch (e) {
       next(ApiError.badRequest(e.message));
     }

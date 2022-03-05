@@ -5,9 +5,10 @@ import jwt_decode from "jwt-decode";
 export const updateBookRating = async (
   bookId: number,
   userId: number,
-  rate: number
+  rate: number | null
 ) => {
   const reqData = new FormData();
+  reqData.append("userId", `${bookId}`);
   reqData.append("userId", `${userId}`);
   reqData.append("rate", `${rate}`);
   const response = await $host.put("api/user/update", reqData);

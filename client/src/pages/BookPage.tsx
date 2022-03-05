@@ -7,6 +7,7 @@ import { IAuthor } from "../types/authors";
 import { IBook } from "../types/books";
 import { IGenre } from "../types/genres";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import { updateBookRating } from "../http/bookAPI";
 
 async function fetchOneBook(id: string) {
   const response = await $host.get("api/book/" + id);
@@ -42,6 +43,19 @@ const BookPage = () => {
 
   let navigate = useNavigate();
 
+  const onChangeRating = (
+    event: React.SyntheticEvent<Element, Event>,
+    newValue: number | null
+  ) => {
+    if (user) {
+      const bookId = Number(params.id);
+      const userId = user.id;
+      updateBookRating(bookId, userId, newValue);
+      setRating(newValue);
+      console.log(newValue);
+    }
+  };
+
   if (!book)
     return (
       <Div>
@@ -64,7 +78,8 @@ const BookPage = () => {
               <div className="card__rating">
                 <span>
                   &#9734;
-                  {book.rating.reduce((acc, current) => acc + current.rate, 0)}
+                  {book.rating.reduce((acc, current) => acc + current.rate, 0) /
+                    book.rating.length}
                 </span>
               </div>
               <div className="card__yourrating">
@@ -72,9 +87,7 @@ const BookPage = () => {
                 <Rating
                   name="simple-controlled"
                   value={rating}
-                  onChange={(event, newValue) => {
-                    setRating(newValue);
-                  }}
+                  onChange={onChangeRating}
                 />
               </div>
 
