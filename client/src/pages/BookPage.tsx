@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Rating from "@mui/material/Rating";
 import styled from "styled-components";
 import { $host } from "../http";
 import { IAuthor } from "../types/authors";
 import { IBook } from "../types/books";
 import { IGenre } from "../types/genres";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 async function fetchOneBook(id: string) {
   const response = await $host.get("api/book/" + id);
@@ -12,8 +14,10 @@ async function fetchOneBook(id: string) {
 }
 
 const BookPage = () => {
+  const { isAuth, user } = useTypedSelector((state) => state.user);
   const params = useParams();
   const [book, setBook] = useState<null | IBook>(null);
+  const [rating, setRating] = React.useState<number | null>(null);
 
   useEffect(() => {
     if (params.id) {
@@ -21,6 +25,15 @@ const BookPage = () => {
         .then((response) => {
           console.log(response);
           setBook(response);
+          if (user) {
+            let userRating = response.rating.find(
+              (item: any) => item.userId == user.id
+            );
+            if (userRating) {
+              console.log("Rating =", userRating.rate);
+              setRating(userRating.rate);
+            }
+          }
         })
         .catch((err) => alert(err))
         .finally(() => {});
@@ -46,11 +59,25 @@ const BookPage = () => {
                 src={book ? process.env.REACT_APP_API_URL + book.img : ""}
               ></img>
             </div>
+
             <div className="card__properties">
               <div className="card__rating">
-                rating
-                {/* <span>&#9734;{book.rating}</span> */}
+                <span>
+                  &#9734;
+                  {book.rating.reduce((acc, current) => acc + current.rate, 0)}
+                </span>
               </div>
+              <div className="card__yourrating">
+                <span>Your rating:</span>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
+                />
+              </div>
+
               <p className="price">
                 Price: <b>{book.price}</b>
               </p>
@@ -103,8 +130,12 @@ const Div = styled.div`
         color: palevioletred;
         font-size: 2.5em;
       }
+      .card__yourrating {
+        color: palevioletred;
+      }
     }
   }
+
   .card__description {
     font-size: 1.1em;
     text-indent: 1.5em;

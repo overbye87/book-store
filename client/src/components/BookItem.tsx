@@ -21,6 +21,9 @@ interface IBookItemProps {
 const BookItem: React.FC<IBookItemProps> = ({ book }) => {
   let navigate = useNavigate();
 
+  const calcRating = () =>
+    book.rating.reduce((acc, current) => acc + current.rate, 0);
+
   return (
     <Card>
       <img src={book ? process.env.REACT_APP_API_URL + book.img : ""}></img>
@@ -34,8 +37,7 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
         <p className="description">{book.description}</p>
       </div>
       <div className="card__rating">
-        rating
-        {/* <span>&#9734;{book.rating}</span> */}
+        <span>&#9734;{calcRating()}</span>
       </div>
       <div className="card__actions">
         <NavLink className={"link"} to={BOOK_ROUTE + "/" + book.id}>
