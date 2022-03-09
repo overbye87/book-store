@@ -7,5 +7,8 @@ router.post("/", bookController.create);
 router.get("/", bookController.getAll);
 router.get("/:id", bookController.getOne);
 
-router.post("/rating", authMiddleware, bookController.updateRateBook);
+router.post("/rating", authMiddleware, bookController.updateBookRate);
+router.post("/comment", authMiddleware, bookController.addBookComment);
+router.delete("/comment", authMiddleware, bookController.removeBookComment);
+
 module.exports = router;

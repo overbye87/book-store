@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       Book.belongsTo(models.Genre, { as: "genre", foreignKey: "genreId" });
 
       Book.hasMany(models.Rating, { as: "rating", foreignKey: "bookId" });
+      Book.hasMany(models.Comment, { as: "comment", foreignKey: "bookId" });
+
       Book.hasMany(models.BasketBook);
       Book.hasMany(models.BookInfo);
     }

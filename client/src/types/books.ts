@@ -1,3 +1,11 @@
+export type IComment = {
+  id: number;
+  text: string;
+  bookId: number;
+  userId: number;
+  answerId: number;
+};
+
 export type IBook = {
   id: number;
   name: string;
@@ -5,6 +13,7 @@ export type IBook = {
   description: string;
   img: string;
   rating: any[];
+  comment: IComment[];
   authorId: number;
   genreId: number;
   author: { id: number; name: string };

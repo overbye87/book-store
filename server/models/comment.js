@@ -1,35 +1,32 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Comment extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasMany(models.Rating, { as: "rating", foreignKey: "userId" });
-      User.hasMany(models.Comment, { as: "comment", foreignKey: "userId" });
-      User.hasOne(models.Basket);
+      Comment.belongsTo(models.User, { as: "user", foreignKey: "userId" });
+      Comment.belongsTo(models.Book, { as: "book", foreignKey: "bookId" });
     }
   }
-  User.init(
+  Comment.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+        foreignKey: true,
       },
-      email: { type: DataTypes.STRING, unique: true },
-      password: DataTypes.STRING,
-      role: { type: DataTypes.STRING, defaultValue: "USER" },
-      name: DataTypes.STRING,
-      img: DataTypes.STRING,
+      answerId: { type: DataTypes.INTEGER, allowNull: true },
+      text: { type: DataTypes.STRING, allowNull: false },
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: "Comment",
     }
   );
-  return User;
+  return Comment;
 };
