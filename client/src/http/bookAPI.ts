@@ -15,3 +15,8 @@ export const updateBookRating = async (
   const { data } = response;
   return data;
 };
+
+export const fetchOneBook = async (id: string) => {
+  const response = await $host.get("api/book/" + id);
+  return response.data;
+};
