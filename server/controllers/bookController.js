@@ -60,6 +60,7 @@ class BookController {
         where,
         limit,
         offset,
+        distinct: true,
       });
 
       books.page = page;

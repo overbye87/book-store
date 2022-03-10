@@ -8,6 +8,7 @@ import Pagination from "@mui/material/Pagination";
 const Pages: React.FC = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const { books, error, loading } = useTypedSelector((state) => state.book);
+
   return (
     <Div>
       <Pagination
