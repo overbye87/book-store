@@ -80,9 +80,10 @@ class UserController {
         raw: true,
       });
       if (!user) {
-        return res
-          .status(400)
-          .json({ status: false, message: `User with ${email} not found` });
+        return res.status(400).json({
+          status: false,
+          message: `User with Email: ${email} not found`,
+        });
       }
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {

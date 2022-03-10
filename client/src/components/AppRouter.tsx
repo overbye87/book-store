@@ -78,6 +78,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 export default AppRouter;
 
 document.body.style.margin = "0";
+document.body.style.overflowY = "scroll";
 
 const Div = styled.div`
   width: 1150px;

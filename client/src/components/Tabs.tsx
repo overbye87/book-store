@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import TabComments from "./TabComments";
 import TabCover from "./TabCover";
 import TabDescription from "./TabDescription";
 
@@ -13,8 +12,6 @@ const Tabs = () => {
         return <TabCover />;
       case "tab2":
         return <TabDescription />;
-      case "tab3":
-        return <TabComments />;
       default:
         return <div>invalid parameter</div>;
     }
@@ -29,7 +26,7 @@ const Tabs = () => {
             setActiveTab("tab1");
           }}
         >
-          cover
+          Cover
         </li>
         <li
           className={activeTab === "tab2" ? "tab tab--active" : "tab"}
@@ -37,15 +34,7 @@ const Tabs = () => {
             setActiveTab("tab2");
           }}
         >
-          description
-        </li>
-        <li
-          className={activeTab === "tab3" ? "tab tab--active" : "tab"}
-          onClick={() => {
-            setActiveTab("tab3");
-          }}
-        >
-          comments
+          Description
         </li>
       </ul>
       <div className="outlet">{outletSwitch(activeTab)}</div>

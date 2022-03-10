@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -15,6 +15,7 @@ type Inputs = {
 };
 
 const Auth = () => {
+  const [loginError, setLoginError] = useState("");
   const { isAuth, user } = useTypedSelector((state) => state.user);
   const dispatch = useDispatch();
   let navigate = useNavigate();
@@ -44,13 +45,13 @@ const Auth = () => {
         //navigate(SHOP_ROUTE, { replace: false });
       }, 1000);
     } catch (e: any) {
-      alert(e.response.data.message);
+      setLoginError(e.response.data.message);
     }
   };
   if (isAuth)
     return (
       <Div>
-        <div>
+        <div className="container">
           <h3>You are successfully authenticated!</h3>
         </div>
       </Div>
@@ -58,16 +59,21 @@ const Auth = () => {
   else
     return (
       <Div>
-        <div>
+        <div className="container">
           {isLogin ? <h3>Log in</h3> : <h3>Registration</h3>}
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form className="flex" onSubmit={handleSubmit(onSubmit)}>
             <label>Email:</label>
             <input
               type="email"
               {...register("email", {
-                required: 'Field "email" cannot be empty',
+                required: 'Field "Email" cannot be empty',
               })}
             />
+            <div className="errors">
+              {errors?.email && (
+                <p>{errors?.email?.message || "Form filled out incorrectly"}</p>
+              )}
+            </div>
             <label>Password:</label>
             <input
               type="password"
@@ -79,17 +85,39 @@ const Auth = () => {
                 },
               })}
             />
-            {!isLogin && <label>Name</label>}
+            <div className="errors">
+              {errors?.password && (
+                <p>
+                  {errors?.password?.message || "Form filled out incorrectly"}
+                </p>
+              )}
+            </div>
+
             {!isLogin && (
-              <input
-                {...register("name", {
-                  required: 'Field "name" cannot be empty',
-                })}
-              />
+              <div className="flex">
+                <label>Name:</label>
+                <input
+                  {...register("name", {
+                    required: 'Field "Name" cannot be empty',
+                  })}
+                />
+                <div className="errors">
+                  {errors?.name && (
+                    <p>
+                      {errors?.name?.message || "Form filled out incorrectly"}
+                    </p>
+                  )}
+                </div>
+              </div>
             )}
+
             {/* {errors.email && errors.password && <p>Fill in all the fields</p>} */}
             <input type="submit" value={isLogin ? "Log in" : "Registration"} />
+            <div className="errors">
+              {loginError && isLogin && <p>Log in error: {loginError}</p>}
+            </div>
           </form>
+
           <div>
             {isLogin ? (
               <p>
@@ -107,16 +135,6 @@ const Auth = () => {
               </p>
             )}
           </div>
-          <div>
-            {errors?.password && (
-              <p>
-                {errors?.password?.message || "Form filled out incorrectly"}
-              </p>
-            )}
-            {errors?.email && (
-              <p>{errors?.email?.message || "Form filled out incorrectly"}</p>
-            )}
-          </div>
         </div>
       </Div>
     );
@@ -129,26 +147,43 @@ const Div = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  div {
+  .container {
     width: 500px;
-  }
-  h3 {
-    font-size: 1.5em;
-    color: palevioletred;
-    text-align: center;
-  }
-  span {
-    color: palevioletred;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  input {
-    padding: 0.5em;
-    margin-top: 0.5em;
-  }
-  label {
-    margin-top: 0.5em;
+    h3 {
+      font-size: 1.5em;
+      color: palevioletred;
+      text-align: center;
+    }
+    .flex {
+      display: flex;
+      flex-direction: column;
+    }
+    .errors {
+      height: 50px;
+      color: palevioletred;
+    }
+    span {
+      color: palevioletred;
+    }
+    input {
+      margin: 10px 0;
+      padding: 10px 15px;
+      border: 2px solid gray;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    label {
+      margin-top: 0.5em;
+    }
+    input[type="submit"] {
+      border: 2px solid palevioletred;
+      background-color: white;
+      cursor: pointer;
+      :hover {
+        background-color: gray;
+        color: white;
+        border-color: gray;
+      }
+    }
   }
 `;

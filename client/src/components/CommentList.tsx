@@ -5,7 +5,7 @@ import { fetchOneBook } from "../http/bookAPI";
 import { IBook } from "../types/books";
 import CommentItem from "./CommentItem";
 
-const TabComments = () => {
+const CommentList = () => {
   const [book, setBook] = useState<null | IBook>(null);
   const params = useParams();
 
@@ -24,13 +24,13 @@ const TabComments = () => {
   if (!book)
     return (
       <Div>
-        <h2>Nothing to show...</h2>
+        <h3>Nothing to show...</h3>
       </Div>
     );
   else
     return (
       <Div>
-        <h2>Comments:</h2>
+        <h3>Comments:</h3>
         <div>
           {book
             ? book.comment.map((comment) => (
@@ -42,7 +42,7 @@ const TabComments = () => {
     );
 };
 
-export default TabComments;
+export default CommentList;
 
 const Div = styled.div`
   flex-grow: 1;
@@ -51,9 +51,10 @@ const Div = styled.div`
   //align-items: center;
   justify-content: flex-start;
 
-  h2 {
-    font-size: 2em;
-    color: palevioletred;
+  h3 {
+    font-size: 1.5em;
+    color: gray;
+    //color: palevioletred;
   }
 
   .card__description {

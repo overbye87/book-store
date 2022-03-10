@@ -37,7 +37,8 @@ const Div = styled.div`
       width: 300px;
     }
     &--booklist {
-      flex-grow: 1;
+      width: 850px;
+      //flex-grow: 1;
     }
   }
 `;

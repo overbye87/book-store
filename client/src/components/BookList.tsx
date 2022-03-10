@@ -43,7 +43,10 @@ export default BookList;
 
 const Div = styled.div`
   flex-grow: 1;
+  gap: 15px;
+  //width: 700px;
+  flex-wrap: wrap;
   display: flex;
   padding: 15px;
-  justify-content: space-around;
+  justify-content: center;
 `;

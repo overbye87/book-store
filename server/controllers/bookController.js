@@ -37,7 +37,7 @@ class BookController {
         page = 1;
       }
       page = page || 1;
-      limit = limit || 3;
+      limit = limit || 6;
       let offset = page * limit - limit;
       console.log("Query:", req.query);
       const where = {};
@@ -70,7 +70,9 @@ class BookController {
       next(ApiError.badRequest(e.message));
     }
   }
-  async getOne(req, res) {
+
+  // *** GET ONE BOOK ***
+  async getOne(req, res, next) {
     try {
       const { id } = req.params;
       if (!Number(id)) {
@@ -80,7 +82,12 @@ class BookController {
         });
       }
       const book = await db.Book.findByPk(id, {
-        include: ["genre", "author", "rating", "comment"],
+        include: [
+          "genre",
+          "author",
+          "rating",
+          { model: db.Comment, as: "comment", include: ["user"] },
+        ],
       });
       if (!book) {
         return res.status(400).json({
@@ -94,6 +101,7 @@ class BookController {
     }
   }
 
+  // *** UPDATE BOOK RATE ***
   async updateBookRate(req, res, next) {
     console.log("updateBookRate", req.body);
     try {

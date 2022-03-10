@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import CommentList from "../components/CommentList";
 import Tabs from "../components/Tabs";
 
 const BookPage = () => {
@@ -8,7 +9,8 @@ const BookPage = () => {
   return (
     <Div>
       <Tabs />
-      <button onClick={() => navigate(-1)}>go back</button>
+      <CommentList />
+      <button onClick={() => navigate(-1)}>Go back</button>
     </Div>
   );
 };
@@ -22,6 +24,7 @@ const Div = styled.div`
   //align-items: center;
   justify-content: flex-start;
   button {
+    width: 10em;
     text-decoration: none;
     border: 2px solid palevioletred;
     padding: 10px 15px;
