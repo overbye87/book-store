@@ -32,6 +32,7 @@ const BookItem: React.FC<ICommentItemProps> = ({ comment, getOneBook }) => {
     deleteComment(id)
       .then((response) => {
         console.log(response);
+        getOneBook();
       })
       .catch((err) => alert(err))
       .finally(() => {});
