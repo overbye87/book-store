@@ -5,12 +5,14 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { BOOK_ROUTE } from "../constants";
 import { IBook } from "../types/books";
 import { IUser } from "../types/users";
+import { deleteComment } from "../http/bookAPI";
 
 interface ICommentItemProps {
   comment: any;
+  getOneBook: () => void;
 }
 
-const BookItem: React.FC<ICommentItemProps> = ({ comment }) => {
+const BookItem: React.FC<ICommentItemProps> = ({ comment, getOneBook }) => {
   let navigate = useNavigate();
 
   const getAvatarPath = (user: null | IUser) => {
@@ -26,6 +28,15 @@ const BookItem: React.FC<ICommentItemProps> = ({ comment }) => {
     return date.toDateString();
   };
 
+  const onClick = (id: number) => {
+    deleteComment(id)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => alert(err))
+      .finally(() => {});
+  };
+
   return (
     <Div>
       <div>
@@ -37,6 +48,14 @@ const BookItem: React.FC<ICommentItemProps> = ({ comment }) => {
             {comment.user ? comment.user.name : "Stranger"}
           </h5>
           <div className="date">{getDataString(comment.createdAt)}</div>
+          <button
+            className="delete"
+            onClick={() => {
+              onClick(comment.id);
+            }}
+          >
+            &#128465;
+          </button>
         </div>
 
         {/* <div className="id">{comment.id}</div> */}
@@ -60,16 +79,23 @@ const Div = styled.div`
       flex-direction: column;
     }
     &--name {
-      justify-content: space-between;
+      //justify-content: space-between;
     }
     &--grow {
       flex-grow: 1;
     }
   }
   .name {
+    flex-grow: 1;
   }
   .date {
     color: gray;
+    margin-right: 2em;
+  }
+  .delete {
+    font-size: 1.3em;
+    padding: 3px;
+    width: 2em;
   }
   img {
     width: 100px;
