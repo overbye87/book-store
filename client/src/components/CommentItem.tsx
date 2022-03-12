@@ -5,14 +5,23 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { BOOK_ROUTE } from "../constants";
 import { IBook } from "../types/books";
 import { IUser } from "../types/users";
-import { deleteComment } from "../http/bookAPI";
+import { deleteComment } from "../http/commentAPI";
+import { IComment, IObjParrents } from "./CommentList";
+import { userInfo } from "os";
 
 interface Props {
-  comment: any;
-  getOneBook: () => void;
+  comment: IComment;
+  getAllBookComments: () => void;
+  objParrents: IObjParrents;
+  user: null | IUser;
 }
 
-const BookItem: React.FC<Props> = ({ comment, getOneBook }) => {
+const CommentItem: React.FC<Props> = ({
+  comment,
+  getAllBookComments,
+  objParrents,
+  user,
+}) => {
   let navigate = useNavigate();
 
   const getAvatarPath = (user: null | IUser) => {
@@ -32,7 +41,7 @@ const BookItem: React.FC<Props> = ({ comment, getOneBook }) => {
     deleteComment(id)
       .then((response) => {
         console.log(response);
-        getOneBook();
+        getAllBookComments();
       })
       .catch((err) => alert(err))
       .finally(() => {});
@@ -40,40 +49,65 @@ const BookItem: React.FC<Props> = ({ comment, getOneBook }) => {
 
   return (
     <Div>
-      <div>
-        <img src={getAvatarPath(comment.user)}></img>
-      </div>
-      <div className="flex flex--grow flex--column">
-        <div className="flex flex--name">
-          <h5 className="name">
-            {comment.user ? comment.user.name : "Stranger"}
-          </h5>
-          <div className="date">{getDataString(comment.createdAt)}</div>
-          <button
-            className="delete"
-            onClick={() => {
-              onClick(comment.id);
-            }}
-          >
-            &#128465;
-          </button>
+      <div className="parrent">
+        <div>
+          <img src={getAvatarPath(comment.user)}></img>
         </div>
-
-        {/* <div className="id">{comment.id}</div> */}
-        <div className="text">{comment.text}</div>
+        <div className="flex flex--grow flex--column">
+          <div className="flex flex--name">
+            <h5 className="name">
+              {comment.user ? comment.user.name : "Stranger"}
+            </h5>
+            <div className="date">{getDataString(comment.createdAt)}</div>
+            <button
+              className={
+                comment.userId == user?.id ? "delete" : "delete delete--hide"
+              }
+              onClick={() => {
+                onClick(comment.id);
+              }}
+            >
+              &#128465;
+            </button>
+          </div>
+          <div className="id">ParrentID:{comment.parrentId}</div>
+          <div className="id">ID:{comment.id}</div>
+          <div className="text">{comment.text}</div>
+        </div>
+      </div>
+      <div className="children">
+        {objParrents[comment.id]?.map((comment: any) => (
+          <div>
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              getAllBookComments={getAllBookComments}
+              objParrents={objParrents}
+              user={user}
+            />
+          </div>
+        ))}
       </div>
     </Div>
   );
 };
 
-export default BookItem;
+export default CommentItem;
 
 const Div = styled.div`
   display: flex;
-  border: solid 2px gray;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 5px;
+  flex-direction: column;
+
+  .parrent {
+    display: flex;
+    border: solid 2px gray;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 5px;
+  }
+  .children {
+    margin-left: 120px;
+  }
   .flex {
     display: flex;
     &--column {
@@ -97,6 +131,9 @@ const Div = styled.div`
     font-size: 1.3em;
     padding: 3px;
     width: 2em;
+    &--hide {
+      display: none;
+    }
   }
   img {
     width: 100px;

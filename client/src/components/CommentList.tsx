@@ -3,26 +3,56 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { createComment, fetchOneBook } from "../http/bookAPI";
+
+import { createComment, fetchCommentsByBookId } from "../http/commentAPI";
 import { RootState } from "../store/redusers";
-import { IBook } from "../types/books";
+import { IUser } from "../types/users";
+import CommentAddForm from "./CommentAddForm";
 import CommentItem from "./CommentItem";
 
-interface PasswordChangeInputs {
+interface ICommentResponse {
+  bookId: number;
+  comments: any[];
+}
+
+export interface IComment {
+  id: number;
+  bookId: number;
+  userId: number;
+  user: IUser;
+  parrentId: number;
   text: string;
+  createdAt: string;
+}
+
+export interface IObjParrents {
+  [key: string]: IComment[];
 }
 
 const CommentList = () => {
   const { isAuth, user } = useSelector((state: RootState) => state.user);
-  const [book, setBook] = useState<null | IBook>(null);
+  const [comment, setComment] = useState<null | ICommentResponse>(null);
+  const [objParrents, setobjParrents] = useState<IObjParrents>({});
   const params = useParams();
 
-  const getOneBook = () => {
+  const getAllBookComments = () => {
     if (params.id) {
-      fetchOneBook(params.id)
+      fetchCommentsByBookId(params.id)
         .then((response) => {
           //console.log(response);
-          setBook(response);
+          setComment(response);
+
+          let obj: any = {};
+          response.comments.forEach((item: IComment) => {
+            // if not have property - create []
+            if (!obj.hasOwnProperty(`${item.parrentId}`)) {
+              obj[`${item.parrentId}`] = [];
+            }
+            obj[`${item.parrentId}`].push(item);
+          });
+          setobjParrents(obj);
+
+          console.log(obj[0]);
         })
         .catch((err) => alert(err))
         .finally(() => {});
@@ -30,41 +60,10 @@ const CommentList = () => {
   };
 
   useEffect(() => {
-    getOneBook();
+    getAllBookComments();
   }, []);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors: errorsPassword, isValid: isValidPassword },
-  } = useForm<PasswordChangeInputs>({ mode: "onBlur" });
-
-  // --- PASSWORD CHANGE --- --- ---
-  const onSubmit: SubmitHandler<PasswordChangeInputs> = async (data) => {
-    try {
-      const { text } = data;
-      console.log(text);
-      if (book) {
-        const bookId = book.id;
-        const userId = user ? user.id : null;
-        const answerId = null;
-        const responseUser = await createComment(
-          bookId,
-          userId,
-          text,
-          answerId
-        );
-        reset();
-        getOneBook();
-        //alert("Comment add successfuly");
-      }
-    } catch (error: any) {
-      alert(error.response.data.message);
-    }
-  };
-
-  if (!book)
+  if (!comment)
     return (
       <Div>
         <h3>Nothing to show...</h3>
@@ -75,27 +74,20 @@ const CommentList = () => {
       <Div>
         <h3>Comments:</h3>
         <div>
-          {book
-            ? book.comment.map((comment) => (
-                <CommentItem
-                  key={comment.id}
-                  comment={comment}
-                  getOneBook={getOneBook}
-                />
-              ))
-            : "Book list display error!"}
+          {objParrents[0]?.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              getAllBookComments={getAllBookComments}
+              objParrents={objParrents}
+              user={user}
+            />
+          ))}
         </div>
-
-        <form key={2} onSubmit={handleSubmit(onSubmit)}>
-          <h3>Add comment:</h3>
-          <label>Message:</label>
-          <textarea
-            {...register("text", {
-              required: "Comment message can not be empty",
-            })}
-          ></textarea>
-          <input type="submit" value={"Add"}></input>
-        </form>
+        <CommentAddForm
+          comment={comment}
+          getAllBookComments={getAllBookComments}
+        />
       </Div>
     );
 };

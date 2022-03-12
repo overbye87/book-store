@@ -20,15 +20,17 @@ class CommentController {
           message: "no book id",
         });
       }
-      const comment = await db.Comment.findAll({
+      const comments = await db.Comment.findAll({
         where: {
           bookId,
         },
+        include: ["user"],
       });
       return res.json({
         status: true,
         message: `all comments by book id:${bookId} get successfully`,
-        comment,
+        bookId,
+        comments,
       });
     } catch (e) {
       next(ApiError.badRequest(e.message));
@@ -39,7 +41,7 @@ class CommentController {
   async addBookComment(req, res, next) {
     console.log("addBookComment", req.body);
     try {
-      const { bookId, userId, text, answerId } = req.body;
+      const { bookId, userId, text, parrentId } = req.body;
 
       if (!bookId) {
         return res.json({
@@ -58,7 +60,7 @@ class CommentController {
         bookId,
         userId: userId === "" ? null : userId,
         text,
-        answerId: answerId === "" ? null : answerId,
+        parrentId: parrentId === "" ? 0 : parrentId,
       });
 
       console.log(comment);

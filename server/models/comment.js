@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         foreignKey: true,
       },
-      answerId: { type: DataTypes.INTEGER, allowNull: true },
+      parrentId: { type: DataTypes.INTEGER, allowNull: false },
       text: { type: DataTypes.STRING, allowNull: false },
     },
     {

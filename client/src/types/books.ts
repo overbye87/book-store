@@ -3,7 +3,7 @@ export type IComment = {
   text: string;
   bookId: number;
   userId: number;
-  answerId: number;
+  parrentId: number;
 };
 
 export type IBook = {

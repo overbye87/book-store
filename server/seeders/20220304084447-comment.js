@@ -6,7 +6,7 @@ module.exports = {
       "Comments",
       [
         {
-          answerId: null,
+          parrentId: 0,
           text: "Blah blah blah book is good...",
           userId: 1,
           bookId: 1,
@@ -14,7 +14,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          answerId: null,
+          parrentId: 0,
           text: "Second comment another author...",
           userId: 2,
           bookId: 1,
@@ -22,10 +22,10 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          answerId: null,
+          parrentId: 1,
           text: "Another comment another author...",
           userId: 2,
-          bookId: 2,
+          bookId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

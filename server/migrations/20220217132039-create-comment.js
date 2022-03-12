@@ -9,9 +9,9 @@ module.exports = {
         foreignKey: true,
         type: Sequelize.INTEGER,
       },
-      answerId: {
+      parrentId: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       text: {
         type: Sequelize.STRING,
