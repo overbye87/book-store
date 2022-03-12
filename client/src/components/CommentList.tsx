@@ -32,6 +32,7 @@ export interface IObjParrents {
 const CommentList = () => {
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const [comment, setComment] = useState<null | ICommentResponse>(null);
+  const [replyId, setReplyId] = useState<number>(0);
   const [objParrents, setobjParrents] = useState<IObjParrents>({});
   const params = useParams();
 
@@ -63,6 +64,11 @@ const CommentList = () => {
     getAllBookComments();
   }, []);
 
+  const onClickReply = (id: number) => {
+    setReplyId(id);
+    console.log(id);
+  };
+
   if (!comment)
     return (
       <Div>
@@ -81,12 +87,14 @@ const CommentList = () => {
               getAllBookComments={getAllBookComments}
               objParrents={objParrents}
               user={user}
+              onClickReply={onClickReply}
             />
           ))}
         </div>
         <CommentAddForm
           comment={comment}
           getAllBookComments={getAllBookComments}
+          replyId={replyId}
         />
       </Div>
     );

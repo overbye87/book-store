@@ -20,9 +20,14 @@ interface IComment {
 interface Props {
   comment: IComment;
   getAllBookComments: () => void;
+  replyId: number;
 }
 
-const CommentAddForm: React.FC<Props> = ({ comment, getAllBookComments }) => {
+const CommentAddForm: React.FC<Props> = ({
+  comment,
+  getAllBookComments,
+  replyId,
+}) => {
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const {
     register,
@@ -39,7 +44,7 @@ const CommentAddForm: React.FC<Props> = ({ comment, getAllBookComments }) => {
       if (comment) {
         const bookId = comment.bookId;
         const userId = user ? user.id : null;
-        const parrentId = 0;
+        const parrentId = replyId;
         console.log(bookId, userId, text, parrentId);
         const responseUser = await createComment(
           bookId,
@@ -62,6 +67,8 @@ const CommentAddForm: React.FC<Props> = ({ comment, getAllBookComments }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Add comment:</h3>
         <label>Message:</label>
+        {replyId ? <p>{replyId}</p> : ""}
+
         <textarea
           {...register("text", {
             required: "Comment message can not be empty",

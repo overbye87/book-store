@@ -14,6 +14,7 @@ interface Props {
   getAllBookComments: () => void;
   objParrents: IObjParrents;
   user: null | IUser;
+  onClickReply: (id: number) => void;
 }
 
 const CommentItem: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const CommentItem: React.FC<Props> = ({
   getAllBookComments,
   objParrents,
   user,
+  onClickReply,
 }) => {
   let navigate = useNavigate();
 
@@ -37,7 +39,7 @@ const CommentItem: React.FC<Props> = ({
     return date.toDateString();
   };
 
-  const onClick = (id: number) => {
+  const onClickDelete = (id: number) => {
     deleteComment(id)
       .then((response) => {
         console.log(response);
@@ -58,13 +60,23 @@ const CommentItem: React.FC<Props> = ({
             <h5 className="name">
               {comment.user ? comment.user.name : "Stranger"}
             </h5>
+            <button
+              className={"reply"}
+              onClick={() => {
+                onClickReply(comment.id);
+              }}
+            >
+              Reply
+            </button>
+            <div className="emptiness"></div>
             <div className="date">{getDataString(comment.createdAt)}</div>
+
             <button
               className={
                 comment.userId == user?.id ? "delete" : "delete delete--hide"
               }
               onClick={() => {
-                onClick(comment.id);
+                onClickDelete(comment.id);
               }}
             >
               &#128465;
@@ -84,6 +96,7 @@ const CommentItem: React.FC<Props> = ({
               getAllBookComments={getAllBookComments}
               objParrents={objParrents}
               user={user}
+              onClickReply={onClickReply}
             />
           </div>
         ))}
@@ -120,7 +133,13 @@ const Div = styled.div`
       flex-grow: 1;
     }
   }
-  .name {
+  .reply {
+    font-size: 1em;
+    margin-left: 1em;
+    padding: 0 5px;
+    width: auto;
+  }
+  .emptiness {
     flex-grow: 1;
   }
   .date {
@@ -145,7 +164,7 @@ const Div = styled.div`
   .name {
     margin: 0;
     margin-bottom: 5px;
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: palevioletred;
   }
   .id {
