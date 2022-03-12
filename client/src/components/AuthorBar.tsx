@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { fetchAuthors } from "../store/actions/author";
@@ -19,10 +19,10 @@ const AuthorBar: React.FC = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const { authors } = useTypedSelector((state) => state.author);
   const [authorId, setAuthorId] = React.useState<(string | null)[]>([]);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     dispatch(fetchAuthors());
-
     const parsed = queryString.parse(searchParams.toString(), {
       arrayFormat: "comma",
       parseNumbers: false,
@@ -39,6 +39,10 @@ const AuthorBar: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     searchParams.delete("page");
     if (!authorId.length) {
       searchParams.delete("author");

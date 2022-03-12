@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { fetchOneBook } from "../http/bookAPI";
 import { IBook } from "../types/books";
 
-const TabDescription = () => {
-  const [book, setBook] = useState<null | IBook>(null);
+interface Props {
+  book: null | IBook;
+}
+
+const TabDescription: React.FC<Props> = ({ book }) => {
   const params = useParams();
-
-  useEffect(() => {
-    if (params.id) {
-      fetchOneBook(params.id)
-        .then((response) => {
-          //console.log(response);
-          setBook(response);
-        })
-        .catch((err) => alert(err))
-        .finally(() => {});
-    }
-  }, []);
-
   if (!book)
     return (
       <Div>

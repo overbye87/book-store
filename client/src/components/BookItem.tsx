@@ -26,7 +26,7 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
       const calc =
         book.rating.reduce((acc, current) => acc + current.rate, 0) /
         book.rating.length;
-      return `\u{2605}` + calc;
+      return `\u{2605}` + calc.toFixed(1);
     }
     return "";
   };

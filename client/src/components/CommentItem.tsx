@@ -7,12 +7,12 @@ import { IBook } from "../types/books";
 import { IUser } from "../types/users";
 import { deleteComment } from "../http/bookAPI";
 
-interface ICommentItemProps {
+interface Props {
   comment: any;
   getOneBook: () => void;
 }
 
-const BookItem: React.FC<ICommentItemProps> = ({ comment, getOneBook }) => {
+const BookItem: React.FC<Props> = ({ comment, getOneBook }) => {
   let navigate = useNavigate();
 
   const getAvatarPath = (user: null | IUser) => {

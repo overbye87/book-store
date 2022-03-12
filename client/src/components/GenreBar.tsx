@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { fetchGenres } from "../store/actions/genre";
@@ -19,6 +19,7 @@ const GenreBar: React.FC = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const { genres } = useTypedSelector((state) => state.genre);
   const [genreId, setGenreId] = React.useState<(string | null)[]>([]);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     dispatch(fetchGenres());
@@ -39,6 +40,10 @@ const GenreBar: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     searchParams.delete("page");
     if (!genreId.length) {
       searchParams.delete("genre");
@@ -91,6 +96,7 @@ const GenreBar: React.FC = () => {
 };
 
 export default GenreBar;
+
 const Div = styled.div`
   display: flex;
   .formcontroll {

@@ -1,17 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { fetchOneBook } from "../http/bookAPI";
+import { IBook } from "../types/books";
 import TabCover from "./TabCover";
 import TabDescription from "./TabDescription";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const params = useParams();
+  const [book, setBook] = useState<null | IBook>(null);
+
+  const getOneBook = () => {
+    if (params.id) {
+      fetchOneBook(params.id)
+        .then((response) => {
+          setBook(response);
+          //getAndSetRating();
+        })
+        .catch((err) => alert(err))
+        .finally(() => {});
+    }
+  };
+
+  useEffect(() => {
+    getOneBook();
+  }, []);
 
   const outletSwitch = (key: string) => {
     switch (key) {
       case "tab1":
-        return <TabCover />;
+        return <TabCover book={book} getOneBook={getOneBook} />;
       case "tab2":
-        return <TabDescription />;
+        return <TabDescription book={book} />;
       default:
         return <div>invalid parameter</div>;
     }

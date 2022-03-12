@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import styled from "styled-components";
-import { $host } from "../http";
 import { IBook } from "../types/books";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-import { fetchOneBook, updateBookRating } from "../http/bookAPI";
+import { updateBookRating } from "../http/bookAPI";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/redusers";
 
-const TabCover = () => {
+interface Props {
+  book: null | IBook;
+  getOneBook: () => void;
+}
+
+const TabCover: React.FC<Props> = ({ book, getOneBook }) => {
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const params = useParams();
-  const [book, setBook] = useState<null | IBook>(null);
   const [rating, setRating] = React.useState<number | null>(null);
-  let navigate = useNavigate();
+
+  const getAndSetRating = () => {
+    if (user && book) {
+      let userRating = book.rating.find((item: any) => item.userId == user.id);
+      if (userRating) {
+        console.log("Rating =", userRating.rate);
+        setRating(userRating.rate);
+      }
+    }
+  };
 
   useEffect(() => {
-    if (params.id) {
-      fetchOneBook(params.id)
-        .then((response) => {
-          //console.log(response);
-          setBook(response);
-          if (user) {
-            let userRating = response.rating.find(
-              (item: any) => item.userId == user.id
-            );
-            if (userRating) {
-              console.log("Rating =", userRating.rate);
-              setRating(userRating.rate);
-            }
-          }
-        })
-        .catch((err) => alert(err))
-        .finally(() => {});
-    }
+    //display rating on page from book
+    getAndSetRating();
+  }, [book]);
+
+  useEffect(() => {
+    //if rating change reload book
+    getOneBook();
   }, [rating]);
 
   const onChangeRating = async (
@@ -46,7 +46,7 @@ const TabCover = () => {
       const userId = user.id;
       const result = await updateBookRating(bookId, userId, newValue);
       setRating(newValue);
-      console.log(result);
+      //console.log(result);
     }
   };
 
@@ -73,10 +73,12 @@ const TabCover = () => {
                 <span>
                   &#9734;
                   {book.rating.length
-                    ? book.rating.reduce(
-                        (acc, current) => acc + current.rate,
-                        0
-                      ) / book.rating.length
+                    ? (
+                        book.rating.reduce(
+                          (acc, current) => acc + current.rate,
+                          0
+                        ) / book.rating.length
+                      ).toFixed(1)
                     : "no rating yet"}
                 </span>
               </div>
