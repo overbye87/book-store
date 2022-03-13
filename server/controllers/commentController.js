@@ -20,11 +20,16 @@ class CommentController {
           message: "no book id",
         });
       }
-      const comments = await db.Comment.findAll({
+      let comments = await db.Comment.findAll({
         where: {
           bookId,
         },
         include: ["user"],
+      });
+
+      comments = comments.map((item) => {
+        item.user.password = null;
+        return item;
       });
       return res.json({
         status: true,

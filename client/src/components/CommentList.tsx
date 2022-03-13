@@ -19,9 +19,10 @@ export interface IComment {
   id: number;
   bookId: number;
   userId: number;
-  user: IUser;
+  loginUser: IUser;
   parrentId: number;
   text: string;
+  user: IUser;
   createdAt: string;
 }
 
@@ -30,9 +31,15 @@ export interface IObjParrents {
 }
 
 const CommentList = () => {
-  const { isAuth, user } = useSelector((state: RootState) => state.user);
-  const [comment, setComment] = useState<null | ICommentResponse>(null);
-  const [replyId, setReplyId] = useState<number>(0);
+  const { user } = useSelector((state: RootState) => state.user);
+  //comment with user include for reply
+  const [replyComment, setReplyComment] = useState<null | IComment>(null);
+  //special structure object
+  //keys of this object is all parent id's from comments - contains arrays of this comments with the same parent id as in the key
+  //{ 0 : [ {comment}, {comment}, {comment}, ...]
+  //  5 : [ {comment}, ...]
+  //  9 : [ {comment}, ...] }
+
   const [objParrents, setobjParrents] = useState<IObjParrents>({});
   const params = useParams();
 
@@ -41,7 +48,6 @@ const CommentList = () => {
       fetchCommentsByBookId(params.id)
         .then((response) => {
           //console.log(response);
-          setComment(response);
 
           let obj: any = {};
           response.comments.forEach((item: IComment) => {
@@ -59,17 +65,21 @@ const CommentList = () => {
         .finally(() => {});
     }
   };
+  const onClickRemoveReply = () => {
+    setReplyComment(null);
+  };
 
   useEffect(() => {
     getAllBookComments();
   }, []);
 
-  const onClickReply = (id: number) => {
-    setReplyId(id);
-    console.log(id);
+  const onClickReply = (comment: IComment) => {
+    setReplyComment(comment);
+    //console.log(userReply);
+    //console.log(comment);
   };
 
-  if (!comment)
+  if (!objParrents[0])
     return (
       <Div>
         <h3>Nothing to show...</h3>
@@ -86,15 +96,16 @@ const CommentList = () => {
               comment={comment}
               getAllBookComments={getAllBookComments}
               objParrents={objParrents}
-              user={user}
+              loginUser={user}
               onClickReply={onClickReply}
             />
           ))}
         </div>
         <CommentAddForm
-          comment={comment}
           getAllBookComments={getAllBookComments}
-          replyId={replyId}
+          replyComment={replyComment}
+          onClickRemoveReply={onClickRemoveReply}
+          bookId={Number(params.id)}
         />
       </Div>
     );

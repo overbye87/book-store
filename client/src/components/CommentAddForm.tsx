@@ -6,27 +6,26 @@ import styled from "styled-components";
 
 import { createComment, fetchCommentsByBookId } from "../http/commentAPI";
 import { RootState } from "../store/redusers";
+import { IUser } from "../types/users";
 import CommentItem from "./CommentItem";
+import { IComment } from "./CommentList";
 
 interface PasswordChangeInputs {
   text: string;
 }
 
-interface IComment {
-  bookId: number;
-  comments: any[];
-}
-
 interface Props {
-  comment: IComment;
   getAllBookComments: () => void;
-  replyId: number;
+  replyComment: null | IComment;
+  onClickRemoveReply: () => void;
+  bookId: number;
 }
 
 const CommentAddForm: React.FC<Props> = ({
-  comment,
   getAllBookComments,
-  replyId,
+  replyComment,
+  onClickRemoveReply,
+  bookId,
 }) => {
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const {
@@ -41,21 +40,15 @@ const CommentAddForm: React.FC<Props> = ({
     try {
       const { text } = data;
       //console.log(text);
-      if (comment) {
-        const bookId = comment.bookId;
-        const userId = user ? user.id : null;
-        const parrentId = replyId;
-        console.log(bookId, userId, text, parrentId);
-        const responseUser = await createComment(
-          bookId,
-          userId,
-          text,
-          parrentId
-        );
-        reset();
-        getAllBookComments();
-        //alert("Comment add successfuly");
-      }
+      //if (replyComment) {
+      const userId = user ? user.id : null;
+      const parrentId = replyComment?.id ? replyComment.id : 0;
+      console.log(bookId, userId, text, parrentId);
+      const responseUser = await createComment(bookId, userId, text, parrentId);
+      reset();
+      getAllBookComments();
+      //alert("Comment add successfuly");
+      //}
     } catch (error: any) {
       alert(error.response.data.message);
     }
@@ -66,8 +59,22 @@ const CommentAddForm: React.FC<Props> = ({
       {" "}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Add comment:</h3>
-        <label>Message:</label>
-        {replyId ? <p>{replyId}</p> : ""}
+        <label>Message: </label>
+        {replyComment ? (
+          <span className="reply">
+            Reply for: <b>{replyComment.user.name}</b>{" "}
+            <button
+              className={"remove"}
+              onClick={() => {
+                onClickRemoveReply();
+              }}
+            >
+              remove
+            </button>
+          </span>
+        ) : (
+          <span></span>
+        )}
 
         <textarea
           {...register("text", {
@@ -101,8 +108,24 @@ const Div = styled.div`
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 15px;
+    .remove {
+      display: inline-block;
+      width: 5em;
+      margin: 0;
+      padding: 0;
+      font-size: 0.6em;
+      color: palevioletred;
+    }
+    .reply {
+      display: inline;
+      margin: 0;
+      padding: 0;
+      font-size: 1.5em;
+      color: palevioletred;
+    }
     label {
       margin-top: 0.5em;
+      display: none;
     }
     input,
     textarea {

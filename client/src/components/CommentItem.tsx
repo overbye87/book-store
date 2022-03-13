@@ -13,15 +13,15 @@ interface Props {
   comment: IComment;
   getAllBookComments: () => void;
   objParrents: IObjParrents;
-  user: null | IUser;
-  onClickReply: (id: number) => void;
+  loginUser: null | IUser;
+  onClickReply: (comment: IComment) => void;
 }
 
 const CommentItem: React.FC<Props> = ({
   comment,
   getAllBookComments,
   objParrents,
-  user,
+  loginUser,
   onClickReply,
 }) => {
   let navigate = useNavigate();
@@ -63,7 +63,8 @@ const CommentItem: React.FC<Props> = ({
             <button
               className={"reply"}
               onClick={() => {
-                onClickReply(comment.id);
+                onClickReply(comment);
+                console.log(comment);
               }}
             >
               Reply
@@ -73,17 +74,19 @@ const CommentItem: React.FC<Props> = ({
 
             <button
               className={
-                comment.userId == user?.id ? "delete" : "delete delete--hide"
+                comment.userId == loginUser?.id
+                  ? "delete"
+                  : "delete delete--hide"
               }
               onClick={() => {
                 onClickDelete(comment.id);
               }}
             >
-              &#128465;
+              X
             </button>
           </div>
           <div className="id">ParrentID:{comment.parrentId}</div>
-          <div className="id">ID:{comment.id}</div>
+          <div className="commentid">{comment.id}</div>
           <div className="text">{comment.text}</div>
         </div>
       </div>
@@ -95,7 +98,7 @@ const CommentItem: React.FC<Props> = ({
               comment={comment}
               getAllBookComments={getAllBookComments}
               objParrents={objParrents}
-              user={user}
+              loginUser={loginUser}
               onClickReply={onClickReply}
             />
           </div>
@@ -112,11 +115,26 @@ const Div = styled.div`
   flex-direction: column;
 
   .parrent {
+    position: relative;
     display: flex;
     border: solid 2px gray;
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 5px;
+  }
+  .commentid {
+    width: 1.2em;
+    height: 1.2em;
+    border: solid 2px gray;
+    background-color: gray;
+    color: white;
+    border-radius: 0.6em;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .children {
     margin-left: 120px;
@@ -147,6 +165,7 @@ const Div = styled.div`
     margin-right: 2em;
   }
   .delete {
+    color: gray;
     font-size: 1.3em;
     padding: 3px;
     width: 2em;
