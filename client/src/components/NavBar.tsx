@@ -11,21 +11,24 @@ import {
   LOGIN_ROUTE,
   SHOP_ROUTE,
 } from "../constants";
+import Notification from "./Notification";
 
 const NavBar: React.FC = () => {
   const { isAuth, user } = useTypedSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  return (
-    <Nav>
-      <NavLink
-        to={SHOP_ROUTE}
-        className={({ isActive }) => (isActive ? "link link--active" : "link")}
-      >
-        Home
-      </NavLink>
-      {isAuth ? (
+  if (isAuth) {
+    return (
+      <div>
         <Nav>
+          <NavLink
+            to={SHOP_ROUTE}
+            className={({ isActive }) =>
+              isActive ? "link link--active" : "link"
+            }
+          >
+            Home
+          </NavLink>
           <img
             src={
               user
@@ -35,7 +38,6 @@ const NavBar: React.FC = () => {
                 : ""
             }
           ></img>
-
           <h2>Welcome {user ? user.name : "Stranger"}! &#128512;</h2>
           <NavLink
             className={"link"}
@@ -63,19 +65,25 @@ const NavBar: React.FC = () => {
           >
             Basket
           </NavLink>
+          <Notification />
         </Nav>
-      ) : (
-        <Nav>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "link link--active" : "link"
-            }
-            to={LOGIN_ROUTE}
-          >
-            Login
-          </NavLink>
-        </Nav>
-      )}
+      </div>
+    );
+  }
+  return (
+    <Nav>
+      <NavLink
+        to={SHOP_ROUTE}
+        className={({ isActive }) => (isActive ? "link link--active" : "link")}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        className={({ isActive }) => (isActive ? "link link--active" : "link")}
+        to={LOGIN_ROUTE}
+      >
+        Login
+      </NavLink>
     </Nav>
   );
 };

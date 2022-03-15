@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { BOOK_ROUTE } from "../constants";
 import { IBook } from "../types/books";
 import { IUser } from "../types/users";
@@ -25,6 +25,8 @@ const CommentItem: React.FC<Props> = ({
   onClickReply,
 }) => {
   let navigate = useNavigate();
+  const commentRef = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getAvatarPath = (user: null | IUser) => {
     if (user === null || user.img === null) {
@@ -48,10 +50,18 @@ const CommentItem: React.FC<Props> = ({
       .catch((err) => alert(err))
       .finally(() => {});
   };
+  useEffect(() => {
+    const commentId = searchParams.get("commentId");
+    console.log(searchParams.get("commentId"));
+
+    if (commentId && +commentId === comment.id) {
+      commentRef?.current?.scrollIntoView();
+    }
+  }, []);
 
   return (
     <Div>
-      <div className="parrent">
+      <div ref={commentRef} id={`comment${comment.id}`} className="parrent">
         <div>
           <img src={getAvatarPath(comment.user)}></img>
         </div>

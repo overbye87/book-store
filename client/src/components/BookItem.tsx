@@ -1,12 +1,5 @@
 import React from "react";
 
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import bookImg from "../assets/book.jpg";
 import styled from "styled-components";
 
 import { NavLink, useNavigate } from "react-router-dom";

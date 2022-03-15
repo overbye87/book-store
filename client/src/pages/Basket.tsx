@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Messenger from "../components/Messenger";
+import Messenger from "../components/Notification";
 
 const Basket = () => {
   return (
     <Div>
       <div>
         <h3>Basket</h3>
-        <Messenger />
       </div>
     </Div>
   );

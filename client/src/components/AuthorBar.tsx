@@ -16,7 +16,7 @@ import {
 
 const AuthorBar: React.FC = () => {
   const dispatch = useDispatch();
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { authors } = useTypedSelector((state) => state.author);
   const [authorId, setAuthorId] = React.useState<(string | null)[]>([]);
   const isFirstRender = useRef(true);

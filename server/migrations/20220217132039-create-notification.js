@@ -17,11 +17,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      read: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
       commentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
       userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      replyUser: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

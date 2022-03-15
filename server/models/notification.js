@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Notification.belongsTo(models.User, { as: "user", foreignKey: "userId" });
+      Notification.belongsTo(models.User, {
+        as: "user",
+        foreignKey: "replyUser",
+      });
       Notification.belongsTo(models.Book, { as: "book", foreignKey: "bookId" });
       Notification.belongsTo(models.Comment, {
         as: "comment",
@@ -26,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       text: { type: DataTypes.STRING, allowNull: true },
       url: { type: DataTypes.STRING, allowNull: true },
+      read: { type: DataTypes.BOOLEAN, allowNull: false },
     },
     {
       sequelize,

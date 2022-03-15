@@ -53,6 +53,22 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          parrentId: 1,
+          text: "USER 3 answer",
+          userId: 3,
+          bookId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          parrentId: 1,
+          text: "USER 2 answer",
+          userId: 2,
+          bookId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
