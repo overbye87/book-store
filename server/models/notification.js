@@ -9,13 +9,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Notification.belongsTo(models.User, {
-        as: "user",
-        foreignKey: "replyUser",
+        as: "parentUser",
+        foreignKey: "parentUserId",
+      });
+      Notification.belongsTo(models.User, {
+        as: "replyUser",
+        foreignKey: "replyUserId",
       });
       Notification.belongsTo(models.Book, { as: "book", foreignKey: "bookId" });
+
       Notification.belongsTo(models.Comment, {
-        as: "comment",
-        foreignKey: "commentId",
+        as: "parentComment",
+        foreignKey: "parentCommentId",
+      });
+      Notification.belongsTo(models.Comment, {
+        as: "replyComment",
+        foreignKey: "replyCommentId",
       });
     }
   }
@@ -27,13 +36,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         foreignKey: true,
       },
-      text: { type: DataTypes.STRING, allowNull: true },
-      url: { type: DataTypes.STRING, allowNull: true },
       read: { type: DataTypes.BOOLEAN, allowNull: false },
 
-      userId: { type: DataTypes.INTEGER, allowNull: false },
-      // replyUser: { type: DataTypes.INTEGER, allowNull: false },
-      // bookId: { type: DataTypes.INTEGER, allowNull: false },
+      parentUserId: { type: DataTypes.INTEGER, allowNull: false },
+      replyUserId: { type: DataTypes.INTEGER, allowNull: false },
+      parentCommentId: { type: DataTypes.INTEGER, allowNull: false },
+      replyCommentId: { type: DataTypes.INTEGER, allowNull: false },
+      bookId: { type: DataTypes.INTEGER, allowNull: false },
     },
     {
       sequelize,

@@ -7,11 +7,12 @@ module.exports = (io, socket) => {
   //socket.on("message:remove", removeNotification);
 
   async function getNotifications() {
-    let notifications = await db.Notification.findAll({
+    const notifications = await db.Notification.findAll({
       where: {
-        userId: socket.userId,
+        parentUserId: socket.userId,
+        read: false,
       },
-      //include: ["user"],
+      include: ["parentUser", "replyUser"],
     });
     console.log("getNotifications", notifications);
   }

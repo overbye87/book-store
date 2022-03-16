@@ -9,31 +9,27 @@ module.exports = {
         foreignKey: true,
         type: Sequelize.INTEGER,
       },
-      text: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      url: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      bookId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       read: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-      commentId: {
+      parentCommentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      userId: {
+      parentUserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      replyUser: {
+      replyCommentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      bookId: {
+      replyUserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

@@ -21,13 +21,17 @@ const Notification = () => {
 
   interface INotification {
     id: number;
-    text: string;
-    url: string;
-    read: boolean;
     bookId: number;
-    userId: number;
-    commentId: number;
-    user: IUser;
+    read: boolean;
+
+    parentCommentId: number;
+    parentUserId: number;
+
+    replyCommentId: number;
+    replyUserId: number;
+
+    parentUser: IUser;
+    replyUser: IUser;
   }
   interface ISocket {
     current: WebSocket;
@@ -112,9 +116,9 @@ const Notification = () => {
           <div className="notification_item" key={notification.id}>
             <NavLink
               className="notification_item--link"
-              to={`book/${notification.bookId}?commentId=${notification.commentId}`}
+              to={`book/${notification.bookId}?commentId=${notification.replyCommentId}`}
             >
-              <b>{notification.user.name}</b> answered you
+              <b>{notification.replyUser.name}</b> answered you
             </NavLink>
           </div>
         ))}

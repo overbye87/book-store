@@ -43,7 +43,7 @@ class CommentController {
   }
 
   // ADD BOOK COMMENT
-  async addBookComment(req, res, next) {
+  async addBookComment(req, res, next, io) {
     console.log("addBookComment", req.body);
     //try {
     const { bookId, userId, text, parrentId } = req.body;
@@ -68,38 +68,33 @@ class CommentController {
       parrentId: parrentId === "" ? 0 : parrentId, // ид комаентаря
     });
 
-    const parrentComment = await db.Comment.findByPk(
-      parrentId ? parrentId : 0,
-      {
+    if (parrentId) {
+      var parrentComment = await db.Comment.findByPk(parrentId, {
         include: ["user"],
-      }
-    );
+      });
 
-    console.log("parrentComment.user.id", parrentComment?.user?.id);
+      const notification = await db.Notification.create({
+        bookId: Number(bookId),
+        read: false,
 
-    const not = {
-      bookId: Number(bookId),
-      userId: 1, //тот кому приходят уведомления
-      replyUser: 1, //тот кто ответил
-      read: false,
-      commentId: comment.id,
-    };
-    console.log("not", not);
+        parentUserId: parrentComment?.user?.id,
+        parentCommentId: parrentId,
 
-    const notification = await db.Notification.create(not);
+        replyUserId: userId,
+        replyCommentId: comment.id,
+      });
+    }
 
-    // if (parrentComment?.user?.id) {
-    //   const notification = await db.Notification.create({
-    //     bookId,
-    //     userId: parrentComment.user.id,
-    //     replyUser: userId === "" ? null : userId,
-    //     read: false,
-    //     commentId: comment.id,
-    //   });
-    // }
+    const notifications = await db.Notification.findAll({
+      where: {
+        parentUserId: parrentComment?.user?.id,
+        read: false,
+      },
+      include: ["parentUser", "replyUser"],
+    });
 
-    // console.log("notification", notification);
-    //console.log(comment);
+    console.log(parrentComment?.user?.id);
+    io.in(`${parrentComment?.user?.id}`).emit("notifications", notifications);
 
     return res.json({
       status: true,

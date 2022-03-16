@@ -18,18 +18,16 @@ const { createServer } = require("http");
 const httpServer = createServer(app);
 
 const PORT = process.env.PORT || 4000;
-//const WSPORT = 5000;
 
 //WebSocket server
 //--- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
   },
 });
-
+//global._io = io;
 const onConnection = async (socket) => {
   // get userId from handshake
   const { userId } = socket.handshake.query;
@@ -40,13 +38,15 @@ const onConnection = async (socket) => {
   // send back userId to check connection
   io.in(socket.userId).emit("connected", userId);
 
-  // get
-  let notifications = await db.Notification.findAll({
+  // get all notifications from db
+  const notifications = await db.Notification.findAll({
     where: {
-      userId: socket.userId,
+      parentUserId: socket.userId,
+      read: false,
     },
-    include: ["user"],
+    include: ["parentUser", "replyUser"],
   });
+  //send all notifications
   io.in(socket.userId).emit("notifications", notifications);
 
   // регистрируем обработчики
@@ -63,15 +63,13 @@ const onConnection = async (socket) => {
 };
 
 io.on("connection", onConnection);
-//io.listen(WSPORT);
-
 //--- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "static")));
 app.use(fileUpload({}));
-app.use("/api", router);
+app.use("/api", router(io));
 
 app.use(errorHandler);
 

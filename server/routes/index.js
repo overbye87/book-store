@@ -8,6 +8,9 @@ const genreRouter = require("./genreRouter");
 router.use("/user", userRouter);
 router.use("/author", authorRouter);
 router.use("/genre", genreRouter);
-router.use("/book", bookRouter);
 
-module.exports = router;
+module.exports = (io) => {
+  router.use("/book", bookRouter(io));
+
+  return router;
+};
