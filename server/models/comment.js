@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Comment.belongsTo(models.User, { as: "user", foreignKey: "userId" });
       Comment.belongsTo(models.Book, { as: "book", foreignKey: "bookId" });
+      Comment.belongsTo(models.Comment, {
+        as: "parrent",
+        foreignKey: "parrentId",
+      });
     }
   }
   Comment.init(

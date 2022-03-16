@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       text: { type: DataTypes.STRING, allowNull: true },
       url: { type: DataTypes.STRING, allowNull: true },
       read: { type: DataTypes.BOOLEAN, allowNull: false },
+
+      userId: { type: DataTypes.INTEGER, allowNull: false },
+      // replyUser: { type: DataTypes.INTEGER, allowNull: false },
+      // bookId: { type: DataTypes.INTEGER, allowNull: false },
     },
     {
       sequelize,

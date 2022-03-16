@@ -13,7 +13,7 @@ module.exports = (io, socket) => {
       },
       //include: ["user"],
     });
-    console.log(notifications);
+    console.log("getNotifications", notifications);
   }
 
   async function addNotification(message) {

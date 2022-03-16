@@ -24,7 +24,7 @@ class CommentController {
         where: {
           bookId,
         },
-        include: ["user"],
+        include: ["user", "parrent"],
       });
 
       comments = comments.map((item) => {
@@ -45,39 +45,70 @@ class CommentController {
   // ADD BOOK COMMENT
   async addBookComment(req, res, next) {
     console.log("addBookComment", req.body);
-    try {
-      const { bookId, userId, text, parrentId } = req.body;
+    //try {
+    const { bookId, userId, text, parrentId } = req.body;
 
-      if (!bookId) {
-        return res.json({
-          status: false,
-          message: "no book id",
-        });
-      }
-
-      if (!text) {
-        return res.json({
-          status: false,
-          message: "no text",
-        });
-      }
-      const comment = await db.Comment.create({
-        bookId,
-        userId: userId === "" ? null : userId,
-        text,
-        parrentId: parrentId === "" ? 0 : parrentId,
-      });
-
-      console.log(comment);
-
+    if (!bookId) {
       return res.json({
-        status: true,
-        message: "comment create successfully",
-        comment,
+        status: false,
+        message: "no book id",
       });
-    } catch (e) {
-      next(ApiError.badRequest(e.message));
     }
+
+    if (!text) {
+      return res.json({
+        status: false,
+        message: "no text",
+      });
+    }
+    const comment = await db.Comment.create({
+      bookId,
+      userId: userId === "" ? null : userId, // тот кто создал
+      text,
+      parrentId: parrentId === "" ? 0 : parrentId, // ид комаентаря
+    });
+
+    const parrentComment = await db.Comment.findByPk(
+      parrentId ? parrentId : 0,
+      {
+        include: ["user"],
+      }
+    );
+
+    console.log("parrentComment.user.id", parrentComment?.user?.id);
+
+    const not = {
+      bookId: Number(bookId),
+      userId: 1, //тот кому приходят уведомления
+      replyUser: 1, //тот кто ответил
+      read: false,
+      commentId: comment.id,
+    };
+    console.log("not", not);
+
+    const notification = await db.Notification.create(not);
+
+    // if (parrentComment?.user?.id) {
+    //   const notification = await db.Notification.create({
+    //     bookId,
+    //     userId: parrentComment.user.id,
+    //     replyUser: userId === "" ? null : userId,
+    //     read: false,
+    //     commentId: comment.id,
+    //   });
+    // }
+
+    // console.log("notification", notification);
+    //console.log(comment);
+
+    return res.json({
+      status: true,
+      message: "comment create successfully",
+      comment,
+    });
+    //} catch (e) {
+    //next(ApiError.badRequest(e.message));
+    //}
   }
 
   // REMOVE BOOK COMMENT
