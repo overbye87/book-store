@@ -10,11 +10,9 @@ import { NavLink } from "react-router-dom";
 import { IUser } from "../types/users";
 
 const Notification = () => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const [hide, setHide] = useState(true);
   const [alert, setAlert] = useState(false);
-  const [value, setValue] = useState("");
   const [connacted, setConnacted] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
   const socketRef = useRef<any>(null);
@@ -33,17 +31,6 @@ const Notification = () => {
     parentUser: IUser;
     replyUser: IUser;
   }
-  interface ISocket {
-    current: WebSocket;
-  }
-
-  interface IMessage {
-    id: number;
-    username: string;
-    text: string;
-    event: string;
-  }
-  const socket = useRef<any>();
 
   useEffect(() => {
     if (user) {
@@ -54,38 +41,61 @@ const Notification = () => {
       socketRef.current.on("connected", (message: any) => {
         setConnacted(user.id == message);
       });
-      socketRef.current.on("notifications", (message: any) => {
-        console.log(message);
-        setNotifications(message);
-      });
 
-      socketRef.current.on("message", (message: any) => {
-        //console.log(message);
-        setMessages((previous) => [message, ...previous]);
-        if (hide) {
-          setAlert(true);
+      // EVENT GET ALL
+      socketRef.current.on(
+        "notifications",
+        (notificationsArray: INotification[]) => {
+          console.log(notificationsArray);
+          setNotifications(notificationsArray);
+          notificationsArray.length === 0 ? setAlert(false) : setAlert(true);
         }
-      });
+      );
+
+      // EVENT REMOVE:RESULT
+      interface IMessageRemove {
+        status: boolean;
+        id: number;
+      }
+      socketRef.current.on(
+        "notification:remove:result",
+        (messageRemove: IMessageRemove) => {
+          console.log(messageRemove);
+          if (messageRemove.status) {
+            setNotifications((previous) => {
+              const notificationsArray = previous.filter(
+                (notification) => notification.id != messageRemove.id
+              );
+              notificationsArray.length === 0
+                ? setAlert(false)
+                : setAlert(true);
+              return notificationsArray;
+            });
+          }
+        }
+      );
+
+      // socketRef.current.on("message", (message: any) => {
+      //   //console.log(message);
+      //   setMessages((previous) => [message, ...previous]);
+      //   if (hide) {
+      //     setAlert(true);
+      //   }
+      // });
     }
   }, []);
 
-  const sendMessage = () => {
-    const message = {
-      username: user?.name,
-      text: value,
-      id: Date.now(),
-    };
-    socketRef.current.emit("message:add", message);
-    //socketRef.current.send(JSON.stringify(message));
-    setValue("");
+  const showHide = () => {
+    console.log("ShowHide");
+    setHide(!hide);
   };
 
-  const showHide = () => {
-    console.log("SH");
-    if (hide) {
-      setAlert(false);
-    }
-    setHide(!hide);
+  const onClick = (notificationId: number) => {
+    //console.log(notificationId);
+    const notifi = {
+      notificationId,
+    };
+    socketRef.current.emit("notification:remove", notifi);
   };
 
   return (
@@ -115,10 +125,14 @@ const Notification = () => {
         {notifications.map((notification: INotification) => (
           <div className="notification_item" key={notification.id}>
             <NavLink
+              onClick={() => {
+                onClick(notification.id);
+              }}
               className="notification_item--link"
               to={`book/${notification.bookId}?commentId=${notification.replyCommentId}`}
             >
-              <b>{notification.replyUser.name}</b> answered you
+              {notification.id} <b>{notification.replyUser.name}</b> answered
+              you
             </NavLink>
           </div>
         ))}
