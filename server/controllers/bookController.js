@@ -39,11 +39,11 @@ class BookController {
       page = page || 1;
       limit = limit || 6;
       let offset = page * limit - limit;
-      console.log("Query:", req.query);
+      console.log("Book list filter query:", req.query);
       const where = {};
 
       if (minp && maxp) {
-        console.log(maxp);
+        //console.log(maxp);
         where.price = { [Op.between]: [Number(minp), Number(maxp)] };
       }
 

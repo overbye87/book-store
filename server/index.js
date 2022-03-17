@@ -24,18 +24,18 @@ const PORT = process.env.PORT || 4000;
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: "*", // F*** CORS
   },
 });
 //global._io = io;
 const onConnection = async (socket) => {
   // get userId from handshake
   const { userId } = socket.handshake.query;
-  console.log("User connected userId:", userId);
+  console.log("WS User connected userId:", userId);
   socket.userId = userId;
   socket.join(userId);
 
-  // send back userId to check connection
+  // EVENT CONNECTED (send back userId to check connection)
   io.in(socket.userId).emit("connected", userId);
 
   // get all notifications from db
@@ -46,19 +46,17 @@ const onConnection = async (socket) => {
     },
     include: ["parentUser", "replyUser"],
   });
-  //send all notifications
+
+  // EVENT NOTIFICATIONS (send all notifications)
   io.in(socket.userId).emit("notifications", notifications);
 
-  // регистрируем обработчики
+  //HANDLERS
   registerNotificationHandlers(io, socket);
-  //registerUserHandlers(io, socket);
 
-  // обрабатываем отключение сокета-пользователя
+  // LISTENER DISCONNECTED
   socket.on("disconnect", () => {
-    // выводим сообщение
-    console.log("User disconnected");
-    // покидаем комнату
-    //socket.leave(roomId);
+    console.log("WS User disconnected userId:", userId);
+    socket.leave(userId);
   });
 };
 
@@ -86,45 +84,3 @@ const start = async () => {
 };
 
 start();
-
-//const ws = require("ws");
-// //const wsserver = new ws.Server({ port: WSPORT }, () => {
-//   console.log(`WebSocket server started on port ${WSPORT}...`);
-// });
-// let ID = 0;
-// io.on("connection", (socket) => {
-//   socket.on("message", (message) => {
-//     message = JSON.parse(message);
-//     switch (message.event) {
-//       case "message":
-//         broadcast(message);
-//         break;
-//       case "connection":
-//         socket.id = message.user.id;
-//         //socket.send("Сonnection established...");
-//         console.log("connection");
-//         console.log("user ID =", message.user.id);
-//         socket.id = message.user.id;
-//         console.log("SOCKET:", socket.id);
-//         //console.log(socket);
-//         break;
-//       case "getall":
-//         socket.send(JSON.stringify(wss.clients));
-//         break;
-//     }
-//   });
-// });
-
-// const broadcast = (message) => {
-//   wsserver.clients.forEach((client) => {
-//     client.send(JSON.stringify(message));
-//   });
-// };
-
-// const unicast = (message, id) => {
-//   wsserver.clients.forEach((client) => {
-//     if (client.id === id) {
-//       client.send(JSON.stringify(message));
-//     }
-//   });
-// };

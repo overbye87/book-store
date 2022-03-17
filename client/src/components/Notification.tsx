@@ -72,6 +72,10 @@ const Notification = () => {
         }
       );
     }
+    return () => {
+      // unmounting component - disconnect the socket
+      socketRef.current.disconnect();
+    };
   }, [user]);
 
   const showHide = () => {
