@@ -19,6 +19,7 @@ interface Props {
   replyComment: null | IComment;
   onClickRemoveReply: () => void;
   bookId: number;
+  textareaRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const CommentAddForm: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const CommentAddForm: React.FC<Props> = ({
   replyComment,
   onClickRemoveReply,
   bookId,
+  textareaRef,
 }) => {
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const {
@@ -55,7 +57,7 @@ const CommentAddForm: React.FC<Props> = ({
   };
 
   return (
-    <Div>
+    <Div ref={textareaRef}>
       {" "}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Add comment:</h3>

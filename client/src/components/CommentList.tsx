@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -31,6 +31,8 @@ export interface IObjParrents {
 }
 
 const CommentList = () => {
+  const textareaRef = useRef<HTMLDivElement>(null);
+
   const { user } = useSelector((state: RootState) => state.user);
   //comment with user include for reply
   const [replyComment, setReplyComment] = useState<null | IComment>(null);
@@ -92,12 +94,13 @@ const CommentList = () => {
         <div>
           {objParrents[0]?.map((comment) => (
             <CommentItem
-              key={comment.id}
+              key={`comment${comment.id}`}
               comment={comment}
               getAllBookComments={getAllBookComments}
               objParrents={objParrents}
               loginUser={user}
               onClickReply={onClickReply}
+              textareaRef={textareaRef}
             />
           ))}
         </div>
@@ -106,6 +109,7 @@ const CommentList = () => {
           replyComment={replyComment}
           onClickRemoveReply={onClickRemoveReply}
           bookId={Number(params.id)}
+          textareaRef={textareaRef}
         />
       </Div>
     );

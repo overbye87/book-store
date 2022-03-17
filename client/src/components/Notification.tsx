@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Socket } from "socket.io";
 import styled from "styled-components";
-import { WebsocketBuilder } from "websocket-ts/lib";
 import { RootState } from "../store/redusers";
-//import {  Socket } from "socket.io-client";
 import io from "socket.io-client";
 import { NavLink } from "react-router-dom";
 import { IUser } from "../types/users";
@@ -34,19 +31,19 @@ const Notification = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("useEffect[]");
+      console.log(`useEffect[${user.name}]`);
       socketRef.current = io("ws://localhost:4000", {
         query: { userId: user.id },
       });
       socketRef.current.on("connected", (message: any) => {
-        setConnacted(user.id == message);
+        setConnacted(user.id === message);
       });
 
       // EVENT GET ALL
       socketRef.current.on(
         "notifications",
         (notificationsArray: INotification[]) => {
-          console.log(notificationsArray);
+          console.log("Notifications received:", notificationsArray);
           setNotifications(notificationsArray);
           notificationsArray.length === 0 ? setAlert(false) : setAlert(true);
         }
@@ -60,11 +57,11 @@ const Notification = () => {
       socketRef.current.on(
         "notification:remove:result",
         (messageRemove: IMessageRemove) => {
-          console.log(messageRemove);
+          console.log("Received answer of removing:", messageRemove);
           if (messageRemove.status) {
             setNotifications((previous) => {
               const notificationsArray = previous.filter(
-                (notification) => notification.id != messageRemove.id
+                (notification) => notification.id !== messageRemove.id
               );
               notificationsArray.length === 0
                 ? setAlert(false)
@@ -74,24 +71,16 @@ const Notification = () => {
           }
         }
       );
-
-      // socketRef.current.on("message", (message: any) => {
-      //   //console.log(message);
-      //   setMessages((previous) => [message, ...previous]);
-      //   if (hide) {
-      //     setAlert(true);
-      //   }
-      // });
     }
-  }, []);
+  }, [user]);
 
   const showHide = () => {
-    console.log("ShowHide");
+    console.log("Show/Hide notifi list");
     setHide(!hide);
   };
 
   const onClick = (notificationId: number) => {
-    //console.log(notificationId);
+    console.log("Send event notification remove:", notificationId);
     const notifi = {
       notificationId,
     };
@@ -99,8 +88,7 @@ const Notification = () => {
   };
 
   return (
-    <Notification__container>
-      <a></a>
+    <NotificationContainer>
       <button
         className={alert ? "icon icon--alert" : "icon"}
         onClick={showHide}
@@ -137,18 +125,13 @@ const Notification = () => {
           </div>
         ))}
       </div>
-    </Notification__container>
+    </NotificationContainer>
   );
 };
 
-interface IMessage {
-  id: number;
-  message: string;
-}
-
 export default Notification;
 
-const Notification__container = styled.div`
+const NotificationContainer = styled.div`
   display: inline;
   //position: relative;
   .icon {

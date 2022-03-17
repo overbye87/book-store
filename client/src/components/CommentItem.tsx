@@ -1,13 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import { BOOK_ROUTE } from "../constants";
-import { IBook } from "../types/books";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { IUser } from "../types/users";
 import { deleteComment } from "../http/commentAPI";
 import { IComment, IObjParrents } from "./CommentList";
-import { userInfo } from "os";
 
 interface Props {
   comment: IComment;
@@ -15,6 +11,7 @@ interface Props {
   objParrents: IObjParrents;
   loginUser: null | IUser;
   onClickReply: (comment: IComment) => void;
+  textareaRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const CommentItem: React.FC<Props> = ({
@@ -23,6 +20,7 @@ const CommentItem: React.FC<Props> = ({
   objParrents,
   loginUser,
   onClickReply,
+  textareaRef,
 }) => {
   let navigate = useNavigate();
   const commentRef = useRef<HTMLDivElement>(null);
@@ -52,7 +50,7 @@ const CommentItem: React.FC<Props> = ({
   };
   useEffect(() => {
     const commentId = searchParams.get("commentId");
-    console.log(searchParams.get("commentId"));
+    //console.log(searchParams.get("commentId"));
 
     if (commentId && +commentId === comment.id) {
       commentRef?.current?.scrollIntoView();
@@ -75,15 +73,16 @@ const CommentItem: React.FC<Props> = ({
               onClick={() => {
                 onClickReply(comment);
                 console.log(comment);
-                let scrollHeight = Math.max(
-                  document.body.scrollHeight,
-                  document.documentElement.scrollHeight,
-                  document.body.offsetHeight,
-                  document.documentElement.offsetHeight,
-                  document.body.clientHeight,
-                  document.documentElement.clientHeight
-                );
-                window.scrollBy(0, scrollHeight);
+                // let scrollHeight = Math.max(
+                //   document.body.scrollHeight,
+                //   document.documentElement.scrollHeight,
+                //   document.body.offsetHeight,
+                //   document.documentElement.offsetHeight,
+                //   document.body.clientHeight,
+                //   document.documentElement.clientHeight
+                // );
+                // window.scrollBy(0, scrollHeight);
+                textareaRef?.current?.scrollIntoView();
               }}
             >
               Reply
@@ -91,18 +90,16 @@ const CommentItem: React.FC<Props> = ({
             <div className="emptiness"></div>
             <div className="date">{getDataString(comment.createdAt)}</div>
 
-            <button
-              className={
-                comment.userId == loginUser?.id
-                  ? "delete"
-                  : "delete delete--hide"
-              }
-              onClick={() => {
-                onClickDelete(comment.id);
-              }}
-            >
-              X
-            </button>
+            {comment.userId == loginUser?.id ? (
+              <button
+                className="delete"
+                onClick={() => {
+                  onClickDelete(comment.id);
+                }}
+              >
+                X
+              </button>
+            ) : null}
           </div>
           <div className="id">ParrentID:{comment.parrentId}</div>
           <div className="commentid">{comment.id}</div>
@@ -110,15 +107,15 @@ const CommentItem: React.FC<Props> = ({
         </div>
       </div>
       <div className="children">
-        {objParrents[comment.id]?.map((comment: any) => (
-          <div>
+        {objParrents[comment.id]?.map((commentItem) => (
+          <div key={`comment${commentItem.id}`}>
             <CommentItem
-              key={comment.id}
-              comment={comment}
+              comment={commentItem}
               getAllBookComments={getAllBookComments}
               objParrents={objParrents}
               loginUser={loginUser}
               onClickReply={onClickReply}
+              textareaRef={textareaRef}
             />
           </div>
         ))}
