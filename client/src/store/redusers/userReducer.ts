@@ -15,6 +15,12 @@ export const userReducer = (
       return { ...state, isAuth: action.payload };
     case UserActionTypes.SET_USER:
       return { ...state, user: action.payload };
+    case UserActionTypes.SET_ISAUTHANDUSER:
+      return {
+        ...state,
+        isAuth: action.payload.isAuth,
+        user: action.payload.user,
+      };
     default:
       return state;
   }

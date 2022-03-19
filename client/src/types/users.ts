@@ -1,6 +1,7 @@
 export enum UserActionTypes {
   SET_ISAUTH = "SET_ISAUTH",
   SET_USER = "SET_USER",
+  SET_ISAUTHANDUSER = "SET_ISAUTHANDUSER",
 }
 
 interface ISetIsAuthAction {
@@ -13,7 +14,15 @@ interface ISetUserAction {
   payload: IUser;
 }
 
-export type UserAction = ISetIsAuthAction | ISetUserAction;
+interface ISetIsAuthAndUserAction {
+  type: UserActionTypes.SET_ISAUTHANDUSER;
+  payload: { isAuth: boolean; user: IUser };
+}
+
+export type UserAction =
+  | ISetIsAuthAction
+  | ISetUserAction
+  | ISetIsAuthAndUserAction;
 
 export interface IUser {
   id: number;

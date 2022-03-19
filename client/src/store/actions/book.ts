@@ -9,9 +9,6 @@ export const fetchBooks = (searchParams: URLSearchParams) => {
       // set state.book.loading to true
       dispatch({ type: BookActionTypes.FETCH_BOOKS });
       // start fetch
-      //console.log(Object.fromEntries(searchParams));
-      let url = "api/book/?" + searchParams.toString();
-
       const response = await $host.get("api/book", {
         params: Object.fromEntries(searchParams),
       });

@@ -30,3 +30,7 @@ export const setSelectedAuthors = (id: number) => {
     });
   };
 };
+
+export const setSelectedAuthors2 = (id: number) => {
+  return { type: AuthorActionTypes.SET_SELECTED_AUTHORS, payload: id };
+};

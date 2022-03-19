@@ -1,3 +1,6 @@
+import { IAuthor } from "./authors";
+import { IGenre } from "./genres";
+
 export type IComment = {
   id: number;
   text: string;
@@ -6,18 +9,25 @@ export type IComment = {
   parrentId: number;
 };
 
+export type IRating = {
+  id: number;
+  rate: number;
+  bookId: number;
+  userId: number;
+};
+
 export type IBook = {
   id: number;
   name: string;
   price: number;
   description: string;
   img: string;
-  rating: any[];
+  rating: IRating[];
   comment: IComment[];
   authorId: number;
   genreId: number;
-  author: { id: number; name: string };
-  genre: { id: number; name: string };
+  author: IAuthor;
+  genre: IGenre;
 };
 
 export enum BookActionTypes {
@@ -30,9 +40,16 @@ interface IFetchBooksAction {
   type: BookActionTypes.FETCH_BOOKS;
 }
 
+interface IBookResponse {
+  rows: IBook[];
+  count: number;
+  page: number;
+  limit: number;
+}
+
 interface IFetchBooksSuccessAction {
   type: BookActionTypes.FETCH_BOOKS_SUCCESS;
-  payload: { rows: any[]; count: number; page: number; limit: number };
+  payload: IBookResponse;
 }
 
 interface IFetchBooksErrorAction {
@@ -46,7 +63,7 @@ export type BookAction =
   | IFetchBooksErrorAction;
 
 export interface IBookState {
-  books: null | { rows: any[]; count: number; page: number; limit: number };
+  books: null | IBookResponse;
   loading: boolean;
   error: null | string | object;
 }

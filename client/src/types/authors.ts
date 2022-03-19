@@ -20,7 +20,7 @@ interface IFetchAuthorsAction {
 }
 interface IFetchAuthorsSuccessAction {
   type: AuthorActionTypes.FETCH_AUTHORS_SUCCESS;
-  payload: any[];
+  payload: IAuthor[];
 }
 interface IFetchAuthorsErrorAction {
   type: AuthorActionTypes.FETCH_AUTHORS_ERROR;

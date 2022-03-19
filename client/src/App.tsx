@@ -4,7 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import { useTypedSelector } from "./hooks/useTypedSelector";
 import { check } from "./http/userAPI";
-import { setIsAuthAction, setUserAction } from "./store/actions/user";
+import {
+  setIsAuthAction,
+  setIsAuthAndUserAction,
+  setUserAction,
+} from "./store/actions/user";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -13,8 +17,7 @@ const App = () => {
   useEffect(() => {
     check() //load user
       .then((user) => {
-        dispatch(setIsAuthAction(true));
-        dispatch(setUserAction(user));
+        dispatch(setIsAuthAndUserAction(true, user));
       })
       .finally(() => setLoading(false));
   }, []);
