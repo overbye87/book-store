@@ -21,6 +21,10 @@ interface Props {
   bookId: number;
   textareaRef: React.MutableRefObject<HTMLDivElement | null>;
 }
+interface IMessage {
+  error: boolean;
+  message: string;
+}
 
 const CommentAddForm: React.FC<Props> = ({
   getAllBookComments,
@@ -29,6 +33,10 @@ const CommentAddForm: React.FC<Props> = ({
   bookId,
   textareaRef,
 }) => {
+  const [message, setMessage] = useState<IMessage>({
+    error: false,
+    message: "",
+  });
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const {
     register,
@@ -41,18 +49,18 @@ const CommentAddForm: React.FC<Props> = ({
   const onSubmit: SubmitHandler<PasswordChangeInputs> = async (data) => {
     try {
       const { text } = data;
-      //console.log(text);
-      //if (replyComment) {
       const userId = user ? user.id : null;
       const parentId = replyComment?.id ? replyComment.id : 0;
       console.log(bookId, userId, text, parentId);
       const responseUser = await createComment(bookId, userId, text, parentId);
       reset();
       await getAllBookComments();
-      //alert("Comment add successfuly");
-      //}
+      setMessage({ error: false, message: "Comment add successfuly" });
+      setTimeout(() => {
+        setMessage({ error: false, message: "" });
+      }, 3000);
     } catch (error: any) {
-      alert(error.response.data.message);
+      setMessage({ error: true, message: `${error.response.data.message}` });
     }
   };
 
@@ -60,6 +68,9 @@ const CommentAddForm: React.FC<Props> = ({
     <Div ref={textareaRef}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Add comment:</h3>
+        <p className={message.error ? "info info--error" : "info"}>
+          {message.message}
+        </p>
         <label>Message: </label>
         {replyComment ? (
           <span className="reply">
@@ -94,6 +105,15 @@ const Div = styled.div`
     font-size: 1.5em;
     color: gray;
     //color: palevioletred;
+  }
+  .info {
+    margin: 0;
+    font-size: 1.5em;
+    color: darkgreen;
+
+    &--error {
+      color: darkred;
+    }
   }
   form {
     display: flex;

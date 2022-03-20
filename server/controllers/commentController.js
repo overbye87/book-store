@@ -67,7 +67,7 @@ class CommentController {
         bookId,
         userId: userId === "" || userId === null ? null : userId, // id user who created comment
         text,
-        parentId: parentId === "" || userId === null ? 0 : parentId, // parent comment id - becomes 0 if root comment
+        parentId: parentId === "" || parentId === null ? 0 : parentId, // parent comment id - becomes 0 if root comment
       });
 
       if (parentId) {
