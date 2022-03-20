@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { RootState } from "../store/redusers";
 import io from "socket.io-client";
 import { NavLink } from "react-router-dom";
-import { IUser } from "../types/users";
+import { IMessageRemove, INotification } from "../types/notifications";
 
 const Notification = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
@@ -13,21 +13,6 @@ const Notification = () => {
   const [connacted, setConnacted] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
   const socketRef = useRef<any>(null);
-
-  interface INotification {
-    id: number;
-    bookId: number;
-    read: boolean;
-
-    parentCommentId: number;
-    parentUserId: number;
-
-    replyCommentId: number;
-    replyUserId: number;
-
-    parentUser: IUser;
-    replyUser: IUser;
-  }
 
   useEffect(() => {
     if (user) {
@@ -50,10 +35,7 @@ const Notification = () => {
       );
 
       // EVENT REMOVE:RESULT
-      interface IMessageRemove {
-        status: boolean;
-        id: number;
-      }
+
       socketRef.current.on(
         "notification:remove:result",
         (messageRemove: IMessageRemove) => {
@@ -99,21 +81,12 @@ const Notification = () => {
       >
         !
       </button>
-
       <div className={hide ? "list list--hide" : "list"}>
         {connacted ? (
           <p className="info">Connected to server</p>
         ) : (
           <p className="info info--warning">Not connected to server</p>
         )}
-        {/* <input
-          type="text"
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-        ></input> */}
-        {/* <button onClick={sendMessage}>Send</button> */}
         {notifications.map((notification: INotification) => (
           <div className="notification_item" key={notification.id}>
             <NavLink

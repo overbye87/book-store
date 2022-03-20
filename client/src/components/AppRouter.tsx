@@ -5,7 +5,7 @@ import Auth from "../pages/Auth";
 import Basket from "../pages/Basket";
 import BookPage from "../pages/BookPage";
 import Shop from "../pages/Shop";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 import {
   ADMIN_ROUTE,
@@ -77,8 +77,12 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 
 export default AppRouter;
 
-document.body.style.margin = "0";
-document.body.style.overflowY = "scroll";
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    overflow-y: scroll;
+  }
+`;
 
 const Div = styled.div`
   width: 1150px;

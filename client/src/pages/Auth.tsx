@@ -5,7 +5,11 @@ import styled from "styled-components";
 import { login, registration } from "../http/userAPI";
 import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAuthAction, setUserAction } from "../store/actions/user";
+import {
+  setIsAuthAction,
+  setIsAuthAndUserAction,
+  setUserAction,
+} from "../store/actions/user";
 import { RootState } from "../store/redusers";
 
 type Inputs = {
@@ -31,15 +35,13 @@ const Auth = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const { email, password, name } = data;
+      let responseUser = null;
       if (isLogin) {
-        var responseUser = await login(email, password);
+        responseUser = await login(email, password);
       } else {
-        var responseUser = await registration(email, password, name);
+        responseUser = await registration(email, password, name);
       }
-      console.log(localStorage.getItem("accessToken"));
-      console.log(responseUser);
-      dispatch(setUserAction(responseUser));
-      dispatch(setIsAuthAction(true));
+      dispatch(setIsAuthAndUserAction(true, responseUser));
       setTimeout(() => {
         navigate(-1);
         //navigate(SHOP_ROUTE, { replace: false });

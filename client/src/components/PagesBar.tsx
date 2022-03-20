@@ -11,11 +11,14 @@ const Pages: React.FC = () => {
     (state: RootState) => state.book
   );
 
+  const count = books ? Math.ceil(books.count / books.limit) : 0;
+  const page = Number(searchParams.get("page")) || 1;
+
   return (
     <Div>
       <Pagination
-        count={books ? Math.ceil(books.count / books.limit) : 0}
-        page={Number(searchParams.get("page")) || 1}
+        count={count}
+        page={page}
         onChange={(e, value) => {
           //set page to URL first
           searchParams.set("page", String(value));

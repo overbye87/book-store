@@ -144,38 +144,41 @@ class UserController {
   // --- UPDATE USER INFORMATION --- --- ---
   async updateUser(req, res) {
     try {
-      //file upload
-      let img = "";
-      const { file } = req.files;
-      console.log("Update file:", file);
-      let fileName = "user_avatar_" + uuid.v4() + ".jpg";
-      file.mv(path.resolve(__dirname, "..", "static", fileName));
-
       //getting user.id from middleware injection
       const { id, email } = req.user;
-      console.log(id, email);
-
       //getting new user data from request body
       const { name } = req.body;
+      console.log("updateUser", req.body);
 
-      console.log(req.body);
+      // find user by email
       const user = await db.User.findOne({ where: { email: email } });
-
       if (!user) {
         return res.status(400).json({
           status: false,
           message: `Can not get user with email:${email}`,
         });
       }
-      // ok - update ) may be
-      console.log(img);
-      const status = await db.User.update(
-        {
-          name,
-          img: fileName,
-        },
-        { where: { email: email } }
-      );
+
+      // ok - update ) may be - let's start preparing the update user object
+      let updateUserObj = {
+        name,
+      };
+
+      // is in req files a file?
+      let fileName = "";
+      const file = req.files?.file;
+      if (file) {
+        console.log("Update file:", file);
+        fileName = "user_avatar_" + uuid.v4() + ".jpg";
+        file.mv(path.resolve(__dirname, "..", "static", fileName));
+        //add to update user object filename
+        updateUserObj.img = fileName;
+      }
+
+      const status = await db.User.update(updateUserObj, {
+        where: { email: email },
+      });
+
       // get this updated user for response and new token generation
       const updatedUser = await db.User.findOne({ where: { email: email } });
       delete updatedUser.password;

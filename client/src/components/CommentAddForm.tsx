@@ -48,7 +48,7 @@ const CommentAddForm: React.FC<Props> = ({
       console.log(bookId, userId, text, parentId);
       const responseUser = await createComment(bookId, userId, text, parentId);
       reset();
-      getAllBookComments();
+      await getAllBookComments();
       //alert("Comment add successfuly");
       //}
     } catch (error: any) {
@@ -58,32 +58,24 @@ const CommentAddForm: React.FC<Props> = ({
 
   return (
     <Div ref={textareaRef}>
-      {" "}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Add comment:</h3>
         <label>Message: </label>
         {replyComment ? (
           <span className="reply">
             Reply for: <b>{replyComment.user.name}</b>{" "}
-            <button
-              className={"remove"}
-              onClick={() => {
-                onClickRemoveReply();
-              }}
-            >
+            <button className="remove" onClick={onClickRemoveReply}>
               remove
             </button>
           </span>
-        ) : (
-          <span></span>
-        )}
+        ) : null}
 
         <textarea
           {...register("text", {
             required: "Comment message can not be empty",
           })}
         ></textarea>
-        <input type="submit" value={"Add"}></input>
+        <input type="submit" value="Add"></input>
       </form>
     </Div>
   );

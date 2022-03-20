@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { DEFAULT_AVATAR_FILENAME, DEFAULT_AVATAR_URL } from "../constants";
 import { updateUser } from "../http/userAPI";
 import { setUserAction } from "../store/actions/user";
 import { RootState } from "../store/redusers";
@@ -9,7 +10,16 @@ interface DataChangeInputs {
   files: FileList;
 }
 
+interface IMessage {
+  error: boolean;
+  message: string;
+}
+
 const UserDataChange = () => {
+  const [message, setMessage] = useState<IMessage>({
+    error: false,
+    message: "",
+  });
   const dispatch = useDispatch();
   const { isAuth, user } = useSelector((state: RootState) => state.user);
   const {
@@ -28,9 +38,9 @@ const UserDataChange = () => {
       dispatch(setUserAction(responseUser));
       console.log(files[0]);
       //resetData();
-      alert("Data changed successfully");
+      setMessage({ error: false, message: "Data changed successfully" });
     } catch (error: any) {
-      alert(error.response.data.message);
+      setMessage({ error: true, message: `${error.response.data.message}` });
     }
   };
   return (
@@ -51,11 +61,14 @@ const UserDataChange = () => {
             user
               ? user.img
                 ? process.env.REACT_APP_API_URL + user.img
-                : process.env.REACT_APP_API_URL + "avatar.png"
+                : DEFAULT_AVATAR_URL
               : ""
           }
         ></img>
         <input {...registerData("files")} type="file" />
+        <p className={message.error ? "info info--error" : "info"}>
+          {message.message}
+        </p>
         <input type="submit" value={"change"}></input>
       </form>
     </div>

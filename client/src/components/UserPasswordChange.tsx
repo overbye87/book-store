@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { updatePassword } from "../http/userAPI";
 interface PasswordChangeInputs {
@@ -6,7 +6,16 @@ interface PasswordChangeInputs {
   newPassword: string;
 }
 
+interface IMessage {
+  error: boolean;
+  message: string;
+}
+
 const UserPasswordChange = () => {
+  const [message, setMessage] = useState<IMessage>({
+    error: false,
+    message: "",
+  });
   const {
     register: registerPassword,
     handleSubmit: handleSubmitPassword,
@@ -22,9 +31,9 @@ const UserPasswordChange = () => {
       const { oldPassword, newPassword } = data;
       const responseUser = await updatePassword(oldPassword, newPassword);
       resetPassword();
-      alert("Password changed successfully");
+      setMessage({ error: false, message: "Password changed successfully" });
     } catch (error: any) {
-      alert(error.response.data.message);
+      setMessage({ error: true, message: `${error.response.data.message}` });
     }
   };
   return (
@@ -45,6 +54,9 @@ const UserPasswordChange = () => {
             required: 'Field "new password" cannot be empty',
           })}
         ></input>
+        <p className={message.error ? "info info--error" : "info"}>
+          {message.message}
+        </p>
         <input type="submit" value={"change"}></input>
       </form>
     </div>

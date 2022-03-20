@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import styled from "styled-components";
-import { IBook } from "../types/books";
+import { IBook, IRating } from "../types/books";
 import { updateBookRating } from "../http/bookAPI";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/redusers";
@@ -50,6 +50,14 @@ const TabCover: React.FC<Props> = ({ book, getOneBook }) => {
     }
   };
 
+  const calculateRating = (bookRatingArray: IRating[]) => {
+    if (!bookRatingArray.length) return "no rating yet";
+    return (
+      bookRatingArray.reduce((acc, current) => acc + current.rate, 0) /
+      bookRatingArray.length
+    ).toFixed(1);
+  };
+
   if (!book)
     return (
       <Div>
@@ -72,14 +80,7 @@ const TabCover: React.FC<Props> = ({ book, getOneBook }) => {
               <div className="card__rating">
                 <span>
                   &#9734;
-                  {book.rating.length
-                    ? (
-                        book.rating.reduce(
-                          (acc, current) => acc + current.rate,
-                          0
-                        ) / book.rating.length
-                      ).toFixed(1)
-                    : "no rating yet"}
+                  {calculateRating(book.rating)}
                 </span>
               </div>
               <div className="card__yourrating">

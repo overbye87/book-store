@@ -28,6 +28,14 @@ const Div = styled.div`
       color: palevioletred;
       text-align: center;
     }
+    .info {
+      font-size: 1.5em;
+      color: darkgreen;
+      text-align: center;
+      &--error {
+        color: darkred;
+      }
+    }
     form {
       display: flex;
       flex-direction: column;

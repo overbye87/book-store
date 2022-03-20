@@ -32,6 +32,9 @@ const BookItem: React.FC<IBookItemProps> = ({ book }) => {
         <p className="price">
           Price: <b>{book.price}</b>
         </p>
+        <p className="bookid">
+          ID: <b>{book.id}</b>
+        </p>
         <p className="filter">Author: {book.author.name}</p>
         <p className="filter">Genre: {book.genre.name}</p>
         <p className="description">{book.description}</p>
@@ -100,6 +103,15 @@ const Card = styled.div`
     right: 15px;
     color: palevioletred;
     font-size: 2.5em;
+  }
+  .bookid {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #1976d2;
+    font-size: 1em;
   }
   .card__actions {
     display: flex;

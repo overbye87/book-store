@@ -7,6 +7,8 @@ import styled from "styled-components";
 import {
   ADMIN_ROUTE,
   BASKET_ROUTE,
+  DEFAULT_AVATAR_FILENAME,
+  DEFAULT_AVATAR_URL,
   LOGIN_ROUTE,
   SHOP_ROUTE,
 } from "../constants";
@@ -34,7 +36,7 @@ const NavBar: React.FC = () => {
               user
                 ? user.img
                   ? process.env.REACT_APP_API_URL + user.img
-                  : process.env.REACT_APP_API_URL + "avatar.png"
+                  : DEFAULT_AVATAR_URL
                 : ""
             }
           ></img>

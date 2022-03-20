@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { IUser } from "../types/users";
 import { deleteComment } from "../http/commentAPI";
 import { IComment, IObjParents } from "./CommentList";
+import { DEFAULT_AVATAR_FILENAME, DEFAULT_AVATAR_URL } from "../constants";
 
 interface Props {
   comment: IComment;
@@ -28,7 +29,7 @@ const CommentItem: React.FC<Props> = ({
 
   const getAvatarPath = (user: null | IUser) => {
     if (user === null || user.img === null) {
-      return process.env.REACT_APP_API_URL + "avatar.png";
+      return DEFAULT_AVATAR_URL;
     } else {
       return process.env.REACT_APP_API_URL + user.img;
     }
