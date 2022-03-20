@@ -44,9 +44,9 @@ const CommentAddForm: React.FC<Props> = ({
       //console.log(text);
       //if (replyComment) {
       const userId = user ? user.id : null;
-      const parrentId = replyComment?.id ? replyComment.id : 0;
-      console.log(bookId, userId, text, parrentId);
-      const responseUser = await createComment(bookId, userId, text, parrentId);
+      const parentId = replyComment?.id ? replyComment.id : 0;
+      console.log(bookId, userId, text, parentId);
+      const responseUser = await createComment(bookId, userId, text, parentId);
       reset();
       getAllBookComments();
       //alert("Comment add successfuly");

@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { $host } from "../../http";
 import { GenreAction, GenreActionTypes } from "../../types/genres";
 
+//Thunks
 export const fetchGenres = () => {
   return async (dispatch: Dispatch<GenreAction>) => {
     try {
@@ -22,11 +23,10 @@ export const fetchGenres = () => {
   };
 };
 
+//Action Creators
 export const setSelectedGenres = (id: number) => {
-  return (dispatch: Dispatch<GenreAction>) => {
-    dispatch({
-      type: GenreActionTypes.SET_SELECTED_GENRES,
-      payload: id,
-    });
+  return {
+    type: GenreActionTypes.SET_SELECTED_GENRES,
+    payload: id,
   };
 };

@@ -1,9 +1,9 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useTypedSelector } from "../hooks/useTypedSelector";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../http/userAPI";
 import { setUserAction } from "../store/actions/user";
+import { RootState } from "../store/redusers";
 interface DataChangeInputs {
   name: string;
   files: FileList;
@@ -11,7 +11,7 @@ interface DataChangeInputs {
 
 const UserDataChange = () => {
   const dispatch = useDispatch();
-  const { isAuth, user } = useTypedSelector((state) => state.user);
+  const { isAuth, user } = useSelector((state: RootState) => state.user);
   const {
     register: registerData,
     setValue: setValueData,

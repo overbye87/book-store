@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useTypedSelector } from "../hooks/useTypedSelector";
 import { fetchBooks } from "../store/actions/book";
 import BookItem from "./BookItem";
 
 import styled from "styled-components";
+import { RootState } from "../store/redusers";
 
 const BookList: React.FC = () => {
   const dispatch = useDispatch();
-  const { books, error, loading } = useTypedSelector((state) => state.book);
+  const { books, error, loading } = useSelector(
+    (state: RootState) => state.book
+  );
 
   let [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {

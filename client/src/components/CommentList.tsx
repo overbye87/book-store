@@ -20,13 +20,13 @@ export interface IComment {
   bookId: number;
   userId: number;
   loginUser: IUser;
-  parrentId: number;
+  parentId: number;
   text: string;
   user: IUser;
   createdAt: string;
 }
 
-export interface IObjParrents {
+export interface IObjParents {
   [key: string]: IComment[];
 }
 
@@ -42,7 +42,7 @@ const CommentList = () => {
   //  5 : [ {comment}, ...]
   //  9 : [ {comment}, ...] }
 
-  const [objParrents, setobjParrents] = useState<IObjParrents>({});
+  const [objParents, setobjParents] = useState<IObjParents>({});
   const params = useParams();
 
   const getAllBookComments = () => {
@@ -54,12 +54,12 @@ const CommentList = () => {
           let obj: any = {};
           response.comments.forEach((item: IComment) => {
             // if not have property - create []
-            if (!obj.hasOwnProperty(`${item.parrentId}`)) {
-              obj[`${item.parrentId}`] = [];
+            if (!obj.hasOwnProperty(`${item.parentId}`)) {
+              obj[`${item.parentId}`] = [];
             }
-            obj[`${item.parrentId}`].push(item);
+            obj[`${item.parentId}`].push(item);
           });
-          setobjParrents(obj);
+          setobjParents(obj);
 
           console.log(obj[0]);
         })
@@ -81,7 +81,7 @@ const CommentList = () => {
     //console.log(comment);
   };
 
-  if (!objParrents[0])
+  if (!objParents[0])
     return (
       <Div>
         <h3>Nothing to show...</h3>
@@ -92,12 +92,12 @@ const CommentList = () => {
       <Div>
         <h3>Comments:</h3>
         <div>
-          {objParrents[0]?.map((comment) => (
+          {objParents[0]?.map((comment) => (
             <CommentItem
               key={`comment${comment.id}`}
               comment={comment}
               getAllBookComments={getAllBookComments}
-              objParrents={objParrents}
+              objParents={objParents}
               loginUser={user}
               onClickReply={onClickReply}
               textareaRef={textareaRef}

@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       Comment.belongsTo(models.User, { as: "user", foreignKey: "userId" });
       Comment.belongsTo(models.Book, { as: "book", foreignKey: "bookId" });
       Comment.belongsTo(models.Comment, {
-        as: "parrent",
-        foreignKey: "parrentId",
+        as: "parent",
+        foreignKey: "parentId",
       });
     }
   }
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         foreignKey: true,
       },
-      parrentId: { type: DataTypes.INTEGER, allowNull: false },
+      parentId: { type: DataTypes.INTEGER, allowNull: false },
       text: { type: DataTypes.STRING, allowNull: false },
     },
     {

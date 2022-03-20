@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthors } from "../store/actions/author";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
@@ -13,11 +12,12 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { RootState } from "../store/redusers";
 
 const AuthorBar: React.FC = () => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { authors } = useTypedSelector((state) => state.author);
+  const { authors } = useSelector((state: RootState) => state.author);
   const [authorId, setAuthorId] = React.useState<(string | null)[]>([]);
   const isFirstRender = useRef(true);
 

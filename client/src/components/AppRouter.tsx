@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useTypedSelector } from "../hooks/useTypedSelector";
 import Admin from "../pages/Admin";
 import Auth from "../pages/Auth";
 import Basket from "../pages/Basket";
@@ -18,7 +17,8 @@ import {
 } from "../constants";
 
 import Layout from "./Layout";
-import { Container } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/redusers";
 
 export const authRoutes = [
   { path: ADMIN_ROUTE, Component: Admin },
@@ -67,7 +67,7 @@ const AppRouter: React.FC = () => {
 };
 
 function RequireAuth({ children }: { children: JSX.Element }) {
-  let { isAuth } = useTypedSelector((state) => state.user);
+  let { isAuth } = useSelector((state: RootState) => state.user);
   let location = useLocation();
   if (!isAuth) {
     return <Navigate to={LOGIN_ROUTE} state={{ from: location }} replace />;

@@ -4,9 +4,9 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { login, registration } from "../http/userAPI";
 import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthAction, setUserAction } from "../store/actions/user";
-import { useTypedSelector } from "../hooks/useTypedSelector";
+import { RootState } from "../store/redusers";
 
 type Inputs = {
   email: string;
@@ -16,7 +16,7 @@ type Inputs = {
 
 const Auth = () => {
   const [loginError, setLoginError] = useState("");
-  const { isAuth, user } = useTypedSelector((state) => state.user);
+  const { isAuth, user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const location = useLocation();

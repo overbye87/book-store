@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { $host } from "../../http";
 import { AuthorAction, AuthorActionTypes } from "../../types/authors";
 
+//Thunks
 export const fetchAuthors = () => {
   return async (dispatch: Dispatch<AuthorAction>) => {
     try {
@@ -22,15 +23,7 @@ export const fetchAuthors = () => {
   };
 };
 
+//Action Creators
 export const setSelectedAuthors = (id: number) => {
-  return (dispatch: Dispatch<AuthorAction>) => {
-    dispatch({
-      type: AuthorActionTypes.SET_SELECTED_AUTHORS,
-      payload: id,
-    });
-  };
-};
-
-export const setSelectedAuthors2 = (id: number) => {
   return { type: AuthorActionTypes.SET_SELECTED_AUTHORS, payload: id };
 };

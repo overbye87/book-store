@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IUser } from "../types/users";
 import { deleteComment } from "../http/commentAPI";
-import { IComment, IObjParrents } from "./CommentList";
+import { IComment, IObjParents } from "./CommentList";
 
 interface Props {
   comment: IComment;
   getAllBookComments: () => void;
-  objParrents: IObjParrents;
+  objParents: IObjParents;
   loginUser: null | IUser;
   onClickReply: (comment: IComment) => void;
   textareaRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -17,7 +17,7 @@ interface Props {
 const CommentItem: React.FC<Props> = ({
   comment,
   getAllBookComments,
-  objParrents,
+  objParents,
   loginUser,
   onClickReply,
   textareaRef,
@@ -59,7 +59,7 @@ const CommentItem: React.FC<Props> = ({
 
   return (
     <Div>
-      <div ref={commentRef} id={`comment${comment.id}`} className="parrent">
+      <div ref={commentRef} id={`comment${comment.id}`} className="parent">
         <div>
           <img src={getAvatarPath(comment.user)}></img>
         </div>
@@ -92,18 +92,18 @@ const CommentItem: React.FC<Props> = ({
               </button>
             ) : null}
           </div>
-          <div className="id">ParrentID:{comment.parrentId}</div>
+          <div className="id">ParentID:{comment.parentId}</div>
           <div className="commentid">{comment.id}</div>
           <div className="text">{comment.text}</div>
         </div>
       </div>
       <div className="children">
-        {objParrents[comment.id]?.map((commentItem) => (
+        {objParents[comment.id]?.map((commentItem) => (
           <div key={`comment${commentItem.id}`}>
             <CommentItem
               comment={commentItem}
               getAllBookComments={getAllBookComments}
-              objParrents={objParrents}
+              objParents={objParents}
               loginUser={loginUser}
               onClickReply={onClickReply}
               textareaRef={textareaRef}
@@ -121,7 +121,7 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
 
-  .parrent {
+  .parent {
     position: relative;
     display: flex;
     border: solid 2px gray;

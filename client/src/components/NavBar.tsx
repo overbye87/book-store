@@ -1,7 +1,6 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { useTypedSelector } from "../hooks/useTypedSelector";
 import { setIsAuthAction } from "../store/actions/user";
 import styled from "styled-components";
 
@@ -12,9 +11,10 @@ import {
   SHOP_ROUTE,
 } from "../constants";
 import Notification from "./Notification";
+import { RootState } from "../store/redusers";
 
 const NavBar: React.FC = () => {
-  const { isAuth, user } = useTypedSelector((state) => state.user);
+  const { isAuth, user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   if (isAuth) {

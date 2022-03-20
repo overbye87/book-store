@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
-import { useTypedSelector } from "./hooks/useTypedSelector";
 import { check } from "./http/userAPI";
-import {
-  setIsAuthAction,
-  setIsAuthAndUserAction,
-  setUserAction,
-} from "./store/actions/user";
+import { setIsAuthAndUserAction } from "./store/actions/user";
 
 const App = () => {
   const [loading, setLoading] = useState(true);

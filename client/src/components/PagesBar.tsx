@@ -1,13 +1,15 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-
 import Pagination from "@mui/material/Pagination";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/redusers";
 
 const Pages: React.FC = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const { books, error, loading } = useTypedSelector((state) => state.book);
+  const { books, error, loading } = useSelector(
+    (state: RootState) => state.book
+  );
 
   return (
     <Div>

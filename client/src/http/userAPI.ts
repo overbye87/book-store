@@ -46,9 +46,10 @@ export const updatePassword = async (
 ) => {
   console.log(oldPassword, newPassword);
 
-  const reqData = new FormData();
-  reqData.append("oldPassword", oldPassword);
-  reqData.append("newPassword", newPassword);
+  const reqData = {
+    oldPassword,
+    newPassword,
+  };
   const response = await $host.put("api/user/updatepassword", reqData);
 
   console.log(response);

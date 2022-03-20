@@ -9,7 +9,7 @@ module.exports = {
         foreignKey: true,
         type: Sequelize.INTEGER,
       },
-      parrentId: {
+      parentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

@@ -11,13 +11,14 @@ export const createComment = async (
   bookId: number,
   userId: number | null,
   text: string,
-  parrentId: number | null
+  parentId: number | null
 ) => {
-  const reqData = new FormData();
-  reqData.append("bookId", `${bookId}`);
-  reqData.append("userId", userId ? `${userId}` : "");
-  reqData.append("text", `${text}`);
-  reqData.append("parrentId", parrentId ? `${parrentId}` : "");
+  const reqData = {
+    bookId,
+    userId: userId ? userId : null,
+    text,
+    parentId: parentId ? parentId : null,
+  };
   const response = await $host.post("api/book/comment", reqData);
   const { data } = response;
   return data;
@@ -25,8 +26,9 @@ export const createComment = async (
 
 // --- DELETE BOOK COMMENT --- --- ---
 export const deleteComment = async (id: number) => {
-  const reqData = new FormData();
-  reqData.append("id", `${id}`);
+  const reqData = {
+    id,
+  };
   const response = await $host.delete("api/book/comment", { data: reqData });
   const { data } = response;
   return data;

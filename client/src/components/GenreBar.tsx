@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchGenres } from "../store/actions/genre";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
@@ -13,11 +12,12 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { RootState } from "../store/redusers";
 
 const GenreBar: React.FC = () => {
   const dispatch = useDispatch();
   let [searchParams, setSearchParams] = useSearchParams();
-  const { genres } = useTypedSelector((state) => state.genre);
+  const { genres } = useSelector((state: RootState) => state.genre);
   const [genreId, setGenreId] = React.useState<(string | null)[]>([]);
   const isFirstRender = useRef(true);
 

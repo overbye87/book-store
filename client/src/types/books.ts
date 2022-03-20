@@ -6,7 +6,7 @@ export type IComment = {
   text: string;
   bookId: number;
   userId: number;
-  parrentId: number;
+  parentId: number;
 };
 
 export type IRating = {
